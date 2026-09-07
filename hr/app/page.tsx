@@ -75,12 +75,12 @@ export default function Page() {
         <Brief />
 
         <p className="tag mt-5 normal-case tracking-normal leading-relaxed">
-          Also built: {alsoBuilt.join(', ')}.{' '}
-          <a className="text-[var(--grey-1)] underline underline-offset-4 hover:text-[var(--paper)]" href={FULL_SITE}>
-            The long version has the write-ups
-          </a>
-          .
+          Also built: {alsoBuilt.join(', ')}.
         </p>
+        <a className="btn mt-4" href={FULL_SITE}>
+          The long version has the write-ups
+          <span aria-hidden>&rarr;</span>
+        </a>
       </section>
 
       {/* ----------------------------------------------------- ninety seconds */}
@@ -208,12 +208,12 @@ export default function Page() {
       </section>
 
       <footer className="band flex flex-wrap items-center justify-between gap-4">
-        <p className="tag normal-case tracking-normal">
-          <a className="hover:text-[var(--paper)]" href={FULL_SITE}>
-            The long version
-          </a>{' '}
-          has the charts and the write-ups.
-        </p>
+        <a
+          className="tag inline-flex min-h-[44px] items-center normal-case tracking-normal transition-colors hover:text-[var(--paper)]"
+          href={FULL_SITE}
+        >
+          The long version has the charts and the write-ups
+        </a>
         <p className="tag">
           {profile.name} · Bangalore · {new Date().getFullYear()}
         </p>
