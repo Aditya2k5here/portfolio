@@ -1,45 +1,36 @@
 import type { Metadata, Viewport } from 'next'
-import { Archivo, IBM_Plex_Mono, Newsreader } from 'next/font/google'
-import { SiteIndex } from '@/components/Index'
-import { site } from '@/content/site'
+import { Schibsted_Grotesk, Azeret_Mono } from 'next/font/google'
+import { profile } from '@/content/profile'
+import { Cut } from '@/components/Cut'
 import './globals.css'
 
-/* Self-hosted by next/font. No font request leaves the domain. */
-/* Variable, so the wdth axis is available: section titles sit at 66–78%. */
-const archivo = Archivo({
+/* One family doing the whole hierarchy, 10px to 172px. Not a display serif,
+   because every generated "premium" site in 2026 reaches for the same one. */
+const sans = Schibsted_Grotesk({
   subsets: ['latin'],
-  axes: ['wdth'],
   display: 'swap',
-  variable: '--font-archivo',
+  variable: '--font-schibsted',
 })
 
-/* Italic only — the thesis face is never set upright anywhere on the site. */
-const newsreader = Newsreader({
+/* Figures only. Chosen for its numerals. */
+const mono = Azeret_Mono({
   subsets: ['latin'],
-  weight: ['300'],
-  style: ['italic'],
+  weight: ['400', '500'],
   display: 'swap',
-  variable: '--font-newsreader',
-})
-
-const plexMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '600'],
-  display: 'swap',
-  variable: '--font-plex-mono',
+  variable: '--font-azeret',
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://adityas.dev'),
   title: {
-    default: `${site.name} — As built / Not built`,
-    template: `%s — ${site.name}`,
+    default: `${profile.name}, ${profile.headline}`,
+    template: `%s · ${profile.name}`,
   },
   description:
-    'An as-built record of four systems: what was made, and what was deliberately not made.',
-  metadataBase: new URL('https://adityas.dev'),
+    'Backend and systems engineer in Bangalore. A JIT regex engine, a garbage collector with a learned lifetime predictor, a deterministic consensus bug-finder, a complete neural network verifier, and an overload-aware API gateway. Graduating 2027.',
   openGraph: {
-    title: `${site.name} — As built / Not built`,
-    description: 'An as-built record of four systems.',
+    title: `${profile.name}, ${profile.headline}`,
+    description: 'Systems work, measured. Graduating May 2027.',
     type: 'website',
   },
   robots: { index: true, follow: true },
@@ -48,28 +39,21 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#E8E3D9' },
-    { media: '(prefers-color-scheme: dark)', color: '#131209' },
-  ],
+  themeColor: '#06070A',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${archivo.variable} ${newsreader.variable} ${plexMono.variable}`}>
+      <body className={`${sans.variable} ${mono.variable}`}>
         <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-3 focus:py-2 focus:font-mono focus:text-[11px] focus:uppercase focus:tracking-[0.16em] focus:text-paper"
+          href="#work"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-[var(--sig)] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
         >
-          Skip to content
+          Skip to the work
         </a>
-
-        <SiteIndex />
-
-        <main id="main" className="px-5 pb-28 lg:pl-[236px] lg:pr-10">
-          <div className="mx-auto max-w-[1180px]">{children}</div>
-        </main>
+        {children}
+        <Cut />
       </body>
     </html>
   )

@@ -1,6 +1,37 @@
-import { Home } from '@/components/Home'
+import { Nav } from '@/components/Nav'
+import { Opening } from '@/components/Opening'
+import { Work } from '@/components/Work'
+import { Education } from '@/components/Education'
+import { Credentials } from '@/components/Credentials'
+import { Experience } from '@/components/Experience'
+import { Contact } from '@/components/Contact'
+import { profile } from '@/content/profile'
 
-/** AS BUILT — the default state and the root URL. Never the other one. */
+export const dynamic = 'force-static'
+
 export default function Page() {
-  return <Home view="as-built" />
+  return (
+    <>
+      <Nav />
+      <Opening />
+      <main>
+        <Work />
+        <Education />
+        <Credentials />
+        <Experience />
+        <Contact />
+      </main>
+
+      <footer className="stage py-10">
+        <div className="shell flex flex-wrap items-center justify-between gap-4">
+          <p className="tag normal-case tracking-normal">
+            Built by hand. No template underneath it.
+          </p>
+          <p className="tag">
+            {profile.name} · Bangalore · {new Date().getFullYear()}
+          </p>
+        </div>
+      </footer>
+    </>
+  )
 }
