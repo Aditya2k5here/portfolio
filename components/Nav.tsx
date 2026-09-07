@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react'
 
 const LINKS = [
+  { id: 'about', label: 'About' },
   { id: 'work', label: 'Work' },
-  { id: 'education', label: 'Education' },
+  { id: 'skills', label: 'Skills' },
   { id: 'credentials', label: 'Credentials' },
+  { id: 'education', label: 'Education' },
   { id: 'experience', label: 'Experience' },
   { id: 'contact', label: 'Contact' },
 ]
@@ -54,7 +56,7 @@ export function Nav() {
 
   return (
     <div
-      className={`sticky top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ${
         stuck
           ? 'border-b border-[var(--edge)] bg-[rgb(6_7_10_/_0.82)] backdrop-blur-xl'
           : 'border-b border-transparent'
@@ -68,10 +70,11 @@ export function Nav() {
         </a>
 
         {/* Scrollable on narrow screens rather than collapsed behind a button.
-            Five words fit; a hamburger for five words is theatre. */}
+            Seven short words fit on a laptop; a hamburger for seven words is
+            theatre, and it hides the only map of the page a reader gets. */}
         <nav
           aria-label="Sections"
-          className="fade-r -mr-[var(--pad)] flex min-w-0 items-center gap-5 overflow-x-auto pr-[var(--pad)] sm:gap-7 md:mr-0 md:overflow-visible md:pr-0"
+          className="fade-r -mr-[var(--pad)] flex min-w-0 items-center gap-4 overflow-x-auto pr-[var(--pad)] sm:gap-5 lg:gap-6 md:mr-0 md:overflow-visible md:pr-0"
           style={{ scrollbarWidth: 'none' }}
         >
           {LINKS.map((l) => (

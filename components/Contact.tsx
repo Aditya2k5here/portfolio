@@ -3,20 +3,20 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { profile, education, languages } from '@/content/profile'
+import { cv } from '@/content/credentials'
 import { Stage } from './Stage'
 import { Flow } from './Flow'
 
 /**
- * Contact, with enough context that nobody has to guess.
+ * Contact.
  *
- * Most contact sections are three icons and a mailto. This one answers the
- * questions somebody actually has before they write: what is he available for,
- * when does he graduate, what time is it where he is, and will he reply.
+ * The last section carries the only photograph below the hero, and it is
+ * deliberately small: a signature in the corner rather than a second portrait
+ * spread. By this point in the page you have read the work, so a face is a
+ * courtesy, not an argument.
  *
- * The clock is live and labelled with the offset, because half the people
- * reading this are in another timezone and that is the one fact a static page
- * can never tell them. It is also where the photograph lives, now that the
- * opening is a drawing: by this point in the page you have earned a face.
+ * The red comes back here, in the smallest form the site has: the pointer fill
+ * on one word. Same system as the hero, a tenth of the volume.
  */
 
 const ROWS = [
@@ -25,20 +25,21 @@ const ROWS = [
   { k: 'GitHub', v: profile.githubHandle, href: profile.github },
   { k: 'LinkedIn', v: profile.linkedinHandle, href: profile.linkedin },
   { k: 'LeetCode', v: 'aditya-srinivas3', href: profile.leetcode },
+  { k: 'CV', v: 'PDF, one page', href: cv },
 ]
 
 export function Contact() {
   return (
-    <Stage id="contact" n="06" title="Contact">
-      <div className="grid gap-[clamp(28px,4vw,64px)] lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+    <Stage id="contact" n="07" title="Contact">
+      <div className="grid gap-x-[clamp(28px,4vw,72px)] gap-y-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <div className="min-w-0">
-          <p className="t-h2 text-[clamp(28px,4.4vw,54px)] leading-[1.06]">
+          <p className="t-h2 text-[clamp(27px,4.2vw,52px)] leading-[1.08]">
             If you are building something
             <br />
             <Flow className="font-medium">interesting</Flow>, I would like to hear about it.
           </p>
 
-          <p className="t-body mt-7 max-w-[46ch]">
+          <p className="t-body mt-7 max-w-[44ch]">
             Graduating {profile.graduating}. Open to software, ML, data and quality roles,
             and to internships before then. I read everything and reply properly, including
             a no.
@@ -53,12 +54,14 @@ export function Contact() {
               >
                 <a
                   href={r.href}
-                  className="flex min-h-[62px] items-center justify-between gap-6 py-4"
-                  {...(r.href.startsWith('http') ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
+                  className="flex min-h-[58px] items-center justify-between gap-6 py-3.5"
+                  {...(r.href.startsWith('http') || r.href.startsWith('/docs')
+                    ? { target: '_blank', rel: 'noreferrer noopener' }
+                    : {})}
                 >
                   <span className="tag">{r.k}</span>
                   <span
-                    className={`m text-right text-[clamp(13px,1.4vw,17px)] transition-colors group-hover:text-[var(--sig-lit)] ${
+                    className={`m text-right text-[clamp(13px,1.4vw,16px)] transition-colors group-hover:text-[var(--sig-lit)] ${
                       r.primary ? 'text-[var(--paper)]' : 'text-[var(--grey-1)]'
                     }`}
                   >
@@ -68,49 +71,49 @@ export function Contact() {
               </li>
             ))}
           </ul>
+
+          <a className="btn btn--sig mt-9" href={`mailto:${profile.email}`}>
+            Say hello
+            <span aria-hidden>&rarr;</span>
+          </a>
         </div>
 
-        {/* ---- the face, and the practicalities ---- */}
-        <div className="flex flex-col gap-[clamp(20px,2.4vw,30px)]">
-          <figure className="plate cut relative m-0 overflow-hidden">
-            <div className="rim" aria-hidden />
-            <Image
-              src="/cut/aditya.webp"
-              alt={`${profile.name}, ${profile.location}`}
-              width={606}
-              height={967}
-              sizes="(min-width: 1024px) 420px, 90vw"
-              className="relative mx-auto h-auto w-[74%] max-w-[300px]"
+        {/* ---- the practicalities, and the signature ---- */}
+        <div className="min-w-0">
+          <dl className="flex flex-col">
+            <Row k="Local time" v={<Clock />} />
+            <Row k="Based" v={profile.location} />
+            <Row
+              k="Graduating"
+              v={`${education.current.expected.replace('Graduating ', '')} · ${education.current.institution.split(' (')[0]}`}
             />
-            <figcaption className="tag absolute bottom-4 left-4 normal-case tracking-normal">
-              {profile.name} · {profile.location}
+            <Row k="Standing" v={`${education.current.standing} · CGPA ${education.current.cgpa}`} />
+            <Row k="Open to" v="Software · ML · Data · QA · Internships" />
+            <Row k="Speaks" v={languages.join(', ')} />
+          </dl>
+
+          {/* The one image below the hero. Small on purpose. */}
+          <figure className="relative m-0 mt-10 flex items-end gap-5">
+            <div className="relative w-[128px] shrink-0 sm:w-[152px]">
+              <span className="rim" aria-hidden />
+              <Image
+                src="/cut/aditya.webp"
+                alt={`${profile.name}, ${profile.location}`}
+                width={606}
+                height={967}
+                sizes="152px"
+                className="cutout relative h-auto w-full"
+              />
+            </div>
+            <figcaption className="pb-2">
+              <p className="text-[15px] font-medium leading-snug">{profile.name}</p>
+              <p className="m mt-1 text-[11px] leading-relaxed text-[var(--grey-3)]">
+                Bangalore, India
+                <br />
+                Still building something.
+              </p>
             </figcaption>
           </figure>
-
-          <aside className="panel p-[clamp(20px,2.6vw,32px)]">
-            <p className="tag mb-5">Before you write</p>
-
-            <dl className="flex flex-col gap-4">
-              <Row k="Local time" v={<Clock />} />
-              <Row k="Based" v={profile.location} />
-              <Row
-                k="Graduating"
-                v={`${education.current.expected.replace('Graduating ', '')} · ${education.current.institution.split(' (')[0]}`}
-              />
-              <Row k="Standing" v={`${education.current.standing} · CGPA ${education.current.cgpa}`} />
-              <Row k="Open to" v="Software · ML · Data · QA · Internships" />
-              <Row k="Speaks" v={languages.join(', ')} />
-            </dl>
-
-            <div className="mt-7 flex flex-wrap gap-2.5">
-              <a className="btn btn--sig" href={`mailto:${profile.email}`}>
-                Email me
-              </a>
-              <a className="btn" href={profile.github} target="_blank" rel="noreferrer noopener">
-                Read the code
-              </a>
-            </div>
-          </aside>
         </div>
       </div>
     </Stage>
@@ -119,7 +122,7 @@ export function Contact() {
 
 function Row({ k, v }: { k: string; v: React.ReactNode }) {
   return (
-    <div className="flex items-baseline justify-between gap-5 border-b border-[var(--edge)] pb-3.5 last:border-0">
+    <div className="flex items-baseline justify-between gap-5 border-b border-[var(--edge)] py-3.5">
       <dt className="tag shrink-0">{k}</dt>
       <dd className="m m-0 text-right text-[13px] leading-snug text-[var(--paper)]">{v}</dd>
     </div>
