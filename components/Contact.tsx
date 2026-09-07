@@ -94,14 +94,16 @@ export function Contact() {
 
           {/* The one image below the hero. Small on purpose. */}
           <figure className="relative m-0 mt-10 flex items-end gap-5">
-            <div className="relative w-[128px] shrink-0 sm:w-[152px]">
+            <div className="relative w-[150px] shrink-0 sm:w-[176px]">
               <span className="rim" aria-hidden />
+              {/* Head, shoulders and upper torso. The full-length cutout read
+                  as a stock photograph pinned to the corner of the page. */}
               <Image
-                src="/cut/aditya.webp"
+                src="/cut/aditya-bust.webp"
                 alt={`${profile.name}, ${profile.location}`}
                 width={606}
-                height={967}
-                sizes="152px"
+                height={487}
+                sizes="176px"
                 className="cutout relative h-auto w-full"
               />
             </div>

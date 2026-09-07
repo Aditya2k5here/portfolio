@@ -1,0 +1,25 @@
+{
+  "name": "aditya-s-hr",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3200",
+    "build": "next build",
+    "start": "next start -p 3200",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^16.3.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  }
+}

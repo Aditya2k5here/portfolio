@@ -66,7 +66,6 @@ export const projects: Project[] = [
     year: '2026',
     status: 'built',
     stack: ['PyTorch', 'MobileNetV2', 'FastAPI', 'Next.js', 'HAM10000', 'ISIC 2019'],
-    repo: 'https://github.com/Aditya2k5here/skin-lesion-classifier',
     featured: true,
     body: [
       'MobileNetV2, ImageNet weights, a new head, seven lesion classes, 28,010 dermatoscopic images pooled from HAM10000 and ISIC 2019. Class-weighted loss and a weighted sampler, because a third of the set is one kind of mole and a model can score well on that set by learning almost nothing. Served through FastAPI behind a Next.js front end, with an abstention gate that declines to answer below 0.15 confidence or above 1.85 entropy.',
@@ -176,7 +175,8 @@ export const projects: Project[] = [
     track: 'Web',
     year: '2026',
     status: 'shipped',
-    stack: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS', 'axe-core', 'Playwright'],
+    stack: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS', 'axe-core'],
+    repo: 'https://github.com/Aditya2k5here/riches-garden-ganeshothsava',
     featured: true,
     body: [
       'A residents’ committee in Ramamurthy Nagar runs a three-day Ganeshothsava and wanted a site for its 21st year. The obvious build is a registrations table, an admin dashboard and a login. I asked how they run it now. A Google Form into a sheet they sort by hand, about thirty names a year, managed by people who are not engineers and who would inherit whatever I left behind the moment I graduate. So the database, the dashboard and the auth were the first three things I removed.',
@@ -195,7 +195,6 @@ export const projects: Project[] = [
     limits: [
       'A static site for a few hundred neighbours. No load testing, and the engineering is in the build and the content model rather than in runtime scale.',
       'Committee photographs are of real residents and their children and are deliberately withheld. The children’s programme route is excluded in robots.ts for the same reason.',
-      'The repository is private, so there is no code to read here. Everything above is checkable against the running site.',
     ],
   },
 
@@ -208,8 +207,7 @@ export const projects: Project[] = [
     track: 'Applied ML',
     year: '2026',
     status: 'local',
-    stack: ['Python', 'asyncio', 'WebSockets', 'SQLite', 'OpenCV', 'MediaPipe', 'Groq', 'Gemini', 'OpenAI'],
-    repo: 'https://github.com/Aditya2k5here/smart-mirror',
+    stack: ['Python', 'asyncio', 'WebSockets', 'SQLite', 'OpenCV', 'Groq', 'Gemini', 'OpenAI'],
     featured: true,
     body: [
       'A mirror surface that wakes when you walk up to it and shows the time, the weather, the news, and what your posture is doing while you stand there. Vision, voice, memory and four REST integrations run at once behind a single orchestration layer: an event bus, a state manager, a WebSocket broadcaster, and a cache that marks entries stale rather than serving them quietly.',

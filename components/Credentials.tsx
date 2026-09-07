@@ -100,8 +100,13 @@ export function Credentials() {
       <div className="mt-[clamp(34px,4.5vw,64px)] grid gap-[clamp(28px,4vw,60px)] lg:grid-cols-2">
         {/* ------------------------------- competitive and organisational -- */}
         <div className="cut">
-          <h3 className="t-h3 text-[clamp(20px,2.2vw,27px)]">Competitive &amp; organisational</h3>
-          <p className="t-small mb-5 mt-1">Won some, ran some.</p>
+          <div className="mb-6 flex items-baseline justify-between gap-5 border-t border-[var(--edge-2)] pt-5">
+            <h3 className="subhead">
+              Competitive <span className="text-[var(--grey-3)]">&amp;</span> organisational
+            </h3>
+            <span className="m text-[11px] text-[var(--grey-3)]">{achievements.length}</span>
+          </div>
+          <p className="t-small -mt-3 mb-5">Won some, ran some.</p>
 
           <ul className="seq flex flex-col">
             {achievements.map((a, i) => (
@@ -125,8 +130,11 @@ export function Credentials() {
 
         {/* ------------------------------------------------ certifications -- */}
         <div className="cut">
-          <h3 className="t-h3 text-[clamp(20px,2.2vw,27px)]">Certifications</h3>
-          <p className="t-small mb-5 mt-1">Four. The arrow opens each one.</p>
+          <div className="mb-6 flex items-baseline justify-between gap-5 border-t border-[var(--edge-2)] pt-5">
+            <h3 className="subhead">Certifications</h3>
+            <span className="m text-[11px] text-[var(--grey-3)]">{certifications.length}</span>
+          </div>
+          <p className="t-small -mt-3 mb-5">The arrow opens each one.</p>
 
           <ul className="seq flex flex-col">
             {certifications.map((c, i) => {

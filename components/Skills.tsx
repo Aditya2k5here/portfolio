@@ -49,8 +49,8 @@ export function Skills() {
                 >
                   <span className="flex items-baseline justify-between gap-6">
                     <span
-                      className={`text-[clamp(19px,2.1vw,26px)] font-medium tracking-[-0.028em] transition-colors ${
-                        on ? 'text-[var(--sig-lit)]' : 'group-hover:text-[var(--sig-lit)]'
+                      className={`subhead transition-colors ${
+                        on ? '!text-[var(--sig-lit)]' : 'group-hover:!text-[var(--sig-lit)]'
                       }`}
                     >
                       {g.group}
