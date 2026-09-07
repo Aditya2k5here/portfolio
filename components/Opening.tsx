@@ -38,7 +38,7 @@ export function Opening() {
       {/* the lamp, hanging in the black where the artwork was cut */}
       <Lamp className="pointer-events-none absolute left-[22%] top-0 z-10 hidden h-[66%] w-auto lg:block xl:left-[24%] [&_.grab]:pointer-events-auto" />
 
-      <div className="shell relative z-20 flex min-h-[92vh] flex-col justify-center pt-[clamp(96px,14vh,150px)] pb-[clamp(36px,6vh,64px)]">
+      <div className="shell relative z-20 flex min-h-[72vh] flex-col justify-center pt-[clamp(88px,12vh,150px)] pb-[clamp(28px,5vh,64px)] lg:min-h-[92vh]">
         <p className="m text-[11px] uppercase tracking-[0.16em] text-[var(--grey-3)]">
           {profile.location} / graduating {profile.graduating}
         </p>
