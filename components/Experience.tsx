@@ -1,4 +1,4 @@
-import { experience, skills } from '@/content/profile'
+import { experience } from '@/content/profile'
 import { Stage } from './Stage'
 
 /**
@@ -13,7 +13,7 @@ export function Experience() {
   return (
     <Stage
       id="experience"
-      n="05"
+      n="06"
       title="Experience"
       aside={<>Four months of writing things down until other people could act on them.</>}
     >
@@ -73,31 +73,6 @@ export function Experience() {
         ))}
       </ul>
 
-      {/* ---------------------------------------------------- the inventory */}
-      <div className="mt-[clamp(38px,5vw,70px)]">
-        <div className="mb-6 flex items-baseline gap-4">
-          <p className="tag">Inventory</p>
-          <span className="h-px flex-1 bg-[var(--edge)]" aria-hidden />
-          <p className="tag">{skills.reduce((n, g) => n + g.items.length, 0)} entries</p>
-        </div>
-
-        <div className="cut seq grid gap-x-9 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
-          {skills.map((g, i) => (
-            <div key={g.group} style={{ '--i': i } as React.CSSProperties}>
-              <p className="m mb-2.5 text-[11px] uppercase tracking-[0.16em] text-[var(--grey-3)]">
-                {g.group}
-              </p>
-              <ul className="flex flex-wrap gap-1.5">
-                {g.items.map((s) => (
-                  <li key={s} className="chip">
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
     </Stage>
   )
 }

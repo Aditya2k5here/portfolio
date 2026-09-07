@@ -37,7 +37,7 @@ export function Education() {
   return (
     <Stage
       id="education"
-      n="03"
+      n="05"
       title="Education"
       aside={
         <>

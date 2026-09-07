@@ -709,3 +709,179 @@ html.js-cut .cut.in .seq > * {
     transition: none;
   }
 }
+
+/* ============================================================================
+   THIRD PASS
+
+   The hero carries the whole visual budget. Everything after it is type,
+   spacing and rules, and the only picture below the fold is a small cutout at
+   the very end. That is the rule the middle of this page is built on.
+   ============================================================================ */
+
+@layer components {
+  /* ---------------------------------------------------------------- name --
+
+     A soft red mass trails the pointer across the name. Three lobes at three
+     different lag rates, merged by an SVG goo filter, so it stretches when you
+     move fast and settles into one round shape when you stop. The letterforms
+     take their colour from the same three points, which is what makes the red
+     read as filling the type rather than sitting behind it. */
+
+  .namewrap {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .blobs {
+    position: absolute;
+    inset: -28% -14%;
+    z-index: -1;
+    pointer-events: none;
+    filter: url(#goo);
+    opacity: 0;
+    transition: opacity 620ms ease;
+  }
+  .namewrap[data-live='1'] .blobs {
+    opacity: 1;
+  }
+
+  .blobs i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 50%;
+    background: var(--sig);
+    will-change: transform;
+  }
+
+  /* The fill. Same three points, so the colour inside the letters and the glow
+     behind them are the same object. */
+  .nametype {
+    color: var(--paper);
+  }
+
+  @supports (-webkit-background-clip: text) or (background-clip: text) {
+    .namewrap[data-live='1'] .nametype {
+      background-image:
+        radial-gradient(9ch 9ch at var(--b1x, -50ch) var(--b1y, 50%), var(--sig-lit) 0%, rgb(225 29 51 / 0.55) 42%, transparent 66%),
+        radial-gradient(11ch 11ch at var(--b2x, -50ch) var(--b2y, 50%), var(--sig) 0%, rgb(225 29 51 / 0.4) 46%, transparent 70%),
+        radial-gradient(13ch 13ch at var(--b3x, -50ch) var(--b3y, 50%), rgb(225 29 51 / 0.7) 0%, transparent 72%),
+        linear-gradient(var(--paper), var(--paper));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+  }
+
+  /* ---------------------------------------------------------------- lamp --
+
+     The handle is the only draggable thing on the page, so it gets a cursor
+     and a hit area rather than relying on the drawn bulb being clickable. */
+
+  .lamp-grab {
+    cursor: grab;
+    touch-action: none;
+  }
+  .lamp-grab:active {
+    cursor: grabbing;
+  }
+
+  .lamp-hint {
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    fill: var(--grey-2);
+    transition: opacity 400ms ease;
+  }
+
+  /* ------------------------------------------------------------- section --
+
+     Below the hero every section is the same object: a number, a title, and
+     content. No card, no panel, no illustration. */
+
+  .rule {
+    height: 1px;
+    background: var(--edge);
+  }
+
+  /* Rows that open. Shared by work, skills and credentials so the whole page
+     has one disclosure behaviour rather than three. */
+  .discl {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .sign {
+    position: relative;
+    display: block;
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+  }
+  .sign::before,
+  .sign::after {
+    content: '';
+    position: absolute;
+    background: currentColor;
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .sign::before {
+    top: 5px;
+    left: 0;
+    width: 11px;
+    height: 1px;
+  }
+  .sign::after {
+    top: 0;
+    left: 5px;
+    width: 1px;
+    height: 11px;
+  }
+  .sign[data-on='1']::after {
+    transform: scaleY(0);
+  }
+
+  /* The scene bleeds off the right edge and dissolves on its left, so the
+     name sits on flat black instead of on a picture. */
+  .scene-bleed {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 34%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent, #000 34%, #000 100%);
+  }
+
+  /* The one prompt on the page. It fades once the lamp has been touched. */
+  .a-hint {
+    animation: hint 5.5s ease-in-out infinite;
+  }
+
+  /* ------------------------------------------------------------- cutout --
+
+     The one image below the hero. Small, and it sits in the corner of the
+     contact block rather than getting a column of its own. */
+
+  .cutout {
+    -webkit-mask-image: radial-gradient(72% 78% at 50% 40%, #000 52%, rgb(0 0 0 / 0.5) 78%, transparent 96%);
+    mask-image: radial-gradient(72% 78% at 50% 40%, #000 52%, rgb(0 0 0 / 0.5) 78%, transparent 96%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blobs {
+    transition: none;
+  }
+}
+
+@keyframes hint {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.95; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .a-hint { animation: none; opacity: 0.7; }
+}

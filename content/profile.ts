@@ -99,13 +99,6 @@ export const education = {
   ],
 } as const
 
-export const publication = {
-  title: 'Digital Heritage Preservation Technologies for Monasteries of Sikkim',
-  venue: 'Advancement in Image Processing and Pattern Recognition',
-  year: '2026',
-  note: 'AI and VR system for monastery digitisation and virtual tourism.',
-} as const
-
 export const experience = [
   {
     role: 'Business Strategy Intern',
@@ -128,29 +121,6 @@ export const experience = [
   },
 ] as const
 
-export const achievements = [
-  {
-    title: '1st Place, Cicada Agentic AI Hackathon',
-    detail: 'Designed, built and deployed a working agentic AI system inside the event window.',
-  },
-  { title: 'Winner, Machine Learning Expo and Generative AI Expo', detail: '' },
-  {
-    title: 'Smart India Hackathon 2025, National round',
-    detail: 'SIH25061. Led system architecture and technical documentation for a government-issued problem statement.',
-  },
-  {
-    title: 'Event Organiser, IEEE Student Chapter',
-    detail: '5+ technical events, 100+ attendees.',
-  },
-] as const
-
-export const certifications = [
-  { name: 'Machine Learning and Deep Learning Specialization', issuer: 'Stanford Online / DeepLearning.AI' },
-  { name: 'Software Engineering, Cloud Computing and Cyber Security', issuer: 'Infosys Springboard' },
-  { name: 'Full Stack Development', issuer: 'SimpliLearn' },
-  { name: 'Java', issuer: 'IIT Bombay' },
-] as const
-
 /** Five. Listed in order of fluency as stated on the resume. */
 export const languages = [
   'English',
@@ -158,56 +128,6 @@ export const languages = [
   'Kannada',
   'Malayalam',
   'Tamil',
-] as const
-
-/**
- * Skills, grouped the way an engineer would group them rather than as one
- * undifferentiated cloud. The master resume carries a much longer inventory
- * split per role variant; this is the union, de-duplicated.
- */
-export const skills = [
-  { group: 'Languages', items: ['Python', 'Go', 'TypeScript', 'JavaScript', 'Java', 'SQL', 'C'] },
-  {
-    group: 'Systems',
-    items: [
-      'Garbage collection',
-      'Bytecode VMs',
-      'JIT compilation (x86-64)',
-      'Concurrency control',
-      'Load shedding',
-      'Deterministic simulation',
-      'Formal verification',
-    ],
-  },
-  {
-    group: 'Backend',
-    items: ['FastAPI', 'Node.js', 'Express', 'asyncio', 'WebSockets', 'REST API design', 'Server-side validation'],
-  },
-  {
-    group: 'Data',
-    items: ['PostgreSQL', 'MySQL', 'SQLite', 'MongoDB', 'Schema design', 'Indexing', 'Query optimisation', 'Migrations'],
-  },
-  {
-    group: 'ML',
-    items: ['PyTorch', 'scikit-learn', 'YOLOv5', 'Feature Pyramid Networks', 'OpenCV', 'Class-imbalance handling', 'Transfer learning'],
-  },
-  {
-    group: 'LLM',
-    items: ['LangChain', 'Multi-provider routing (Groq / Gemini / OpenAI)', 'Agentic workflows', 'Prompt engineering'],
-  },
-  {
-    group: 'Frontend',
-    items: ['React 19', 'Next.js 16', 'Tailwind CSS', 'Accessible UI', 'HTML5', 'CSS3'],
-  },
-  {
-    group: 'Quality',
-    items: ['axe-core auditing', 'Core Web Vitals', 'Headless browser automation', 'WCAG contrast', 'Test design', 'Root cause analysis'],
-  },
-  {
-    group: 'Analysis',
-    items: ['Market sizing', 'Unit economics', 'Competitive analysis', 'Tableau', 'Power BI', 'Excel modelling'],
-  },
-  { group: 'Tools', items: ['Git', 'Linux', 'Docker-free deploys', 'Postman', 'Jupyter', 'Lighthouse', 'VS Code'] },
 ] as const
 
 /**

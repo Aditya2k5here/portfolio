@@ -1,8 +1,10 @@
 import { Nav } from '@/components/Nav'
 import { Opening } from '@/components/Opening'
+import { About } from '@/components/About'
 import { Work } from '@/components/Work'
-import { Education } from '@/components/Education'
+import { Skills } from '@/components/Skills'
 import { Credentials } from '@/components/Credentials'
+import { Education } from '@/components/Education'
 import { Experience } from '@/components/Experience'
 import { Contact } from '@/components/Contact'
 import { profile } from '@/content/profile'
@@ -15,9 +17,11 @@ export default function Page() {
       <Nav />
       <Opening />
       <main>
+        <About />
         <Work />
-        <Education />
+        <Skills />
         <Credentials />
+        <Education />
         <Experience />
         <Contact />
       </main>
