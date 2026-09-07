@@ -1,14 +1,19 @@
-import { education } from '@/content/profile'
+import { education, profile } from '@/content/profile'
 import { counts } from '@/content/projects'
 import { Stage } from './Stage'
 
 /**
  * About.
  *
- * Everything the hero used to say, said properly and one scroll later. No
- * picture. From here to the last section the page is type, rules and space,
- * which is the only way the four figures at the bottom of this block land as
- * facts rather than as more decoration.
+ * Rewritten to one voice. The previous version had four registers stacked on
+ * top of each other: an aphorism, a list of imperatives, an expository
+ * paragraph and a joke, each formatted differently, which is why it read as
+ * assembled rather than written.
+ *
+ * It now runs lead, body, close, facts. The lead is the claim, the three body
+ * paragraphs all answer "and then what", the close is two short lines in the
+ * same key, and the facts are set in the mono face used for every other piece
+ * of metadata on the site. No picture: from here to Contact the page is type.
  */
 export function About() {
   const figures = [
@@ -20,57 +25,66 @@ export function About() {
 
   return (
     <Stage id="about" n="01" title="About">
-      <div className="cut grid gap-x-[clamp(32px,5vw,80px)] gap-y-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-        <div className="min-w-0">
-          <p className="text-[clamp(19px,2.2vw,27px)] font-medium leading-[1.34] tracking-[-0.02em]">
-            Slightly obsessed with structured implementation details. Dangerously
-            comfortable with &ldquo;let&rsquo;s build it and see.&rdquo;
-          </p>
+      <div className="cut grid gap-x-[clamp(32px,5vw,88px)] gap-y-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        {/* the claim */}
+        <p className="max-w-[24ch] text-[clamp(21px,2.5vw,31px)] font-medium leading-[1.28] tracking-[-0.028em]">
+          Slightly obsessed with structured implementation details. Dangerously
+          comfortable with &ldquo;let&rsquo;s build it and see.&rdquo;
+        </p>
 
-          <p className="mt-7 max-w-[54ch] text-[16px] leading-[1.7] text-[var(--grey-1)]">
-            Dig deep. Understand how things work. Take notes. Question assumptions.
-            Break things to figure them out. Then build something ridiculous because
-            apparently wondering{' '}
-            <span className="text-[var(--paper)]">&ldquo;what if?&rdquo;</span> was not
-            enough.
+        {/* and then what */}
+        <div className="flex max-w-[56ch] flex-col gap-5 text-[16px] leading-[1.72] text-[var(--grey-1)]">
+          <p>
+            I like understanding how things work, which usually means taking them apart
+            first. Compilers, collectors, gateways, verifiers. The layer underneath the
+            thing everyone else is looking at.
           </p>
-
-          <p className="mt-5 max-w-[54ch] text-[16px] leading-[1.7] text-[var(--paper)]">
-            Fuelled by an ADHD brain, growing up alongside AI.
+          <p>
+            The questions worth the time only show up once something is running. When
+            compiling is worth what it costs. What gets dropped when there is not enough
+            capacity for everyone. What a model should do when it is not sure.
           </p>
-        </div>
-
-        <div className="min-w-0">
-          <p className="max-w-[46ch] text-[16px] leading-[1.7] text-[var(--grey-1)]">
-            Most of what I build sits under the thing everyone else is looking at.
-            Schedulers, collectors, verifiers, gateways. I like the questions that only
-            show up once something is running: when is compiling worth the cost, what
-            gets dropped when there is not enough capacity for everyone, and what a
-            model should do when it is not sure.
-          </p>
-
-          <p className="mt-5 max-w-[46ch] text-[16px] leading-[1.7] text-[var(--grey-1)]">
-            The habit I care about most is measuring after, not before. Several of the
-            results on this page argued with me. They are still here.
-          </p>
-
-          <p className="mt-7 text-[15px] leading-[1.7]">
-            {education.current.degree}
-            <br />
-            <span className="text-[var(--grey-1)]">{education.current.institution}</span>
-            <br />
-            <span className="m text-[12px] text-[var(--grey-2)]">
-              {education.current.standing} · No backlogs · Bangalore
-            </span>
-          </p>
-
-          <p className="mt-5 max-w-[42ch] text-[15px] leading-[1.7] text-[var(--paper)]">
-            The degree is still loading. The side quests are already running.
+          <p>
+            Then I measure it, and I keep the number either way. Several of the results
+            on this page argued with me, and they are still here.
           </p>
         </div>
       </div>
 
-      <ul className="cut seq mt-[clamp(34px,5vw,64px)] grid grid-cols-2 border-t border-[var(--edge)] sm:grid-cols-4">
+      {/* the close: two lines, one key */}
+      <p className="cut mt-[clamp(30px,4vw,52px)] max-w-[42ch] text-[clamp(17px,1.9vw,21px)] leading-[1.5] text-[var(--paper)]">
+        Fuelled by an ADHD brain, growing up alongside AI.
+        <br />
+        <span className="text-[var(--grey-1)]">
+          The degree is still loading. The side quests are already running.
+        </span>
+      </p>
+
+      {/* the facts, in the face every other fact on this site is set in */}
+      <dl className="cut m mt-[clamp(28px,4vw,48px)] flex flex-wrap gap-x-8 gap-y-3 border-t border-[var(--edge)] pt-6 text-[12px] text-[var(--grey-2)]">
+        <div>
+          <dt className="sr-only">Degree</dt>
+          <dd className="m-0 text-[var(--paper)]">{education.current.degree}</dd>
+        </div>
+        <div>
+          <dt className="sr-only">Institution</dt>
+          <dd className="m-0">{education.current.institution}</dd>
+        </div>
+        <div>
+          <dt className="sr-only">Standing</dt>
+          <dd className="m-0">{education.current.standing}, no backlogs</dd>
+        </div>
+        <div>
+          <dt className="sr-only">Based</dt>
+          <dd className="m-0">{profile.location}</dd>
+        </div>
+        <div>
+          <dt className="sr-only">Graduating</dt>
+          <dd className="m-0">Graduating {profile.graduating}</dd>
+        </div>
+      </dl>
+
+      <ul className="cut seq mt-[clamp(28px,4vw,48px)] grid grid-cols-2 border-t border-[var(--edge)] sm:grid-cols-4">
         {figures.map((f, i) => (
           <li
             key={f.k}

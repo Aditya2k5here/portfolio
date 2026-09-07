@@ -437,7 +437,11 @@ html.js-cut .cut.in .seq > * {
 
   .navlink {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    /* 44px of height on touch. The underline still sits on the text baseline
+       box, so the target grows without the rule drifting away from the word. */
+    min-height: 44px;
     padding-block: 7px;
     font-family: var(--font-azeret), monospace;
     font-size: 10.5px;
@@ -452,7 +456,7 @@ html.js-cut .cut.in .seq > * {
     content: '';
     position: absolute;
     inset-inline: 0;
-    bottom: 0;
+    bottom: calc(50% - 0.85em);
     height: 1px;
     background: var(--sig);
     transform: scaleX(0);
@@ -734,7 +738,7 @@ html.js-cut .cut.in .seq > * {
 
   .blobs {
     position: absolute;
-    inset: -28% -14%;
+    inset: -40% -20%;
     z-index: -1;
     pointer-events: none;
     filter: url(#goo);
@@ -851,13 +855,23 @@ html.js-cut .cut.in .seq > * {
   /* The scene bleeds off the right edge and dissolves on its left, so the
      name sits on flat black instead of on a picture. */
   .scene-bleed {
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 34%, #000 100%);
-    mask-image: linear-gradient(90deg, transparent, #000 34%, #000 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 2%, #000 30%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 2%, #000 30%, #000 100%);
   }
 
   /* The one prompt on the page. It fades once the lamp has been touched. */
   .a-hint {
     animation: hint 5.5s ease-in-out infinite;
+  }
+
+  /* One level below a section title, and unmistakably still a title. Used by
+     every sub-heading on the page so Credentials, Skills and Work all agree. */
+  .subhead {
+    font-weight: 500;
+    font-size: clamp(21px, 2.4vw, 29px);
+    line-height: 1.08;
+    letter-spacing: -0.032em;
+    color: var(--paper);
   }
 
   /* ------------------------------------------------------------- cutout --

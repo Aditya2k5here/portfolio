@@ -1,42 +1,58 @@
+import Image from 'next/image'
 import { profile } from '@/content/profile'
-import { Name, GooFilter } from './Name'
-import { Scene } from './Scene'
+import { Blob, GooFilter } from './Blob'
+import { Lamp } from './Lamp'
 
 /**
  * The first screen.
  *
- * The name and the scene, and almost nothing else. Everything that used to sit
- * here as a paragraph moved into About, one scroll down, because the opening
- * of a portfolio is the one place where a wall of text costs the most and
- * proves the least.
+ * The room is the reference render, cropped right of the type that was baked
+ * into it and below the baked navigation. What is left of the interface in its
+ * top-left corner falls inside the mask that dissolves the image into the page,
+ * so it never reaches the screen.
  *
- * The scene bleeds off the right edge and dissolves into the page on its left,
- * so the type sits on flat black rather than on a picture. It is the only
- * illustration on the site until the very last section.
+ * The lamp is not in the photograph. It was cropped off deliberately and drawn
+ * live instead, hanging in the black where the artwork's own warm falloff still
+ * points, because a lamp baked into a JPEG cannot be pulled about.
+ *
+ * The name and the blob are the only other things here. Everything the hero
+ * used to say in prose is one scroll down in About.
  */
 export function Opening() {
   return (
     <header id="top" className="relative isolate overflow-hidden">
       <GooFilter />
 
-      {/* The scene, bleeding right. Hidden below lg, where it gets its own
-          block underneath instead of being squeezed behind the type. */}
-      <div className="scene-bleed absolute inset-y-0 right-0 hidden w-[60%] lg:block xl:w-[58%]">
-        <Scene className="h-full w-full" />
+      {/* the room */}
+      <div className="scene-bleed absolute inset-y-0 right-0 hidden w-[62%] lg:block xl:w-[60%]">
+        <Image
+          src="/hero/room.webp"
+          alt="Aditya at night on a beanbag with a laptop and a mug of coffee, lit by a hanging lamp"
+          fill
+          priority
+          sizes="62vw"
+          className="object-cover object-left"
+        />
       </div>
 
-      <div className="shell relative z-10 flex min-h-[92vh] flex-col justify-center pt-[clamp(96px,14vh,150px)] pb-[clamp(36px,6vh,64px)]">
+      {/* the lamp, hanging in the black where the artwork was cut */}
+      <Lamp className="pointer-events-none absolute left-[22%] top-0 z-10 hidden h-[66%] w-auto lg:block xl:left-[24%] [&_.grab]:pointer-events-auto" />
+
+      <div className="shell relative z-20 flex min-h-[92vh] flex-col justify-center pt-[clamp(96px,14vh,150px)] pb-[clamp(36px,6vh,64px)]">
         <p className="m text-[11px] uppercase tracking-[0.16em] text-[var(--grey-3)]">
           {profile.location} / graduating {profile.graduating}
         </p>
 
-        <div className="mt-6 max-w-[16ch] lg:max-w-none">
-          <Name first="Aditya" last="Srinivas" />
-        </div>
+        <Blob>
+          <h1 className="nametype mt-6">
+            <span className="t-h1 block">Aditya</span>
+            <span className="t-mega -ml-[0.045em] block">Srinivas</span>
+          </h1>
+        </Blob>
 
         <p className="t-h3 mt-8 font-medium">Curious by default.</p>
 
-        <p className="mt-2.5 max-w-[34ch] text-[16.5px] leading-[1.55] text-[var(--grey-1)]">
+        <p className="mt-2.5 max-w-[32ch] text-[16.5px] leading-[1.55] text-[var(--grey-1)]">
           Building systems, products, and things I probably should not be building.
         </p>
 
@@ -51,9 +67,6 @@ export function Opening() {
           <a className="btn" href={profile.linkedin} target="_blank" rel="noreferrer noopener">
             LinkedIn
           </a>
-          <a className="btn" href="#contact">
-            Contact
-          </a>
         </div>
 
         <a
@@ -65,10 +78,17 @@ export function Opening() {
         </a>
       </div>
 
-      {/* Below lg the scene gets its own band, full width, rather than being
-          cropped to a sliver behind the name. */}
-      <div className="relative aspect-[10/8] w-full sm:aspect-[16/9] lg:hidden">
-        <Scene className="h-full w-full" />
+      {/* Below lg the room gets its own band at full width rather than being
+          cropped to a sliver behind the name. No lamp: there is no pointer to
+          pull it with, and a toy nobody can reach is just weight. */}
+      <div className="relative aspect-[10/8] w-full sm:aspect-[16/10] lg:hidden">
+        <Image
+          src="/hero/room.webp"
+          alt="Aditya at night on a beanbag with a laptop and a mug of coffee"
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+        />
       </div>
     </header>
   )
