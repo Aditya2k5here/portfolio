@@ -1,16 +1,14 @@
 {
-  "name": "as-built-not-built",
+  "name": "aditya-s",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node --experimental-strip-types scripts/validate-content.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "validate": "node --experimental-strip-types scripts/validate-content.ts",
-    "measure": "node scripts/measure.mjs"
+    "plates": "python scripts/make-plates.py"
   },
   "dependencies": {
     "next": "^16.3.2",
