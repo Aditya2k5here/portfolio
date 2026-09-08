@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
+import { asset } from '@/content/paths'
 import { projects, type Project } from '@/content/projects'
 import { Stage } from './Stage'
 import { Flow } from './Flow'
@@ -238,7 +239,7 @@ function Row({
               {p.shot ? (
                 <figure className="panel m-0 overflow-hidden">
                   <Image
-                    src={p.shot.src}
+                    src={asset(p.shot.src)}
                     alt={p.shot.alt}
                     width={1280}
                     height={720}
