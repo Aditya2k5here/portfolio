@@ -13,13 +13,17 @@ import { Stage } from './Stage'
  * certificate rather than promising them on request. The DOI is printed in
  * full: it is the one link here that will still resolve in ten years.
  *
- * "Competitive & organisational" was a category name, not a heading. What is
- * actually in that list is hackathons he won and a chapter he ran, so it says
- * that instead.
+ * The two sub-headings kept being read as body copy. Making them bigger was not
+ * fixing it, so they take the signal colour and a short rule instead. On a page
+ * where red appears about six times in total, red is the loudest available way
+ * to say "heading" without spending points on it.
+ *
+ * The certifications no longer open. Each one expanded onto a single line
+ * saying the file was not hosted here, which is a click that buys nothing, and
+ * the disclosure signs went with it.
  */
 export function Credentials() {
   const [paper, setPaper] = useState(false)
-  const [cert, setCert] = useState<string | null>(null)
 
   return (
     <Stage id="credentials" n="04" title="Credentials">
@@ -107,10 +111,7 @@ export function Credentials() {
       <div className="mt-[clamp(34px,4.5vw,64px)] grid gap-[clamp(28px,4vw,60px)] lg:grid-cols-2">
         {/* ------------------------------------------- won, and ran --------- */}
         <div className="cut">
-          <div className="mb-5 flex items-baseline justify-between gap-5 border-t border-[var(--edge-2)] pt-5">
-            <h3 className="subhead">Hackathons &amp; chapters</h3>
-            <span className="m text-[11px] text-[var(--grey-3)]">{achievements.length}</span>
-          </div>
+          <h3 className="subhead--mark mb-5">Competitive &amp; organisational</h3>
 
           <ul className="seq flex flex-col">
             {achievements.map((a, i) => (
@@ -134,65 +135,22 @@ export function Credentials() {
 
         {/* ------------------------------------------------ certifications -- */}
         <div className="cut">
-          <div className="mb-5 flex items-baseline justify-between gap-5 border-t border-[var(--edge-2)] pt-5">
-            <h3 className="subhead">Certifications</h3>
-            <span className="m text-[11px] text-[var(--grey-3)]">{certifications.length}</span>
-          </div>
+          <h3 className="subhead--mark mb-5">Certifications</h3>
 
           <ul className="seq flex flex-col">
-            {certifications.map((c, i) => {
-              const on = cert === c.name
-              return (
-                <li
-                  key={c.name}
-                  style={{ '--i': i } as React.CSSProperties}
-                  className="border-t border-[var(--edge)]"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setCert(on ? null : c.name)}
-                    aria-expanded={on}
-                    className="discl group flex w-full items-start justify-between gap-5 py-4"
-                  >
-                    <span className="min-w-0">
-                      <span
-                        className={`block text-[16px] font-medium leading-snug transition-colors ${
-                          on ? 'text-[var(--sig-lit)]' : 'group-hover:text-[var(--sig-lit)]'
-                        }`}
-                      >
-                        {c.name}
-                      </span>
-                      <span className="m mt-1.5 block text-[12px] text-[var(--grey-3)]">
-                        {c.issuer}
-                      </span>
-                    </span>
-                    <span
-                      className="sign mt-2 shrink-0 text-[var(--grey-2)] group-hover:text-[var(--sig-lit)]"
-                      data-on={on ? '1' : '0'}
-                      aria-hidden
-                    />
-                  </button>
-
-                  <div className="drawer" data-on={on ? '1' : '0'}>
-                    <div>
-                      <div className="pb-5" inert={!on}>
-                        {c.file ? (
-                          <a className="btn" href={c.file} target="_blank" rel="noreferrer noopener">
-                            Open the certificate
-                            <span aria-hidden>&#8599;</span>
-                          </a>
-                        ) : (
-                          <p className="tag normal-case tracking-normal">
-                            Not hosted here. Available on request.
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              )
-            })}
+            {certifications.map((c, i) => (
+              <li
+                key={c.name}
+                style={{ '--i': i } as React.CSSProperties}
+                className="border-t border-[var(--edge)] py-4"
+              >
+                <p className="text-[16px] font-medium leading-snug">{c.name}</p>
+                <p className="m mt-1.5 text-[12px] text-[var(--grey-3)]">{c.issuer}</p>
+              </li>
+            ))}
           </ul>
+
+          <p className="tag mt-4 normal-case tracking-normal">Certificates on request.</p>
 
           <div className="mt-8">
             <p className="tag mb-3">Languages</p>
