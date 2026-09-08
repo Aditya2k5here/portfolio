@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { asset } from '@/content/paths'
 import { profile } from '@/content/profile'
 import { Blob } from './Blob'
 import { Lamp } from './Lamp'
@@ -23,7 +24,7 @@ export function Opening() {
     <header id="top" className="portfolio-hero relative isolate overflow-hidden">
       <div className="absolute inset-0" aria-hidden>
         <Image
-          src="/hero/aditya-room.webp"
+          src={asset('/hero/aditya-room.webp')}
           alt="Aditya at night on a beanbag with a laptop and a mug of coffee, lit by a hanging lamp"
           fill
           priority
