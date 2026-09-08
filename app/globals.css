@@ -1019,3 +1019,290 @@ html.js-cut .cut.in .seq > * {
 #contact > .shell > .cut:first-child {
   margin-bottom: clamp(18px, 2.2vw, 30px);
 }
+
+/* ============================================================================
+   MOBILE
+
+   Everything below 768px, and nothing above it. The laptop layout is signed
+   off and must not move, so every rule here lives inside this query.
+
+   The problem being solved is scroll. On a phone the work index was ten
+   stacked rows and skills was eight, which is most of a metre of thumb. Both
+   become two-column grids of tiles; opening one lets it span the full width
+   and show everything it shows on desktop.
+   ============================================================================ */
+
+@media (max-width: 767px) {
+  /* ---------------------------------------------------------------- shell */
+
+  .stage {
+    padding-block: 44px;
+    scroll-margin-top: 58px;
+  }
+
+  /* ------------------------------------------------------------------ nav */
+
+  /* All five fit at 390px once the gap comes in, so the bar stops looking
+     like a word has been cut off. */
+  .portfolio-hero ~ * nav[aria-label='Sections'],
+  nav[aria-label='Sections'] {
+    gap: 9px;
+  }
+
+  /* ----------------------------------------------------------------- hero */
+
+  /* The type sits on the photograph on a phone, so it needs a ground under
+     it. Weighted to the left and bottom, where the words actually are. */
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgb(6 7 10 / 0.86) 0%, rgb(6 7 10 / 0.34) 34%, rgb(6 7 10 / 0.72) 78%, rgb(6 7 10 / 0.94) 100%),
+      linear-gradient(90deg, rgb(6 7 10 / 0.72) 0%, rgb(6 7 10 / 0.22) 58%, transparent 100%);
+  }
+
+  .portfolio-hero {
+    min-height: 92svh;
+  }
+
+  .portfolio-hero .shell {
+    min-height: 92svh;
+    padding-top: 104px;
+    padding-bottom: 34px;
+  }
+
+  .hero-name-given {
+    font-size: 56px;
+  }
+
+  .hero-name-family {
+    font-size: 76px;
+  }
+
+  .portfolio-hero .scroll-cue {
+    margin-top: 22px;
+  }
+
+  .t-h1 {
+    font-size: 34px;
+  }
+
+  /* ----------------------------------------------------------------- work */
+
+  #work ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    border-top: 0;
+  }
+
+  #work ol > li {
+    border: 1px solid var(--edge);
+    border-radius: var(--r-lg);
+    background: var(--ink);
+    overflow: hidden;
+    transition: border-color 260ms ease;
+  }
+
+  /* The open one takes the full width, so the detail is never read in a
+     half-width column. */
+  #work ol > li[data-open='1'] {
+    grid-column: 1 / -1;
+    border-color: var(--sig-edge);
+  }
+
+  #work .rowbtn {
+    padding: 13px 12px 14px;
+  }
+
+  #work .row-name {
+    font-size: 19px;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+
+  /* The number column and the plus are noise at tile size. */
+  #work .rowbtn .caret {
+    display: none;
+  }
+
+  #work .row-tagline {
+    margin-top: 7px;
+    font-size: 12.5px;
+    line-height: 1.42;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  #work ol > li[data-open='1'] .row-tagline {
+    -webkit-line-clamp: unset;
+    font-size: 14px;
+  }
+
+  /* Chips: keep the track, drop the rest until the tile is open. */
+  #work .rowbtn .chip {
+    height: 20px;
+    padding-inline: 7px;
+    font-size: 9.5px;
+  }
+
+  #work ol > li[data-open='0'] .rowbtn .chip ~ .chip,
+  #work ol > li[data-open='0'] .rowbtn .m {
+    display: none;
+  }
+
+  #work .drawer > div > div {
+    padding-inline: 12px;
+    padding-bottom: 16px;
+  }
+
+  #work ol + .tag {
+    margin-top: 18px;
+  }
+
+  /* --------------------------------------------------------------- skills */
+
+  #skills > .shell > ul,
+  #skills ul.cut {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    border-top: 0;
+  }
+
+  #skills ul.cut > li {
+    border: 1px solid var(--edge);
+    border-bottom: 1px solid var(--edge);
+    border-radius: var(--r-lg);
+    background: var(--ink);
+    padding: 12px;
+  }
+
+  #skills ul.cut > li[data-open='1'] {
+    grid-column: 1 / -1;
+    border-color: var(--sig-edge);
+  }
+
+  #skills ul.cut > li > div {
+    display: block;
+    padding-block: 0;
+  }
+
+  #skills .subhead {
+    font-size: 15.5px;
+    line-height: 1.15;
+  }
+
+  /* The one-line explanation is lovely on a laptop and is clutter in a tile. */
+  #skills .skill-note {
+    display: none;
+  }
+
+  #skills ul.cut > li[data-open='1'] .skill-note {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  #skills ul.cut > li dd,
+  #skills ul.cut > li > div > div:last-child > ul {
+    margin-top: 8px;
+  }
+
+  #skills ul.cut li li {
+    font-size: 12.5px;
+    line-height: 1.35;
+  }
+
+  /* ---------------------------------------------------------- credentials */
+
+  #credentials .subhead--mark {
+    font-size: 19px;
+    padding-top: 14px;
+  }
+
+  #credentials article h3 {
+    font-size: 21px;
+    line-height: 1.14;
+  }
+
+  #credentials .chip {
+    height: 21px;
+    padding-inline: 7px;
+    font-size: 9.5px;
+  }
+
+  #credentials li {
+    padding-block: 12px;
+  }
+
+  #credentials li p:first-child {
+    font-size: 15px;
+  }
+
+  #credentials li p + p {
+    font-size: 12.5px;
+    margin-top: 4px;
+  }
+
+  #credentials > .shell > div:last-child {
+    gap: 26px;
+    margin-top: 26px;
+  }
+
+  /* ----------------------------------------------------------- experience */
+
+  #experience li {
+    padding-top: 20px;
+  }
+
+  #experience .t-h3 {
+    font-size: 19px;
+  }
+
+  #experience li p:nth-of-type(2) {
+    font-size: 15px;
+    margin-top: 12px;
+  }
+
+  #experience ul li {
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  #experience .chip {
+    height: 21px;
+    font-size: 9.5px;
+  }
+
+  /* ------------------------------------------------------------ education */
+
+  #education .scroll-x {
+    margin-top: 22px;
+  }
+
+  #education .chip {
+    height: 22px;
+    font-size: 10px;
+  }
+
+  /* ------------------------------------------------------------ elsewhere */
+
+  #contact .grid,
+  #contact dl {
+    gap: 0;
+  }
+
+  /* Long values would otherwise force the row to scroll sideways. */
+  #contact li a {
+    grid-template-columns: 20px minmax(0, 1fr) 16px;
+    column-gap: 12px;
+  }
+
+  #contact li a > .tag {
+    display: none;
+  }
+}

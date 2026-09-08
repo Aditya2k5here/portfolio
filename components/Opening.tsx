@@ -21,16 +21,18 @@ import { Lamp } from './Lamp'
 export function Opening() {
   return (
     <header id="top" className="portfolio-hero relative isolate overflow-hidden">
-      <div className="absolute inset-0 hidden lg:block" aria-hidden>
+      <div className="absolute inset-0" aria-hidden>
         <Image
           src="/hero/aditya-room.webp"
           alt="Aditya at night on a beanbag with a laptop and a mug of coffee, lit by a hanging lamp"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center"
+          className="object-cover object-[64%_center] lg:object-center"
         />
       </div>
+
+      <span className="hero-scrim lg:hidden" aria-hidden />
 
       <Lamp className="pointer-events-none absolute left-[35.5%] top-0 z-30 hidden h-[63%] w-auto lg:block [&_#rig]:pointer-events-auto" />
 
@@ -79,15 +81,6 @@ export function Opening() {
         </a>
       </div>
 
-      <div className="relative aspect-[10/8] w-full sm:aspect-[16/10] lg:hidden">
-        <Image
-          src="/hero/aditya-room.webp"
-          alt="Aditya at night on a beanbag with a laptop and a mug of coffee"
-          fill
-          sizes="100vw"
-          className="object-cover object-[78%_center]"
-        />
-      </div>
     </header>
   )
 }

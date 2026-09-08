@@ -36,11 +36,11 @@ export function Skills() {
           const on = open === g.group
           const id = `sk-${g.group.replace(/\s+/g, '-')}`
           return (
-            <li key={g.group} className="border-b border-[var(--edge)]">
+            <li key={g.group} className="border-b border-[var(--edge)]" data-open={on ? '1' : '0'}>
               <div className="grid gap-x-[clamp(20px,3vw,56px)] gap-y-3 py-[clamp(18px,2.2vw,26px)] lg:grid-cols-[minmax(0,250px)_minmax(0,1fr)]">
                 <div className="min-w-0">
                   <h3 className="subhead text-[clamp(18px,1.9vw,23px)]">{g.group}</h3>
-                  <p className="t-small mt-1.5 max-w-[34ch]">{g.note}</p>
+                  <p className="skill-note t-small mt-1.5 max-w-[34ch]">{g.note}</p>
                 </div>
 
                 <div className="min-w-0">
