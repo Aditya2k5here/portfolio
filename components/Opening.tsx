@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { profile } from '@/content/profile'
-import { Blob, GooFilter } from './Blob'
+import { Blob } from './Blob'
 import { Lamp } from './Lamp'
 
 /**
@@ -21,8 +21,6 @@ import { Lamp } from './Lamp'
 export function Opening() {
   return (
     <header id="top" className="relative isolate overflow-hidden">
-      <GooFilter />
-
       {/* the room */}
       <div className="scene-bleed absolute inset-y-0 right-0 hidden w-[62%] lg:block xl:w-[60%]">
         <Image
@@ -36,7 +34,7 @@ export function Opening() {
       </div>
 
       {/* the lamp, hanging in the black where the artwork was cut */}
-      <Lamp className="pointer-events-none absolute left-[22%] top-0 z-10 hidden h-[66%] w-auto lg:block xl:left-[24%] [&_.grab]:pointer-events-auto" />
+      <Lamp className="pointer-events-none absolute left-[22%] top-0 z-10 hidden h-[66%] w-auto lg:block xl:left-[24%] [&_#rig]:pointer-events-auto" />
 
       <div className="shell relative z-20 flex min-h-[72vh] flex-col justify-center pt-[clamp(88px,12vh,150px)] pb-[clamp(28px,5vh,64px)] lg:min-h-[92vh]">
         <p className="m text-[11px] uppercase tracking-[0.16em] text-[var(--grey-3)]">
@@ -52,8 +50,8 @@ export function Opening() {
 
         <p className="t-h3 mt-8 font-medium">Curious by default.</p>
 
-        <p className="mt-2.5 max-w-[32ch] text-[16.5px] leading-[1.55] text-[var(--grey-1)]">
-          Building systems, products, and things I probably should not be building.
+        <p className="mt-2.5 max-w-[30ch] text-[16.5px] leading-[1.55] text-[var(--grey-1)]">
+          I take things apart to see how they work, then build something with the pieces.
         </p>
 
         <div className="mt-9 flex flex-wrap gap-2.5">

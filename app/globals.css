@@ -725,52 +725,50 @@ html.js-cut .cut.in .seq > * {
 @layer components {
   /* ---------------------------------------------------------------- name --
 
-     A soft red mass trails the pointer across the name. Three lobes at three
-     different lag rates, merged by an SVG goo filter, so it stretches when you
-     move fast and settles into one round shape when you stop. The letterforms
-     take their colour from the same three points, which is what makes the red
-     read as filling the type rather than sitting behind it. */
+     A soft irregular mass sits on the pointer and stretches behind it as you
+     move. The letterforms take their colour from the same centre, which is
+     what makes the red read as filling the type rather than passing behind
+     it. Drawn as a path, not a circle: see components/Blob.tsx. */
 
   .namewrap {
     position: relative;
     isolation: isolate;
   }
 
+  /* The blob is an SVG laid over the whole block, so the path can be drawn in
+     the same coordinate space the pointer is reported in. It sits behind the
+     type; the letters take their own colour from the same centre. */
   .blobs {
     position: absolute;
-    inset: -40% -20%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     z-index: -1;
+    overflow: visible;
     pointer-events: none;
-    filter: url(#goo);
     opacity: 0;
-    transition: opacity 620ms ease;
+    transition: opacity 420ms ease;
   }
   .namewrap[data-live='1'] .blobs {
     opacity: 1;
   }
 
-  .blobs i {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    border-radius: 50%;
-    background: var(--sig);
-    will-change: transform;
-  }
-
-  /* The fill. Same three points, so the colour inside the letters and the glow
-     behind them are the same object. */
   .nametype {
     color: var(--paper);
   }
 
+  /* Guarded, because without background-clip the type would be transparent,
+     and invisible is a worse failure than plain. */
   @supports (-webkit-background-clip: text) or (background-clip: text) {
     .namewrap[data-live='1'] .nametype {
       background-image:
-        radial-gradient(9ch 9ch at var(--b1x, -50ch) var(--b1y, 50%), var(--sig-lit) 0%, rgb(225 29 51 / 0.55) 42%, transparent 66%),
-        radial-gradient(11ch 11ch at var(--b2x, -50ch) var(--b2y, 50%), var(--sig) 0%, rgb(225 29 51 / 0.4) 46%, transparent 70%),
-        radial-gradient(13ch 13ch at var(--b3x, -50ch) var(--b3y, 50%), rgb(225 29 51 / 0.7) 0%, transparent 72%),
+        radial-gradient(
+          132px 132px at var(--bx, -60ch) var(--by, 50%),
+          #ff6979 0%,
+          var(--sig-lit) 32%,
+          rgb(225 29 51 / 0.5) 60%,
+          transparent 80%
+        ),
         linear-gradient(var(--paper), var(--paper));
       -webkit-background-clip: text;
       background-clip: text;
@@ -781,22 +779,16 @@ html.js-cut .cut.in .seq > * {
 
   /* ---------------------------------------------------------------- lamp --
 
-     The handle is the only draggable thing on the page, so it gets a cursor
-     and a hit area rather than relying on the drawn bulb being clickable. */
+     The whole fixture is the handle. Grabbing a lamp by its shade is what
+     anyone would try first, and the cursor is the only thing telling you the
+     interaction exists now that the label is gone. */
 
-  .lamp-grab {
+  .grab {
     cursor: grab;
     touch-action: none;
   }
-  .lamp-grab:active {
+  .grab:active {
     cursor: grabbing;
-  }
-
-  .lamp-hint {
-    font-size: 12px;
-    letter-spacing: 0.02em;
-    fill: var(--grey-2);
-    transition: opacity 400ms ease;
   }
 
   /* ------------------------------------------------------------- section --

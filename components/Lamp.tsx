@@ -17,6 +17,10 @@ import { useEffect, useRef } from 'react'
  *
  * The glow is a sibling that reads the same two custom properties, so the light
  * goes where the bulb actually is rather than staying where it was drawn.
+ *
+ * There is no label on it. A lamp that swings the moment you touch it does not
+ * need one, and the annotation was the only piece of interface left in the
+ * picture.
  */
 
 /* Anchor is the ceiling fixing, in the SVG's own coordinates. */
@@ -37,7 +41,6 @@ export function Lamp({ className = '' }: { className?: string }) {
     const svg = root.current
     if (!svg) return
     const rig = svg.querySelector<SVGGElement>('#rig')
-    const hint = svg.querySelector<SVGGElement>('#hint')
     if (!rig) return
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -48,7 +51,6 @@ export function Lamp({ className = '' }: { className?: string }) {
     let stretchVel = 0
     let dragging = false
     let raf = 0
-    let touched = false
 
     const toLocal = (e: PointerEvent) => {
       const pt = svg.createSVGPoint()
@@ -93,10 +95,6 @@ export function Lamp({ className = '' }: { className?: string }) {
 
     const down = (e: PointerEvent) => {
       dragging = true
-      if (!touched) {
-        touched = true
-        hint?.style.setProperty('opacity', '0')
-      }
       ;(e.target as Element).setPointerCapture?.(e.pointerId)
       e.preventDefault()
     }
@@ -115,6 +113,7 @@ export function Lamp({ className = '' }: { className?: string }) {
       const want = Math.max(0, Math.min(MAX_STRETCH, dist - REST))
       stretchVel = want - stretch
       stretch = want
+      paint()
       e.preventDefault()
     }
 
@@ -184,23 +183,21 @@ export function Lamp({ className = '' }: { className?: string }) {
         style={{ transform: 'translate(calc(var(--bx) * 1px), calc(var(--by) * 1px))' }}
       />
 
-      <g id="rig">
+      <g id="rig" className="grab">
         {/* cord */}
         <line x1={AX} y1={AY} x2={AX} y2={AY + 150} stroke="#15181d" strokeWidth="5" />
         <line x1={AX} y1={AY} x2={AX} y2={AY + 150} stroke="#2c323c" strokeWidth="1.5" />
 
         {/* collar */}
         <path
-          className="grab"
           d={`M${AX - 15} ${AY + 150}h30l-3 30h-24z`}
           fill="url(#l-collar)"
         />
-        <rect className="grab" x={AX - 22} y={AY + 178} width="44" height="12" rx="3" fill="#8a7145" />
+        <rect x={AX - 22} y={AY + 178} width="44" height="12" rx="3" fill="#8a7145" />
 
         {/* the bell. Wide mouth, slightly domed shoulder, like the reference. */}
-        <path className="grab" d={`M${AX - 58} ${AY + 214}C${AX - 58} ${AY + 188} ${AX - 34} ${AY + 182} ${AX} ${AY + 182}C${AX + 34} ${AY + 182} ${AX + 58} ${AY + 188} ${AX + 58} ${AY + 214}L${AX + 66} ${AY + 288}A66 20 0 0 1 ${AX - 66} ${AY + 288}Z`} fill="url(#l-glass)" />
+        <path d={`M${AX - 58} ${AY + 214}C${AX - 58} ${AY + 188} ${AX - 34} ${AY + 182} ${AX} ${AY + 182}C${AX + 34} ${AY + 182} ${AX + 58} ${AY + 188} ${AX + 58} ${AY + 214}L${AX + 66} ${AY + 288}A66 20 0 0 1 ${AX - 66} ${AY + 288}Z`} fill="url(#l-glass)" />
         <path
-          className="grab"
           d={`M${AX - 58} ${AY + 214}C${AX - 58} ${AY + 188} ${AX - 34} ${AY + 182} ${AX} ${AY + 182}C${AX + 34} ${AY + 182} ${AX + 58} ${AY + 188} ${AX + 58} ${AY + 214}L${AX + 66} ${AY + 288}A66 20 0 0 1 ${AX - 66} ${AY + 288}Z`}
           fill="none"
           stroke="#ffc061"
@@ -212,7 +209,6 @@ export function Lamp({ className = '' }: { className?: string }) {
         {/* the bulb, and the light it actually makes */}
         <circle cx={AX} cy={AY + 248} r="58" fill="#ffc061" opacity="0.6" filter="url(#l-soft)" />
         <path
-          className="grab"
           d={`M${AX - 15} ${AY + 210}h30v40a15 28 0 0 1 -30 0z`}
           fill="url(#l-bulb)"
         />
@@ -228,27 +224,6 @@ export function Lamp({ className = '' }: { className?: string }) {
         <ellipse cx={AX} cy={AY + 306} rx="36" ry="10" fill="#ffe0a6" opacity="0.5" filter="url(#l-soft)" />
       </g>
 
-      {/* the one prompt on the page */}
-      <g id="hint" className="a-hint" style={{ transition: 'opacity 600ms ease' }}>
-        <path
-          d={`M${AX + 128} ${AY + 118}c-32 8 -54 28 -64 58`}
-          stroke="var(--grey-2)"
-          strokeWidth="1.8"
-          fill="none"
-          strokeDasharray="4 5"
-        />
-        <path d={`M${AX + 62} ${AY + 180}l4 -18 14 9z`} fill="var(--grey-2)" />
-        <text
-          x={AX + 136}
-          y={AY + 110}
-          fill="var(--grey-1)"
-          fontSize="19"
-          fontStyle="italic"
-          fontFamily="var(--font-schibsted), sans-serif"
-        >
-          drag me
-        </text>
-      </g>
     </svg>
   )
 }

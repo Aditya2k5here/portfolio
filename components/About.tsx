@@ -1,19 +1,17 @@
-import { education, profile } from '@/content/profile'
+import { profile } from '@/content/profile'
 import { counts } from '@/content/projects'
 import { Stage } from './Stage'
 
 /**
  * About.
  *
- * Rewritten to one voice. The previous version had four registers stacked on
- * top of each other: an aphorism, a list of imperatives, an expository
- * paragraph and a joke, each formatted differently, which is why it read as
- * assembled rather than written.
+ * Cut to about a third of what was here. The three paragraphs it replaces
+ * explained compilers, collectors, gateways, verifiers, compile costs, capacity
+ * and model uncertainty, which is the work restating itself before you have
+ * reached the work. The Work section is one scroll down and does it better.
  *
- * It now runs lead, body, close, facts. The lead is the claim, the three body
- * paragraphs all answer "and then what", the close is two short lines in the
- * same key, and the facts are set in the mono face used for every other piece
- * of metadata on the site. No picture: from here to Contact the page is type.
+ * Two lines he wrote stay as they are. Everything else is short enough to read
+ * without deciding to.
  */
 export function About() {
   const figures = [
@@ -25,66 +23,45 @@ export function About() {
 
   return (
     <Stage id="about" n="01" title="About">
-      <div className="cut grid gap-x-[clamp(32px,5vw,88px)] gap-y-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-        {/* the claim */}
-        <p className="max-w-[24ch] text-[clamp(21px,2.5vw,31px)] font-medium leading-[1.28] tracking-[-0.028em]">
+      <div className="cut grid gap-x-[clamp(32px,5vw,88px)] gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <p className="max-w-[26ch] text-[clamp(21px,2.5vw,31px)] font-medium leading-[1.28] tracking-[-0.028em]">
           Slightly obsessed with structured implementation details. Dangerously
           comfortable with &ldquo;let&rsquo;s build it and see.&rdquo;
         </p>
 
-        {/* and then what */}
-        <div className="flex max-w-[56ch] flex-col gap-5 text-[16px] leading-[1.72] text-[var(--grey-1)]">
+        <div className="flex max-w-[48ch] flex-col gap-5 text-[16px] leading-[1.72] text-[var(--grey-1)]">
           <p>
-            I like understanding how things work, which usually means taking them apart
-            first. Compilers, collectors, gateways, verifiers. The layer underneath the
-            thing everyone else is looking at.
+            Final-year B.E. ISE student at Atria Institute of Technology. Most of what
+            I build sits a layer under the thing everyone else is looking at, and most
+            of what I learn comes from measuring it afterwards.
           </p>
-          <p>
-            The questions worth the time only show up once something is running. When
-            compiling is worth what it costs. What gets dropped when there is not enough
-            capacity for everyone. What a model should do when it is not sure.
-          </p>
-          <p>
-            Then I measure it, and I keep the number either way. Several of the results
-            on this page argued with me, and they are still here.
+          <p className="text-[var(--paper)]">
+            Some of the numbers on this page went against me. Those are the ones worth
+            keeping.
           </p>
         </div>
       </div>
 
-      {/* the close: two lines, one key */}
-      <p className="cut mt-[clamp(30px,4vw,52px)] max-w-[42ch] text-[clamp(17px,1.9vw,21px)] leading-[1.5] text-[var(--paper)]">
-        Fuelled by an ADHD brain, growing up alongside AI.
-        <br />
-        <span className="text-[var(--grey-1)]">
-          The degree is still loading. The side quests are already running.
-        </span>
-      </p>
-
-      {/* the facts, in the face every other fact on this site is set in */}
-      <dl className="cut m mt-[clamp(28px,4vw,48px)] flex flex-wrap gap-x-8 gap-y-3 border-t border-[var(--edge)] pt-6 text-[12px] text-[var(--grey-2)]">
-        <div>
-          <dt className="sr-only">Degree</dt>
-          <dd className="m-0 text-[var(--paper)]">{education.current.degree}</dd>
-        </div>
-        <div>
-          <dt className="sr-only">Institution</dt>
-          <dd className="m-0">{education.current.institution}</dd>
-        </div>
-        <div>
-          <dt className="sr-only">Standing</dt>
-          <dd className="m-0">{education.current.standing}, no backlogs</dd>
-        </div>
+      <dl className="cut m mt-[clamp(30px,4vw,52px)] flex flex-wrap gap-x-8 gap-y-3 border-t border-[var(--edge)] pt-6 text-[12px] text-[var(--grey-2)]">
         <div>
           <dt className="sr-only">Based</dt>
-          <dd className="m-0">{profile.location}</dd>
+          <dd className="m-0 text-[var(--paper)]">{profile.location}</dd>
         </div>
         <div>
           <dt className="sr-only">Graduating</dt>
           <dd className="m-0">Graduating {profile.graduating}</dd>
         </div>
+        <div>
+          <dt className="sr-only">Standing</dt>
+          <dd className="m-0">Semester VII, no backlogs</dd>
+        </div>
+        <div>
+          <dt className="sr-only">Open to</dt>
+          <dd className="m-0">Software · ML · Data · QA</dd>
+        </div>
       </dl>
 
-      <ul className="cut seq mt-[clamp(28px,4vw,48px)] grid grid-cols-2 border-t border-[var(--edge)] sm:grid-cols-4">
+      <ul className="cut seq mt-[clamp(24px,3.5vw,40px)] grid grid-cols-2 border-t border-[var(--edge)] sm:grid-cols-4">
         {figures.map((f, i) => (
           <li
             key={f.k}
