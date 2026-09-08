@@ -493,9 +493,170 @@ html.js-cut .cut.in .seq > * {
     transform: none;
     pointer-events: auto;
   }
+  /* On a laptop the corner is far enough from the artwork's own lettering that
+     the name can simply live there, which is what it has always done. On a
+     phone the bar sits directly on top of the same name set at 56px, so there
+     it waits until the hero has gone past. */
+  @media (min-width: 768px) {
+    .wordmark {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+    }
+  }
   .wordmark i {
     font-style: normal;
     color: var(--sig-lit);
+  }
+
+  /* ----------------------------------------------------------- navtrig --
+
+     The phone control, and only the phone control: above 768px the five links
+     fit with room to spare and the strip stays.
+
+     It is labelled with the section you are in rather than with the word
+     "menu", because that is the reading it gets ninety-nine times out of a
+     hundred. The glyph is two bars of different lengths, which is a shape,
+     not the stock three-line icon. */
+
+  .navtrig {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 44px;
+    margin-right: -7px;
+    padding-inline: 7px;
+    background: none;
+    border: 0;
+    color: var(--paper);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .navtrig-label {
+    font-family: var(--font-azeret), monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-1);
+    transition: color 240ms ease;
+  }
+  .navtrig[aria-expanded='true'] .navtrig-label {
+    color: var(--paper);
+  }
+
+  .navtrig-glyph {
+    position: relative;
+    display: block;
+    width: 22px;
+    height: 11px;
+  }
+  .navtrig-glyph i {
+    position: absolute;
+    left: 0;
+    height: 1.5px;
+    background: var(--paper);
+    transition:
+      width 420ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .navtrig-glyph i:first-child {
+    top: 0;
+    width: 22px;
+  }
+  .navtrig-glyph i:last-child {
+    bottom: 0;
+    width: 13px;
+  }
+  /* Both bars come to full width, then cross on the container's centre line:
+     half of 11px less half of 1.5px is 4.75px of travel each. */
+  .navtrig-glyph[data-on='1'] i:first-child {
+    width: 22px;
+    transform: translateY(4.75px) rotate(45deg);
+  }
+  .navtrig-glyph[data-on='1'] i:last-child {
+    width: 22px;
+    transform: translateY(-4.75px) rotate(-45deg);
+  }
+
+  /* -------------------------------------------------------------- menu --
+
+     Sits under the bar rather than over it, so the control that opened it is
+     still the control that closes it. */
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    background: var(--void);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 320ms ease;
+  }
+  .menu--on {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .menu-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    min-height: 64px;
+    padding-block: 15px;
+    border-bottom: 1px solid var(--edge);
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 240ms ease,
+      transform 240ms ease;
+  }
+  .menu--on .menu-row {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 460ms cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms),
+      transform 460ms cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms);
+  }
+  .menu--on .menu-row:nth-child(1) { --d: 40ms; }
+  .menu--on .menu-row:nth-child(2) { --d: 80ms; }
+  .menu--on .menu-row:nth-child(3) { --d: 120ms; }
+  .menu--on .menu-row:nth-child(4) { --d: 160ms; }
+  .menu--on .menu-row:nth-child(5) { --d: 200ms; }
+
+  .menu-no {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--grey-3);
+    transition: color 260ms ease;
+  }
+
+  .menu-name {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+
+  .menu-arrow {
+    margin-left: auto;
+    align-self: center;
+    font-size: 17px;
+    color: var(--sig);
+    opacity: 0;
+    transform: translateX(-7px);
+    transition:
+      opacity 300ms ease,
+      transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .menu-row[data-on='1'] .menu-no {
+    color: var(--sig);
+  }
+  .menu-row[data-on='1'] .menu-arrow {
+    opacity: 1;
+    transform: none;
   }
 
   /* -------------------------------------------------------------- flow --
@@ -970,7 +1131,7 @@ html.js-cut .cut.in .seq > * {
     font-size: 116px;
   }
 
-  nav[aria-label='Sections'] {
+  .barnav {
     flex: 1 1 auto;
     justify-content: flex-end;
   }
@@ -991,11 +1152,7 @@ html.js-cut .cut.in .seq > * {
     font-size: 82px;
   }
 
-  .wordmark {
-    display: none;
-  }
-
-  nav[aria-label='Sections'] {
+  .barnav {
     justify-content: space-between;
   }
 
@@ -1040,16 +1197,48 @@ html.js-cut .cut.in .seq > * {
     scroll-margin-top: 58px;
   }
 
-  /* ------------------------------------------------------------------ nav */
+  /* --------------------------------------------------------------- charts */
 
-  /* All five fit at 390px once the gap comes in, so the bar stops looking
-     like a word has been cut off. */
-  .portfolio-hero ~ * nav[aria-label='Sections'],
-  nav[aria-label='Sections'] {
-    gap: 9px;
+  /* The card's own 18px each side on top of the shell's 20px leaves 244px at
+     320px for a bar label and its number, and the number was the one that
+     lost. The chart is the evidence, so it gets the space back. */
+  figure.panel {
+    padding: 15px;
+  }
+
+  /* ---------------------------------------------------------------- chips */
+
+  /* A pill is nowrap by design and that is right on a laptop, where the
+     widest of them ("Abstract interpretation", 182px) has room to spare. In
+     a 145px tile it hangs off the card instead, so on a phone a pill is
+     allowed a second line. Wrapping keeps the term; truncating loses it. */
+  .chip {
+    max-width: 100%;
+    height: auto;
+    padding-block: 2px;
+    white-space: normal;
+    line-height: 1.3;
   }
 
   /* ----------------------------------------------------------------- hero */
+
+  /* Three buttons on one flex line wrap two-and-one and leave 96px of dead
+     air beside GitHub. As a grid the primary takes the full width it has
+     earned and the two secondaries split the rest evenly. */
+  .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+
+  .hero-actions > .btn {
+    width: 100%;
+    padding-inline: 14px;
+  }
+
+  .hero-actions > .btn:first-child {
+    grid-column: 1 / -1;
+  }
 
   /* The type sits on the photograph on a phone, so it needs a ground under
      it. Weighted to the left and bottom, where the words actually are. */
@@ -1145,9 +1334,24 @@ html.js-cut .cut.in .seq > * {
 
   /* Chips: keep the track, drop the rest until the tile is open. */
   #work .rowbtn .chip {
-    height: 20px;
+    min-height: 20px;
     padding-inline: 7px;
     font-size: 9.5px;
+  }
+
+  /* Label and value share a line on a laptop, where the value is short next
+     to the width available. A journal name at 390px is not, and `shrink-0`
+     meant it ran 354px off the screen instead of wrapping. */
+  #work dl > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  #work dl > div > dd {
+    flex-shrink: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   #work ol > li[data-open='0'] .rowbtn .chip ~ .chip,
@@ -1230,7 +1434,7 @@ html.js-cut .cut.in .seq > * {
   }
 
   #credentials .chip {
-    height: 21px;
+    min-height: 21px;
     padding-inline: 7px;
     font-size: 9.5px;
   }
@@ -1274,7 +1478,7 @@ html.js-cut .cut.in .seq > * {
   }
 
   #experience .chip {
-    height: 21px;
+    min-height: 21px;
     font-size: 9.5px;
   }
 
@@ -1285,7 +1489,7 @@ html.js-cut .cut.in .seq > * {
   }
 
   #education .chip {
-    height: 22px;
+    min-height: 22px;
     font-size: 10px;
   }
 

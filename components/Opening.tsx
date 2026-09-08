@@ -57,7 +57,7 @@ export function Opening() {
           </p>
         </Blob>
 
-        <div className="mt-9 flex flex-wrap gap-2.5">
+        <div className="hero-actions mt-9 flex flex-wrap gap-2.5">
           <a className="btn btn--sig" href="#work">
             See my work
             <span aria-hidden>&rarr;</span>
