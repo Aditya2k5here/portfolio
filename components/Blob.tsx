@@ -14,9 +14,11 @@ import { useEffect, useRef, type ReactNode } from 'react'
  *      them, and
  *   2. a radialGradient fill, which is the orb look itself, painted on top.
  *
- * So the silhouette is now carried by a nearly crisp body layer, and the glow
- * is a separate heavily blurred copy underneath it. The fill is flat and a
- * little translucent rather than a gradient.
+ * Three layers, and the order matters. A glow copy scaled to 1.16 sits behind
+ * and spreads outward. The body sits on top of it at 96% opacity with a blur
+ * of only 2.2, which is what actually carries the silhouette; every earlier
+ * attempt lost the shape here by blurring this layer into the glow. A pink
+ * copy at 55% gives it an inside. The fills are flat: no gradient anywhere.
  *
  * The outline is asymmetric by construction, not by animation: each of the
  * twelve points has its own fixed radius multiplier between 0.76 and 1.24, so
@@ -30,15 +32,25 @@ import { useEffect, useRef, type ReactNode } from 'react'
  * the focal point sits on the cursor by construction and cannot drift.
  */
 
-const N = 12
-const R = 74
-const WIDE = 1.62 // horizontal stretch of the resting shape
-const TALL = 0.86
+const N = 16
+const R = 84
+const WIDE = 1.38 // horizontal stretch of the resting shape
+const TALL = 0.92
 
 /* Fixed, not random: the server and the client have to agree, and it should be
    the same creature every time the page loads. */
-const BASE = [1.0, 0.79, 1.18, 0.87, 1.24, 0.76, 1.07, 0.93, 1.21, 0.82, 1.13, 0.88]
-const PHASE = Array.from({ length: N }, (_, i) => ({ a: i * 1.7, b: i * 2.9 + 0.6 }))
+const BASE = [
+  1.02, 1.21, 1.27, 1.13, // a big lobe
+  0.94, 0.85, 1.01, 1.11, // a small one
+  1.03, 0.89, 1.17, 1.25, // another big one, offset from the first
+  1.06, 0.90, 0.84, 0.92, // and a long shallow stretch
+]
+/* Irregular, so the surface never breathes in a pattern you can spot, but
+   small enough that it cannot carve a notch between two neighbours. */
+const PHASE = Array.from({ length: N }, (_, i) => ({
+  a: i * 1.31,
+  b: i * 2.17 + 0.8,
+}))
 
 const K = 0.13 // spring toward the resting outline
 const DAMP = 0.8
@@ -78,7 +90,6 @@ export function Blob({ children }: { children: ReactNode }) {
 
     const g = el.querySelector<SVGGElement>('.blob-g')
     const paths = Array.from(el.querySelectorAll<SVGPathElement>('.blob-p'))
-    const core = el.querySelector<SVGPathElement>('.blob-core')
     if (!g || !paths.length) return
 
     const pts: Pt[] = Array.from({ length: N }, (_, i) => {
@@ -101,8 +112,8 @@ export function Blob({ children }: { children: ReactNode }) {
         const a = (i / N) * Math.PI * 2
         const wob =
           BASE[i] +
-          0.035 * Math.sin(t * 0.0005 + PHASE[i].a) +
-          0.022 * Math.sin(t * 0.0008 + PHASE[i].b)
+          0.030 * Math.sin(t * 0.0005 + PHASE[i].a) +
+          0.018 * Math.sin(t * 0.0008 + PHASE[i].b)
         const bx = Math.cos(a) * R * wob * WIDE
         const by = Math.sin(a) * R * wob * TALL
 
@@ -114,7 +125,6 @@ export function Blob({ children }: { children: ReactNode }) {
       }
       const d = toPath(pts)
       paths.forEach((p) => p.setAttribute('d', d))
-      core?.setAttribute('transform', 'scale(0.62)')
       g.setAttribute('transform', `translate(${cx.toFixed(1)} ${cy.toFixed(1)})`)
     }
 
@@ -185,29 +195,44 @@ export function Blob({ children }: { children: ReactNode }) {
     <div ref={wrap} className="namewrap" data-live="0">
       <svg className="blobs" aria-hidden preserveAspectRatio="none">
         <defs>
-          {/* The glow, on its own copy so it can bloom without ever touching
-              the silhouette. */}
+          {/* The glow. Its own layer, drawn larger than the body and sitting
+              underneath it, so it spreads outward instead of blooming inward
+              over the edge it is supposed to be lighting. */}
           <filter id="blob-glow" x="-90%" y="-90%" width="280%" height="280%">
-            <feGaussianBlur stdDeviation="30" />
+            <feGaussianBlur stdDeviation="26" />
           </filter>
-          {/* The body. Just enough to take the hardness off the edge and no
-              more. This is the filter that used to erase the shape. */}
-          <filter id="blob-body" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="6.5" />
+          {/* The body. Barely blurred: this is the layer that has to carry a
+              recognisable silhouette, and every previous attempt lost the
+              shape here. */}
+          <filter id="blob-body" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="2.2" />
+          </filter>
+          {/* The highlight inside it. */}
+          <filter id="blob-core" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="12" />
           </filter>
         </defs>
 
         <g className="blob-g">
-          <path className="blob-p" d="" fill="#e11d33" opacity="0.5" filter="url(#blob-glow)" />
-          <path className="blob-p" d="" fill="#dd1b31" opacity="0.6" filter="url(#blob-body)" />
-          {/* The core. Same outline at 62%, so the density falls off from the
-              middle without a radial gradient anywhere near it. */}
+          {/* behind, and wider than the body */}
           <path
-            className="blob-p blob-core"
+            className="blob-p"
             d=""
-            fill="#ff4d5f"
-            opacity="0.34"
-            filter="url(#blob-body)"
+            transform="scale(1.16)"
+            fill="#e11d33"
+            opacity="0.32"
+            filter="url(#blob-glow)"
+          />
+          {/* the silhouette itself */}
+          <path className="blob-p" d="" fill="#dc1b32" opacity="0.96" filter="url(#blob-body)" />
+          {/* the pink inside it, same outline at 55% */}
+          <path
+            className="blob-p"
+            d=""
+            transform="scale(0.55)"
+            fill="#ff6076"
+            opacity="0.5"
+            filter="url(#blob-core)"
           />
         </g>
       </svg>
