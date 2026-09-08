@@ -1,25 +1,24 @@
 'use client'
 
 import { useState } from 'react'
-import { skills, skillCounts } from '@/content/skills'
+import { skills } from '@/content/skills'
 import { Stage } from './Stage'
 
 /**
- * Skills, as one grid with a filter over it.
+ * Skills, in two tiers.
  *
- * The accordion this replaces was nine collapsed rows you had to open one at a
- * time to find out whether the thing you were looking for was there, which is
- * the opposite of what this section is for. Everything is on screen at once
- * now: nine short rows, about forty entries, readable in a glance.
+ * The version this replaces read like a repository statistics dashboard: file
+ * counts, a ratio of what had code behind it, and a filter that dimmed half
+ * the page. Accurate, and the wrong argument to be making in a section a
+ * recruiter scans in six seconds.
  *
- * The one control is the filter. "With code behind it" dims everything that
- * comes from the resume rather than from a repository, which is a distinction
- * worth being able to see, and one most portfolios quietly avoid making.
- * Dimming rather than removing, so the layout never jumps and you can see what
- * you filtered out.
+ * Now every group states what it is for in one line, shows the five or six
+ * entries somebody hiring for that role actually looks for, and keeps the rest
+ * behind a count. The disclosure is per group, so opening one to check for a
+ * specific technology never buries the others.
  */
 export function Skills() {
-  const [coreOnly, setCoreOnly] = useState(false)
+  const [open, setOpen] = useState<string | null>(null)
 
   return (
     <Stage
@@ -28,64 +27,63 @@ export function Skills() {
       title="Skills"
       aside={
         <>
-          Counted out of the repositories and the resume, not remembered.{' '}
-          <span className="text-[var(--paper)]">
-            {skillCounts.core} of {skillCounts.total} have code behind them.
-          </span>
+          Always building something. These are the ones that survived.{' '}
+          <span className="text-[var(--paper)]">Click any of them to open it up.</span>
         </>
       }
     >
-      <div className="cut">
-        <div className="mb-7 flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setCoreOnly(false)}
-            aria-pressed={!coreOnly}
-            className={coreOnly ? 'chip' : 'chip chip--sig'}
-          >
-            Everything
-          </button>
-          <button
-            type="button"
-            onClick={() => setCoreOnly(true)}
-            aria-pressed={coreOnly}
-            className={coreOnly ? 'chip chip--sig' : 'chip'}
-          >
-            With code behind it
-          </button>
-        </div>
+      <ul className="cut border-t border-[var(--edge)]">
+        {skills.map((g) => {
+          const on = open === g.group
+          const id = `sk-${g.group.replace(/\s+/g, '-')}`
+          return (
+            <li key={g.group} className="border-b border-[var(--edge)]">
+              <div className="grid gap-x-[clamp(20px,3vw,56px)] gap-y-3 py-[clamp(18px,2.2vw,26px)] lg:grid-cols-[minmax(0,250px)_minmax(0,1fr)]">
+                <div className="min-w-0">
+                  <h3 className="subhead text-[clamp(18px,1.9vw,23px)]">{g.group}</h3>
+                  <p className="t-small mt-1.5 max-w-[34ch]">{g.note}</p>
+                </div>
 
-        <dl className="grid gap-x-[clamp(24px,3vw,56px)] gap-y-0 sm:grid-cols-2">
-          {skills.map((row) => (
-            <div
-              key={row.group}
-              className="grid grid-cols-[minmax(88px,104px)_minmax(0,1fr)] items-baseline gap-x-4 border-t border-[var(--edge)] py-4"
-            >
-              <dt className="tag pt-1">{row.group}</dt>
-              <dd className="m-0 flex flex-wrap gap-x-3 gap-y-1.5">
-                {row.items.map((s) => (
-                  <span
-                    key={s.name}
-                    className="text-[14px] leading-snug transition-[color,opacity] duration-300"
-                    style={{
-                      color: s.core ? 'var(--paper)' : 'var(--grey-1)',
-                      opacity: coreOnly && !s.core ? 0.22 : 1,
-                    }}
+                <div className="min-w-0">
+                  <ul className="flex flex-wrap gap-x-3 gap-y-1.5">
+                    {g.lead.map((s) => (
+                      <li key={s} className="text-[15px] leading-snug text-[var(--paper)]">
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="drawer" data-on={on ? '1' : '0'} id={id}>
+                    <div>
+                      <ul
+                        className="flex flex-wrap gap-x-3 gap-y-1.5 pt-2.5"
+                        inert={!on}
+                      >
+                        {g.more.map((s) => (
+                          <li key={s} className="text-[15px] leading-snug text-[var(--grey-1)]">
+                            {s}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setOpen(on ? null : g.group)}
+                    aria-expanded={on}
+                    aria-controls={id}
+                    className="mt-1 inline-flex min-h-[44px] items-center gap-2.5 text-[12.5px] text-[var(--grey-2)] transition-colors hover:text-[var(--sig-lit)]"
                   >
-                    {s.name}
-                  </span>
-                ))}
-              </dd>
-            </div>
-          ))}
-        </dl>
-
-        <p className="tag mt-6 max-w-[70ch] normal-case tracking-normal leading-relaxed">
-          Python 358 files, TypeScript 44, JavaScript 22, Go 19, across nine
-          repositories. The rest is from the resume and the internship, and is dimmed
-          above so you can tell which is which.
-        </p>
-      </div>
+                    <span className="sign" data-on={on ? '1' : '0'} aria-hidden />
+                    {on ? 'Less' : `${g.more.length} more`}
+                  </button>
+                </div>
+              </div>
+            </li>
+          )
+        })}
+      </ul>
     </Stage>
   )
 }

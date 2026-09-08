@@ -51,7 +51,8 @@ export function Opening() {
         <p className="t-h3 mt-8 font-medium">Curious by default.</p>
 
         <p className="mt-2.5 max-w-[30ch] text-[16.5px] leading-[1.55] text-[var(--grey-1)]">
-          I take things apart to see how they work, then build something with the pieces.
+          I like finding the moving parts, then seeing what happens when I put them
+          together.
         </p>
 
         <div className="mt-9 flex flex-wrap gap-2.5">
@@ -69,7 +70,7 @@ export function Opening() {
 
         <a
           href="#about"
-          className="tag mt-[clamp(32px,6vh,64px)] inline-flex items-center gap-3 transition-colors hover:text-[var(--paper)]"
+          className="tag mt-[clamp(24px,5vh,56px)] inline-flex min-h-[44px] items-center gap-3 transition-colors hover:text-[var(--paper)]"
         >
           <span aria-hidden className="block h-px w-8 bg-[var(--edge-3)]" />
           Scroll

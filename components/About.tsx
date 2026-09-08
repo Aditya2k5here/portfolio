@@ -1,17 +1,14 @@
-import { profile } from '@/content/profile'
 import { counts } from '@/content/projects'
 import { Stage } from './Stage'
 
 /**
  * About.
  *
- * Cut to about a third of what was here. The three paragraphs it replaces
- * explained compilers, collectors, gateways, verifiers, compile costs, capacity
- * and model uncertainty, which is the work restating itself before you have
- * reached the work. The Work section is one scroll down and does it better.
+ * Two columns, one voice. The left carries the claim and the closing line, the
+ * right answers it. Both halves are his words, tightened only where two
+ * sentences were saying the same thing.
  *
- * Two lines he wrote stay as they are. Everything else is short enough to read
- * without deciding to.
+ * No picture: from here to Contact the page is type, rules and space.
  */
 export function About() {
   const figures = [
@@ -23,43 +20,32 @@ export function About() {
 
   return (
     <Stage id="about" n="01" title="About">
-      <div className="cut grid gap-x-[clamp(32px,5vw,88px)] gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        <p className="max-w-[26ch] text-[clamp(21px,2.5vw,31px)] font-medium leading-[1.28] tracking-[-0.028em]">
-          Slightly obsessed with structured implementation details. Dangerously
-          comfortable with &ldquo;let&rsquo;s build it and see.&rdquo;
-        </p>
+      <div className="cut grid gap-x-[clamp(32px,5vw,88px)] gap-y-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="min-w-0">
+          <p className="max-w-[26ch] text-[clamp(21px,2.5vw,31px)] font-medium leading-[1.28] tracking-[-0.028em]">
+            Slightly obsessed with structured implementation details. Dangerously
+            comfortable with &ldquo;let&rsquo;s build it and see.&rdquo;
+          </p>
+
+          <p className="m mt-8 text-[12.5px] leading-relaxed text-[var(--grey-2)]">
+            Final-year B.E. ISE student at Atria Institute of Technology, Bengaluru.
+          </p>
+        </div>
 
         <div className="flex max-w-[48ch] flex-col gap-5 text-[16px] leading-[1.72] text-[var(--grey-1)]">
           <p>
-            Final-year B.E. ISE student at Atria Institute of Technology. Most of what
-            I build sits a layer under the thing everyone else is looking at, and most
-            of what I learn comes from measuring it afterwards.
+            I like understanding what sits underneath the obvious. Systems, models,
+            products, the strange little mechanisms that make everything work.
           </p>
           <p className="text-[var(--paper)]">
-            Some of the numbers on this page went against me. Those are the ones worth
-            keeping.
+            I build to understand, then measure what actually happened.
           </p>
         </div>
       </div>
 
-      <dl className="cut m mt-[clamp(30px,4vw,52px)] flex flex-wrap gap-x-8 gap-y-3 border-t border-[var(--edge)] pt-6 text-[12px] text-[var(--grey-2)]">
-        <div>
-          <dt className="sr-only">Based</dt>
-          <dd className="m-0 text-[var(--paper)]">{profile.location}</dd>
-        </div>
-        <div>
-          <dt className="sr-only">Graduating</dt>
-          <dd className="m-0">Graduating {profile.graduating}</dd>
-        </div>
-        <div>
-          <dt className="sr-only">Standing</dt>
-          <dd className="m-0">Semester VII, no backlogs</dd>
-        </div>
-        <div>
-          <dt className="sr-only">Open to</dt>
-          <dd className="m-0">Software · ML · Data · QA</dd>
-        </div>
-      </dl>
+      <p className="cut mt-[clamp(28px,4vw,48px)] border-t border-[var(--edge)] pt-7 text-[clamp(17px,1.9vw,22px)] leading-[1.4] text-[var(--paper)]">
+        Degree still loading. <span className="text-[var(--grey-1)]">Curiosity already running in production.</span>
+      </p>
 
       <ul className="cut seq mt-[clamp(24px,3.5vw,40px)] grid grid-cols-2 border-t border-[var(--edge)] sm:grid-cols-4">
         {figures.map((f, i) => (

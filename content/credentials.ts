@@ -63,7 +63,7 @@ export const achievements = [
     detail: '',
   },
   {
-    title: 'Smart India Hackathon 2025, National round',
+    title: 'Smart India Hackathon 2025',
     detail: 'SIH25061. Led the system architecture and the technical documentation.',
   },
   {
