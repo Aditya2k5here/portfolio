@@ -18,6 +18,11 @@ import { useEffect, useRef } from 'react'
  * The glow is a sibling that reads the same two custom properties, so the light
  * goes where the bulb actually is rather than staying where it was drawn.
  *
+ * The cord pays out rather than the whole assembly sliding: rotating and then
+ * translating the rig moved the cord's top end off the ceiling and opened a
+ * gap at the crop line, so `#rig` only rotates now, the two cord lines have
+ * their y2 driven, and `#fixture` alone carries the travel.
+ *
  * A note on the sign. In SVG's y-down space rotate(+θ) about the ceiling fixing
  * maps the hanging point (0, L) to (-L·sinθ, L·cosθ), so a positive angle
  * swings the shade left. Taking the pointer's angle straight out of atan2 drove
@@ -47,11 +52,15 @@ export function Lamp({ className = '' }: { className?: string }) {
     const svg = root.current
     if (!svg) return
     const rig = svg.querySelector<SVGGElement>('#rig')
+    const fixture = svg.querySelector<SVGGElement>('#fixture')
+    const cords = Array.from(svg.querySelectorAll<SVGLineElement>('.cord'))
     if (!rig) return
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    let angle = reduce ? 0 : -0.06
+    /* Dead straight at rest. It used to start tilted and settle, which read
+       as the lamp reacting to the pointer merely arriving. */
+    let angle = 0
     let angVel = 0
     let stretch = 0
     let stretchVel = 0
@@ -68,10 +77,11 @@ export function Lamp({ className = '' }: { className?: string }) {
 
     const paint = () => {
       const len = REST + stretch
-      rig.setAttribute(
-        'transform',
-        `rotate(${(angle * 180) / Math.PI} ${AX} ${AY}) translate(0 ${stretch})`,
-      )
+      rig.setAttribute('transform', `rotate(${(angle * 180) / Math.PI} ${AX} ${AY})`)
+      /* The cord grows; only the fixture travels. Translating the whole rig
+         dragged the cord's top end away from the ceiling and opened a gap. */
+      cords.forEach((c) => c.setAttribute('y2', String(AY + 150 + stretch)))
+      fixture?.setAttribute('transform', `translate(0 ${stretch})`)
       /* Where the bulb ended up, for the glow and for anything outside that
          wants to follow the light. */
       svg.style.setProperty('--bx', String(AX - Math.sin(angle) * len))
@@ -118,7 +128,7 @@ export function Lamp({ className = '' }: { className?: string }) {
       if (!p) return
       const dx = p.x - AX
       const dy = p.y - AY
-      const next = Math.max(-0.62, Math.min(0.62, -Math.atan2(dx, dy)))
+      const next = Math.max(-0.72, Math.min(0.72, -Math.atan2(dx, dy)))
       angVel = next - angle
       angle = next
 
@@ -197,10 +207,11 @@ export function Lamp({ className = '' }: { className?: string }) {
       />
 
       <g id="rig" className="grab">
-        {/* cord */}
-        <line x1={AX} y1={AY} x2={AX} y2={AY + 150} stroke="#15181d" strokeWidth="5" />
-        <line x1={AX} y1={AY} x2={AX} y2={AY + 150} stroke="#2c323c" strokeWidth="1.5" />
+        {/* cord: y2 is driven, so it pays out as the lamp is pulled down */}
+        <line className="cord" x1={AX} y1={AY} x2={AX} y2={AY + 150} stroke="#15181d" strokeWidth="5" />
+        <line className="cord" x1={AX} y1={AY} x2={AX} y2={AY + 150} stroke="#2c323c" strokeWidth="1.5" />
 
+        <g id="fixture">
         {/* collar */}
         <path
           d={`M${AX - 15} ${AY + 150}h30l-3 30h-24z`}
@@ -235,6 +246,7 @@ export function Lamp({ className = '' }: { className?: string }) {
 
         {/* the spill on the floor under it */}
         <ellipse cx={AX} cy={AY + 306} rx="36" ry="10" fill="#ffe0a6" opacity="0.5" filter="url(#l-soft)" />
+        </g>
       </g>
 
     </svg>
