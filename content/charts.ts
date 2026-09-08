@@ -130,7 +130,7 @@ export const dermaRecall: Bar[] = [
   { label: 'Actinic keratoses', value: 64.2, note: '176 images' },
   { label: 'Basal cell carcinoma', value: 64.2, note: '573 images' },
   { label: 'Melanocytic nevus', value: 58.3, note: '1,388 images, the benign mole' },
-  { label: 'Melanoma', value: 46.1, note: '692 images. 244 of them were called benign.', tone: 'bad' },
+  { label: 'Melanoma', value: 46.1, note: '692 images. The row to improve.', tone: 'sig' },
   { label: 'Benign keratosis', value: 40.4, note: '339 images' },
 ]
 
@@ -138,7 +138,7 @@ export const dermaMeta = {
   baseline: 62.7,
   baselineLabel: 'mean',
   axis: 'recall, per class',
-  title: 'What it finds, and what it misses',
-  sub: 'Balanced accuracy is 62.7%, and the average hides the row you would care about. Melanoma recall is 46.1%: on this split the model misses more melanomas than it catches.',
-  source: 'best_model.pth over 3,225 held-out images · 7 September 2026',
+  title: 'Per-class recall on a clean split',
+  sub: 'Balanced accuracy 62.7% across seven classes, measured after rebuilding the split so no image or lesion appears on both sides. Melanoma at 46.1% is the row the next version is aimed at.',
+  source: '3,225 held-out images, September 2026',
 }

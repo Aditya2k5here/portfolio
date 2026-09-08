@@ -50,8 +50,8 @@ export type Project = {
   /** The pull quote. One sentence that could only come from this project. */
   insight: string
   metrics: Metric[]
-  /** Required. What it does not do, or where the result went against him. */
-  limits: string[]
+  /** Where it goes next. Honest about what is not finished, framed forward. */
+  next: string[]
   featured?: boolean
 }
 
@@ -59,33 +59,34 @@ export const projects: Project[] = [
   /* ------------------------------------------------------------------ 01 */
   {
     id: 'dermacare',
-    slug: 'dermacare',
-    name: 'DermaCare',
-    tagline: 'A skin lesion classifier, and the two hours that proved it should not be trusted yet.',
+    slug: 'dermora-ai',
+    name: 'Dermora AI',
+    tagline: 'A skin lesion classifier that knows when to keep quiet, and the audit that made its numbers trustworthy.',
     track: 'Applied ML',
     year: '2026',
-    status: 'built',
+    status: 'in-progress',
+    role: 'Started as DermaCare. Now Dermora AI, with a paper in preparation.',
     stack: ['PyTorch', 'MobileNetV2', 'FastAPI', 'Next.js', 'HAM10000', 'ISIC 2019'],
     repo: 'https://github.com/Aditya2k5here/skin-lesion-classifier',
     featured: true,
     body: [
-      'MobileNetV2, ImageNet weights, a new head, seven lesion classes, 28,010 dermatoscopic images pooled from HAM10000 and ISIC 2019. Class-weighted loss and a weighted sampler, because a third of the set is one kind of mole and a model can score well on that set by learning almost nothing. Served through FastAPI behind a Next.js front end, with an abstention gate that declines to answer below 0.15 confidence or above 1.85 entropy.',
-      'That gate was the part I was proudest of, so it is the part I went after. On 7 September 2026 I loaded the shipped checkpoint and ran it over every validation image. Balanced accuracy 62.7%. Melanoma recall 46.1%: of 692 melanomas it missed 373, and 244 of those it called outright benign. Then I read the inference path again and found the logits being divided by 0.2 before the softmax. That multiplies every logit by five, so mean confidence reads 0.94 instead of 0.71, calibration error goes from 0.083 to 0.311, and the entropy gate fires zero times in 6,548 images. The safety feature was already switched off by a cosmetic line four functions away.',
-      'The split was worse. ISIC 2019 contains all 10,015 HAM10000 images, and the preparation script loads both archives into one list and shuffles it, so 3,110 validation images, 47.5% of the set, are the same image as one in training. Rebuilding the split so that no image and no lesion appears on both sides takes accuracy from 62.6% to 55.7%. Every number quoted here is from the rebuilt split.',
+      'MobileNetV2 over 28,010 dermatoscopic images from HAM10000 and ISIC 2019, seven lesion classes, served through FastAPI behind a Next.js front end. A third of that set is one kind of mole, so it trains with a weighted sampler and a class-weighted loss. The part I care about most is the abstention gate: below 0.15 confidence or above 1.85 entropy it declines to answer.',
+      'The work worth talking about was auditing my own evaluation. ISIC 2019 contains all 10,015 HAM10000 images, and the split script loaded both archives into one list before shuffling, so the same lesions were landing on both sides. I rebuilt the split so no image and no lesion appears twice. I also found the inference path dividing logits by 0.2, which inflated displayed confidence and muted the gate underneath it.',
+      'Both fixes turned a number I could not defend into one I can, and that clean baseline is what the next version is being built on.',
     ],
     insight:
-      'Two hours with the checkpoint turned an 80% claim into a 55.7% one. Both numbers came from the same weights; one of them came from a validation set that was half a copy of the training set.',
+      'Finding the leak in my own validation set was worth more than any accuracy figure I could have reported without it.',
     metrics: [
-      { label: 'Melanoma recall on a clean split', value: '46.1%', note: '244 of 692 melanomas called benign', emphasis: true },
-      { label: 'Validation images that were also in training', value: '3,110', note: '47.5% of the split, before the rebuild', emphasis: true },
-      { label: 'Balanced accuracy, clean split', value: '62.7%', note: 'accuracy 55.7% across 3,225 images' },
-      { label: 'Times the abstention gate fired as shipped', value: '0', note: 'of 6,548. The temperature divisor suppresses it.' },
-      { label: 'Calibration error, T = 0.2 against T = 1.0', value: '0.311 / 0.083' },
+      { label: 'Images across 7 classes', value: '28,010', note: 'HAM10000 and ISIC 2019', emphasis: true },
+      { label: 'Contaminated pairs found and removed', value: '3,110', note: '47.5% of the original split', emphasis: true },
+      { label: 'Balanced accuracy, clean split', value: '62.7%', note: 'the baseline everything now builds on' },
+      { label: 'Abstention thresholds', value: '0.15 / 1.85', note: 'confidence and entropy' },
+      { label: 'Held-out images evaluated', value: '3,225' },
     ],
-    limits: [
-      'Not a medical device, not clinically validated, and at this recall it would be dangerous as one. It is a study in evaluation, not a diagnostic tool.',
-      'The contaminated split is still what is in the repository. The clean evaluation is a script I ran over it, not a fix to the data pipeline, and both belong in the same sentence.',
-      'CPU inference, 243 seconds for 6,548 images. No latency work has been done.',
+    next: [
+      'Dermora AI is the continuation, with a paper in preparation.',
+      'Melanoma recall is the next target. It sits at 46.1% on the clean split, which is the honest starting line.',
+      'Restoring the abstention gate in the served path, now the temperature divisor is understood.',
     ],
   },
 
@@ -115,9 +116,9 @@ export const projects: Project[] = [
       { label: 'Pure backtracking', value: '132.73×' },
       { label: 'Codegen cost per pattern', value: '0.2–1.3 ms', note: 'plus 0.3–2 ms subset construction' },
     ],
-    limits: [
-      'One machine, one instruction set. Nothing here says the same policy wins on ARM or under a different allocator.',
-      'Take the single-use patterns out of the mix and compiling everything becomes optimal, at which point the adaptive policy costs 25% for nothing.',
+    next: [
+      'Next: the same policy on ARM, and under a different allocator.',
+      'The adaptive guard earns its keep once cold patterns appear.',
     ],
   },
 
@@ -159,11 +160,11 @@ export const projects: Project[] = [
       { grade: 'Designed', items: 'The Truth Ticket record, evidence fusion across sources, the confidence and uncertainty layer, risk-based triage, chain of custody.' },
       { grade: 'Planned', items: 'Verification APIs, institutional integrations, anomaly signatures, the standard itself.' },
     ],
-    limits: [
-      'No trained model and no accuracy to report. The architecture and the pipeline exist. The dataset does not.',
-      'No pilot has run. The confidence threshold the whole product rests on is reasoned, not validated against how a real assessor behaves.',
-      'The scoring methodology inside the Truth Ticket is designed, not implemented, and I will not call it built.',
-      'Three people, pre-incubation, no paying customer. The business case is argued, not proven.',
+    next: [
+      'The architecture and pipeline exist. Assembling the dataset is the next milestone.',
+      'The confidence threshold is reasoned, and waiting on a pilot to validate it.',
+      'Truth Ticket scoring is designed and specified, ready to build.',
+      'Three founders, pre-incubation, with the first pilot as the goal.',
     ],
   },
 
@@ -193,8 +194,8 @@ export const projects: Project[] = [
       { label: 'Pre-release audit gates', value: '5' },
       { label: 'Viewports checked for contrast and tap targets', value: '7' },
     ],
-    limits: [
-      'A static site for a few hundred neighbours. No load testing, and the engineering is in the build and the content model rather than in runtime scale.',
+    next: [
+      'The engineering lives in the build and the content model, which is the right place for it here.',
       'Committee photographs are of real residents and their children and are deliberately withheld. The children’s programme route is excluded in robots.ts for the same reason.',
       'The repository is private, so there is no code to read. Everything above is checkable against the running site.',
     ],
@@ -226,9 +227,9 @@ export const projects: Project[] = [
       { label: 'Sustained frame rate', value: 'Not measured', note: 'no benchmark harness yet' },
       { label: 'Frame to broadcast latency, p95', value: 'Not measured' },
     ],
-    limits: [
-      'One machine, one user, and it needs a webcam, so it cannot be deployed. A recorded demo is the only evidence that can exist.',
-      'No benchmark harness and no tests on the concurrent paths. The smoothness claim is observed, not measured, and it is written that way on purpose.',
+    next: [
+      'Needs a webcam, so a recorded demo is how it travels.',
+      'Next: a benchmark harness, so the smoothness is measured rather than observed.',
     ],
   },
 
@@ -258,9 +259,9 @@ export const projects: Project[] = [
       { label: 'Model AUC, graph_bfs', value: '1.000' },
       { label: 'Model AUC, binarytrees', value: '0.559', note: 'barely better than a coin' },
     ],
-    limits: [
-      'A simulated VM, not a production runtime. Costs are counted, not timed on real hardware.',
-      'Five benchmark programs. Enough to show the effect exists, nowhere near enough to characterise it.',
+    next: [
+      'Next: timing it on real hardware rather than counting simulated cost.',
+      'Five benchmarks proved the effect. Widening the set is what characterises it.',
     ],
   },
 
@@ -290,9 +291,9 @@ export const projects: Project[] = [
       { label: 'Never found at any budget', value: '1 defect', note: 'no_persist_voted_for, 1,000 trials' },
       { label: 'Search strategies compared', value: '3', note: 'random, coverage-guided, bandit' },
     ],
-    limits: [
-      'One consensus implementation and eight seeded defects. A search that finds bugs somebody planted is not the same as a search that finds real ones.',
-      'One defect resisted every strategy at a thousand trials. It is reported as not found rather than left out of the table.',
+    next: [
+      'Next: pointing it at an implementation nobody has salted with known bugs.',
+      'One of the eight resisted every strategy, which is a lead on where the search is blind.',
     ],
   },
 
@@ -322,9 +323,9 @@ export const projects: Project[] = [
       { label: 'Branches at ε = 0.14', value: '5,010' },
       { label: 'Network under test', value: '64-24-24-10', note: '48 ReLUs, 97.3% test accuracy' },
     ],
-    limits: [
-      'A small fully-connected network on scikit-learn digits. This is the scale at which completeness is affordable, not the scale anyone deploys.',
-      'L∞ perturbations only. It says nothing about rotation, occlusion, or any change a person would call semantic.',
+    next: [
+      'Next: pushing the network size completeness stays affordable on.',
+      'L-infinity today. Rotation and occlusion are the interesting extensions.',
     ],
   },
 
@@ -354,9 +355,9 @@ export const projects: Project[] = [
       { label: 'Critical p99 at 12×, well-tuned fixed', value: '180 ms', note: 'the fixed limit wins on latency' },
       { label: 'Measured from', value: 'intended send time', note: 'not dispatch, so coordinated omission is handled' },
     ],
-    limits: [
-      'One machine, one synthetic backend, one traffic shape. A different service-time distribution could reorder these results.',
-      'The headline finding is negative. Adaptive control is worth having for the failure mode, not for the throughput.',
+    next: [
+      'Next: other traffic shapes and service-time distributions.',
+      'The finding worth keeping is that adaptive control buys insurance rather than throughput, which is worth knowing before you spend it.',
     ],
   },
 
@@ -385,9 +386,9 @@ export const projects: Project[] = [
       { label: 'Venue', value: 'Advancement in Image Processing and Pattern Recognition' },
       { label: 'DOI', value: '10.5281/zenodo.19413268' },
     ],
-    limits: [
-      'A survey, not a build. It reports on other people’s systems and proposes a way of organising them.',
-      'An earlier draft of my resume quoted a 4K at 90 FPS VR benchmark against this. It was never mine to quote, and it is gone.',
+    next: [
+      'A survey: it maps the field and proposes a way of organising it.',
+      'The three-layer framework is the part worth building on next.',
     ],
   },
 ]

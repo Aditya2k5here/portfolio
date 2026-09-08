@@ -27,10 +27,7 @@ export default function Page() {
       </main>
 
       <footer className="stage py-10">
-        <div className="shell flex flex-wrap items-center justify-between gap-4">
-          <p className="tag normal-case tracking-normal">
-            Built by hand. No template underneath it.
-          </p>
+        <div className="shell flex flex-wrap items-center justify-end gap-4">
           <p className="tag">
             {profile.name} · Bangalore · {new Date().getFullYear()}
           </p>

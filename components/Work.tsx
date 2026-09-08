@@ -69,9 +69,8 @@ export function Work() {
       title="Work"
       aside={
         <>
-          Every number comes out of that project&rsquo;s own results file, including the
-          ones that argued with me.{' '}
-          <span className="text-[var(--paper)]">Click a name to open it.</span>
+          Always building something. These are the ones that survived.{' '}
+          <span className="text-[var(--paper)]">Click any of them to open it up.</span>
         </>
       }
     >
@@ -305,9 +304,9 @@ function Row({
               )}
 
               <div className="mt-6">
-                <p className="tag mb-3">What it does not do</p>
+                <p className="tag mb-3">What&rsquo;s next</p>
                 <ul className="flex flex-col gap-2.5">
-                  {p.limits.map((l) => (
+                  {p.next.map((l) => (
                     <li
                       key={l.slice(0, 24)}
                       className="t-small max-w-[54ch] border-l border-[var(--edge-2)] pl-3.5"

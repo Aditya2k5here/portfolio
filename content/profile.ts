@@ -9,7 +9,7 @@
  */
 
 export const profile = {
-  name: 'Aditya S',
+  name: 'Aditya Srinivas',
   location: 'Bangalore, India',
   phone: '+91 99724 52243',
   email: 'adityasrinivasofficial@gmail.com',

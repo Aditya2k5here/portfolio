@@ -20,39 +20,36 @@ import { Lamp } from './Lamp'
  */
 export function Opening() {
   return (
-    <header id="top" className="relative isolate overflow-hidden">
-      {/* the room */}
-      <div className="scene-bleed absolute inset-y-0 right-0 hidden w-[62%] lg:block xl:w-[60%]">
+    <header id="top" className="portfolio-hero relative isolate overflow-hidden">
+      <div className="absolute inset-0 hidden lg:block" aria-hidden>
         <Image
-          src="/hero/room.webp"
+          src="/hero/aditya-room.webp"
           alt="Aditya at night on a beanbag with a laptop and a mug of coffee, lit by a hanging lamp"
           fill
           priority
-          sizes="62vw"
-          className="object-cover object-left"
+          sizes="100vw"
+          className="object-cover object-center"
         />
       </div>
 
-      {/* the lamp, hanging in the black where the artwork was cut */}
-      <Lamp className="pointer-events-none absolute left-[22%] top-0 z-10 hidden h-[66%] w-auto lg:block xl:left-[24%] [&_#rig]:pointer-events-auto" />
+      <Lamp className="pointer-events-none absolute left-[35.5%] top-0 z-30 hidden h-[63%] w-auto lg:block [&_#rig]:pointer-events-auto" />
 
-      <div className="shell relative z-20 flex min-h-[72vh] flex-col justify-center pt-[clamp(88px,12vh,150px)] pb-[clamp(28px,5vh,64px)] lg:min-h-[92vh]">
-        <p className="m text-[11px] uppercase tracking-[0.16em] text-[var(--grey-3)]">
+      <div className="shell relative z-20 flex min-h-[72svh] flex-col justify-center pt-[132px] pb-12 lg:min-h-[100svh] lg:max-w-none lg:pb-24">
+        <p className="m text-[11px] uppercase tracking-[0.16em] text-[var(--grey-1)]">
           {profile.location} / graduating {profile.graduating}
         </p>
 
         <Blob>
-          <h1 className="nametype mt-6">
-            <span className="t-h1 block">Aditya</span>
-            <span className="t-mega -ml-[0.045em] block">Srinivas</span>
+          <h1 className="nametype mt-7">
+            <span className="hero-name-given block">Aditya</span>
+            <span className="hero-name-family -ml-[0.05em] block">Srinivas</span>
           </h1>
         </Blob>
 
-        <p className="t-h3 mt-8 font-medium">Curious by default.</p>
+        <p className="mt-8 text-[30px] font-medium leading-tight tracking-[-0.03em]">Curious by default.</p>
 
-        <p className="mt-2.5 max-w-[30ch] text-[16.5px] leading-[1.55] text-[var(--grey-1)]">
-          I like finding the moving parts, then seeing what happens when I put them
-          together.
+        <p className="mt-2.5 max-w-[31ch] text-[17px] leading-[1.55] text-[var(--grey-1)]">
+          I&rsquo;m usually one &ldquo;wait, what if&hellip;&rdquo; away from building something.
         </p>
 
         <div className="mt-9 flex flex-wrap gap-2.5">
@@ -70,23 +67,22 @@ export function Opening() {
 
         <a
           href="#about"
-          className="tag mt-[clamp(24px,5vh,56px)] inline-flex min-h-[44px] items-center gap-3 transition-colors hover:text-[var(--paper)]"
+          className="scroll-cue tag mt-10 inline-flex min-h-[44px] items-center gap-3 transition-colors hover:text-[var(--paper)]"
         >
-          <span aria-hidden className="block h-px w-8 bg-[var(--edge-3)]" />
+          <span className="scroll-cue-line" aria-hidden>
+            &darr;
+          </span>
           Scroll
         </a>
       </div>
 
-      {/* Below lg the room gets its own band at full width rather than being
-          cropped to a sliver behind the name. No lamp: there is no pointer to
-          pull it with, and a toy nobody can reach is just weight. */}
       <div className="relative aspect-[10/8] w-full sm:aspect-[16/10] lg:hidden">
         <Image
-          src="/hero/room.webp"
+          src="/hero/aditya-room.webp"
           alt="Aditya at night on a beanbag with a laptop and a mug of coffee"
           fill
           sizes="100vw"
-          className="object-cover object-center"
+          className="object-cover object-[78%_center]"
         />
       </div>
     </header>

@@ -914,3 +914,90 @@ html.js-cut .cut.in .seq > * {
 @media (prefers-reduced-motion: reduce) {
   .a-hint { animation: none; opacity: 0.7; }
 }
+
+/* Reference-led opening: the generated room carries the atmosphere while the
+   live type, navigation, and lamp remain crisp and reachable. */
+.portfolio-hero {
+  min-height: 100svh;
+  background: var(--void);
+}
+
+.hero-name-given,
+.hero-name-family {
+  font-weight: 500;
+  line-height: 0.82;
+  letter-spacing: -0.058em;
+}
+
+.hero-name-given {
+  font-size: 112px;
+}
+
+.hero-name-family {
+  font-size: 152px;
+}
+
+.scroll-cue {
+  align-items: flex-end;
+}
+
+.scroll-cue-line {
+  display: grid;
+  height: 46px;
+  width: 14px;
+  place-items: end center;
+  border-left: 1px solid var(--edge-3);
+  color: var(--grey-1);
+}
+
+/* The hero's liquid accent stays a flat color rather than becoming a gradient. */
+.namewrap[data-live='1'] .nametype {
+  background-image: none;
+  color: var(--paper);
+  -webkit-text-fill-color: currentColor;
+}
+
+@media (max-width: 1300px) {
+
+  .hero-name-given {
+    font-size: 88px;
+  }
+
+  .hero-name-family {
+    font-size: 116px;
+  }
+
+  nav[aria-label='Sections'] {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+  }
+
+  .navlink {
+    font-size: 8px;
+    letter-spacing: 0.07em;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .hero-name-given {
+    font-size: 64px;
+  }
+
+  .hero-name-family {
+    font-size: 82px;
+  }
+
+  .wordmark {
+    display: none;
+  }
+
+  nav[aria-label='Sections'] {
+    justify-content: space-between;
+  }
+
+  .navlink {
+    font-size: 8px;
+    letter-spacing: 0.07em;
+  }
+}

@@ -18,6 +18,12 @@ import { useEffect, useRef } from 'react'
  * The glow is a sibling that reads the same two custom properties, so the light
  * goes where the bulb actually is rather than staying where it was drawn.
  *
+ * A note on the sign. In SVG's y-down space rotate(+θ) about the ceiling fixing
+ * maps the hanging point (0, L) to (-L·sinθ, L·cosθ), so a positive angle
+ * swings the shade left. Taking the pointer's angle straight out of atan2 drove
+ * the lamp away from the hand; it is negated, and the bulb's x is derived with
+ * the matching sign.
+ *
  * There is no label on it. A lamp that swings the moment you touch it does not
  * need one, and the annotation was the only piece of interface left in the
  * picture.
@@ -68,7 +74,7 @@ export function Lamp({ className = '' }: { className?: string }) {
       )
       /* Where the bulb ended up, for the glow and for anything outside that
          wants to follow the light. */
-      svg.style.setProperty('--bx', String(AX + Math.sin(angle) * len))
+      svg.style.setProperty('--bx', String(AX - Math.sin(angle) * len))
       svg.style.setProperty('--by', String(AY + Math.cos(angle) * len))
     }
 
@@ -95,7 +101,14 @@ export function Lamp({ className = '' }: { className?: string }) {
 
     const down = (e: PointerEvent) => {
       dragging = true
-      ;(e.target as Element).setPointerCapture?.(e.pointerId)
+      /* Throws if the pointer went away between the event being queued and
+         handled. Capture is an optimisation here; the window listeners below
+         already track the drag without it. */
+      try {
+        ;(e.target as Element).setPointerCapture?.(e.pointerId)
+      } catch {
+        /* no capture, drag still works */
+      }
       e.preventDefault()
     }
 
@@ -105,7 +118,7 @@ export function Lamp({ className = '' }: { className?: string }) {
       if (!p) return
       const dx = p.x - AX
       const dy = p.y - AY
-      const next = Math.max(-0.62, Math.min(0.62, Math.atan2(dx, dy)))
+      const next = Math.max(-0.62, Math.min(0.62, -Math.atan2(dx, dy)))
       angVel = next - angle
       angle = next
 

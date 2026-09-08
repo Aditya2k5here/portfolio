@@ -3,11 +3,9 @@
 import { useEffect, useState } from 'react'
 
 const LINKS = [
-  { id: 'about', label: 'About' },
   { id: 'work', label: 'Work' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'credentials', label: 'Credentials' },
   { id: 'education', label: 'Education' },
+  { id: 'credentials', label: 'Credentials' },
   { id: 'experience', label: 'Experience' },
   { id: 'contact', label: 'Contact' },
 ]
@@ -63,7 +61,7 @@ export function Nav() {
       }`}
     >
       <div className="shell flex h-[62px] items-center justify-between gap-4">
-        <a href="#top" className="wordmark" data-on={stuck ? '1' : '0'} aria-hidden={!stuck}>
+        <a href="#top" className="wordmark" data-on="1">
           <span>
             <i>A</i>ditya <i>S</i>rinivas
           </span>
@@ -74,7 +72,7 @@ export function Nav() {
             theatre, and it hides the only map of the page a reader gets. */}
         <nav
           aria-label="Sections"
-          className="fade-r -mr-[var(--pad)] flex min-w-0 items-center gap-4 overflow-x-auto pr-[var(--pad)] sm:gap-5 lg:gap-6 md:mr-0 md:overflow-visible md:pr-0"
+          className="-mr-[var(--pad)] flex min-w-0 items-center gap-4 overflow-x-auto pr-[var(--pad)] sm:gap-5 lg:gap-6 md:mr-0 md:overflow-visible md:pr-0"
           style={{ scrollbarWidth: 'none' }}
         >
           {LINKS.map((l) => (

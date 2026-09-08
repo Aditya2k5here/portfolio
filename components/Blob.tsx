@@ -52,8 +52,8 @@ const PHASE = Array.from({ length: N }, (_, i) => ({
   b: i * 2.17 + 0.8,
 }))
 
-const K = 0.13 // spring toward the resting outline
-const DAMP = 0.8
+const K = 0.075 // spring toward the resting outline; low, so the surface rolls
+const DAMP = 0.86
 const LAG = 0.62 // how much of the centre's motion each point resists
 const MAX_LAG = 46 // ceiling, so a fast flick stretches instead of tearing
 
@@ -112,8 +112,8 @@ export function Blob({ children }: { children: ReactNode }) {
         const a = (i / N) * Math.PI * 2
         const wob =
           BASE[i] +
-          0.030 * Math.sin(t * 0.0005 + PHASE[i].a) +
-          0.018 * Math.sin(t * 0.0008 + PHASE[i].b)
+          0.078 * Math.sin(t * 0.00062 + PHASE[i].a) +
+          0.046 * Math.sin(t * 0.00101 + PHASE[i].b)
         const bx = Math.cos(a) * R * wob * WIDE
         const by = Math.sin(a) * R * wob * TALL
 
@@ -199,7 +199,7 @@ export function Blob({ children }: { children: ReactNode }) {
               underneath it, so it spreads outward instead of blooming inward
               over the edge it is supposed to be lighting. */}
           <filter id="blob-glow" x="-90%" y="-90%" width="280%" height="280%">
-            <feGaussianBlur stdDeviation="26" />
+            <feGaussianBlur stdDeviation="15" />
           </filter>
           {/* The body. Barely blurred: this is the layer that has to carry a
               recognisable silhouette, and every previous attempt lost the
@@ -218,20 +218,20 @@ export function Blob({ children }: { children: ReactNode }) {
           <path
             className="blob-p"
             d=""
-            transform="scale(1.16)"
-            fill="#e11d33"
-            opacity="0.32"
+            transform="scale(1.07)"
+            fill="#ff2f47"
+            opacity="0.3"
             filter="url(#blob-glow)"
           />
           {/* the silhouette itself */}
-          <path className="blob-p" d="" fill="#dc1b32" opacity="0.96" filter="url(#blob-body)" />
+          <path className="blob-p" d="" fill="#d81530" opacity="1" filter="url(#blob-body)" />
           {/* the pink inside it, same outline at 55% */}
           <path
             className="blob-p"
             d=""
-            transform="scale(0.55)"
-            fill="#ff6076"
-            opacity="0.5"
+            transform="scale(0.62)"
+            fill="#ff5468"
+            opacity="0.4"
             filter="url(#blob-core)"
           />
         </g>
