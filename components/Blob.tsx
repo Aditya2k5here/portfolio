@@ -5,30 +5,69 @@ import { useEffect, useRef, type ReactNode } from 'react'
 /**
  * The red, dragged around by the pointer.
  *
- * The first version lagged all three lobes behind the cursor, which is why it
- * read as a decorative shape moving near the mouse rather than a thing the
- * mouse was holding. The fix is that the leading lobe is pinned to the pointer
- * exactly, every frame, with no easing at all. Zero offset is the whole
- * difference between "attached" and "nearby".
+ * Two earlier attempts were wrong in the same way: they were circles. Merging
+ * three circles with a goo filter looks organic only while they are separated,
+ * and the moment the pointer stops they collapse into one obvious disc.
  *
- * The other two lobes trail it and an SVG goo filter welds all three together,
- * so the mass grows a tail when you move and pulls back into one shape when you
- * stop. The leading lobe also squashes along its direction of travel in
- * proportion to speed, which is what makes it read as material rather than as
- * a sprite.
+ * This is a real closed path instead. Ten points around a centre, each with two
+ * slow sine terms on its radius at different phases, so the outline is never a
+ * circle and never repeats exactly. The path is drawn through them as cubics
+ * with Catmull-Rom tangents, which is what keeps the edge smooth rather than
+ * polygonal.
  *
- * The letterforms inside are filled from the same three points, so the colour
- * in the type and the glow behind it are one object.
+ * The centre is the pointer. Not eased toward it, not offset from it: assigned
+ * from clientX/clientY every frame, so the blob can never drift. The lag lives
+ * in the shape instead. Speed stretches the outline along the direction of
+ * travel about an origin pushed ahead of the centre, so the mass piles up
+ * behind the cursor and reads as something being dragged, while the cursor
+ * itself stays inside it.
  *
- * Scoped to this element. Moving the pointer out over the photograph does not
- * drag red across it.
+ * The letterforms are filled from the same centre, so the colour in the type
+ * and the shape behind it are one object.
  */
 
-const TRAIL = [
-  { r: 150, ease: 1 },      // pinned to the pointer
-  { r: 116, ease: 0.26 },
-  { r: 84, ease: 0.13 },
-]
+const N = 10
+const R = 78
+
+/* Per-point phases. Fixed, not random, so the server and the client agree and
+   the shape is the same one every reload. */
+const PHASE = Array.from({ length: N }, (_, i) => ({
+  a: i * 1.7,
+  b: i * 2.9 + 0.6,
+}))
+
+function organicPath(r: number, t: number, pull: number) {
+  const pts: [number, number][] = []
+  for (let i = 0; i < N; i++) {
+    const ang = (i / N) * Math.PI * 2
+    const wob = 1 + 0.16 * Math.sin(t * 0.0009 + PHASE[i].a) + 0.09 * Math.sin(t * 0.0015 + PHASE[i].b)
+    let x = Math.cos(ang) * r * wob
+    let y = Math.sin(ang) * r * wob
+
+    /* Stretch about a point ahead of centre, so the tail forms behind the
+       pointer rather than the whole shape growing in both directions. */
+    const ox = r * 0.42 * pull
+    x = (x - ox) * (1 + pull * 0.85) + ox
+    y = y * (1 - pull * 0.3)
+
+    pts.push([x, y])
+  }
+
+  /* Closed Catmull-Rom, converted to cubics. */
+  let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`
+  for (let i = 0; i < N; i++) {
+    const p0 = pts[(i - 1 + N) % N]
+    const p1 = pts[i]
+    const p2 = pts[(i + 1) % N]
+    const p3 = pts[(i + 2) % N]
+    const c1x = p1[0] + (p2[0] - p0[0]) / 6
+    const c1y = p1[1] + (p2[1] - p0[1]) / 6
+    const c2x = p2[0] - (p3[0] - p1[0]) / 6
+    const c2y = p2[1] - (p3[1] - p1[1]) / 6
+    d += `C${c1x.toFixed(1)} ${c1y.toFixed(1)} ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`
+  }
+  return d + 'Z'
+}
 
 export function Blob({ children }: { children: ReactNode }) {
   const wrap = useRef<HTMLDivElement>(null)
@@ -38,19 +77,31 @@ export function Blob({ children }: { children: ReactNode }) {
     if (!el) return
 
     /* No pointer, no effect. On touch the name renders plain white rather than
-       painting a blob wherever somebody last happened to tap. */
+       leaving a blob wherever somebody last happened to tap. */
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    const nodes = Array.from(el.querySelectorAll<HTMLElement>('.blobs i'))
-    if (nodes.length !== TRAIL.length) return
+    const g = el.querySelector<SVGGElement>('.blob-g')
+    const path = el.querySelector<SVGPathElement>('.blob-p')
+    if (!g || !path) return
 
-    const target = { x: 0, y: 0 }
-    const at = TRAIL.map(() => ({ x: 0, y: 0 }))
+    let px = 0
+    let py = 0
     let vx = 0
     let vy = 0
+    let heading = 0
     let live = false
     let raf = 0
+
+    /* The centre is written here, on the pointer event itself, not in the
+       animation loop. If a frame is dropped the shape stops wobbling for a
+       moment; the blob still cannot come off the cursor. */
+    const place = (t = 0, pull = 0) => {
+      path.setAttribute('d', organicPath(R, t, pull))
+      g.setAttribute('transform', `translate(${px.toFixed(1)} ${py.toFixed(1)}) rotate(${heading.toFixed(1)})`)
+      el.style.setProperty('--bx', `${px}px`)
+      el.style.setProperty('--by', `${py}px`)
+    }
 
     const move = (e: PointerEvent) => {
       const r = el.getBoundingClientRect()
@@ -58,16 +109,15 @@ export function Blob({ children }: { children: ReactNode }) {
       const y = e.clientY - r.top
       if (!live) {
         live = true
-        at.forEach((p) => {
-          p.x = x
-          p.y = y
-        })
         el.dataset.live = '1'
+      } else {
+        vx = x - px
+        vy = y - py
       }
-      vx = x - target.x
-      vy = y - target.y
-      target.x = x
-      target.y = y
+      px = x
+      py = y
+      if (Math.hypot(vx, vy) > 0.4) heading = (Math.atan2(vy, vx) * 180) / Math.PI
+      place(e.timeStamp, Math.min(Math.hypot(vx, vy) / 70, 1))
     }
 
     const leave = () => {
@@ -75,38 +125,17 @@ export function Blob({ children }: { children: ReactNode }) {
       el.dataset.live = '0'
     }
 
-    const tick = () => {
+    const tick = (t: number) => {
       raf = requestAnimationFrame(tick)
       if (!live) return
 
-      /* Speed, smoothed, drives how far the head stretches. Capped so a fast
-         flick across the name deforms it without tearing it apart. */
-      const speed = Math.min(Math.hypot(vx, vy), 90)
-      const pull = speed / 90
-      const angle = (Math.atan2(vy, vx) * 180) / Math.PI
-      vx *= 0.82
-      vy *= 0.82
+      /* Smoothed speed. Decays on its own so the tail relaxes when the pointer
+         stops rather than freezing mid-stretch. */
+      vx *= 0.86
+      vy *= 0.86
+      const pull = Math.min(Math.hypot(vx, vy) / 70, 1)
 
-      for (let i = 0; i < TRAIL.length; i++) {
-        const p = at[i]
-        const e = TRAIL[i].ease
-        p.x += (target.x - p.x) * e
-        p.y += (target.y - p.y) * e
-
-        const d = TRAIL[i].r
-        const base = `translate3d(${p.x - d / 2}px, ${p.y - d / 2}px, 0)`
-
-        if (i === 0) {
-          const sx = 1 + pull * 0.55
-          const sy = 1 - pull * 0.26
-          nodes[i].style.transform = `${base} rotate(${angle}deg) scale(${sx}, ${sy}) rotate(${-angle}deg)`
-        } else {
-          nodes[i].style.transform = base
-        }
-
-        el.style.setProperty(`--b${i + 1}x`, `${p.x}px`)
-        el.style.setProperty(`--b${i + 1}y`, `${p.y}px`)
-      }
+      place(t, pull)
     }
 
     el.addEventListener('pointermove', move)
@@ -122,37 +151,22 @@ export function Blob({ children }: { children: ReactNode }) {
 
   return (
     <div ref={wrap} className="namewrap" data-live="0">
-      <span aria-hidden className="blobs">
-        {TRAIL.map((l, i) => (
-          <i key={i} style={{ width: l.r, height: l.r }} />
-        ))}
-      </span>
+      <svg className="blobs" aria-hidden preserveAspectRatio="none">
+        <defs>
+          <filter id="blob-soft" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="11" />
+          </filter>
+          <radialGradient id="blob-fill" cx="42%" cy="38%">
+            <stop offset="0%" stopColor="#ff4257" />
+            <stop offset="58%" stopColor="#e11d33" />
+            <stop offset="100%" stopColor="#a5122a" />
+          </radialGradient>
+        </defs>
+        <g className="blob-g">
+          <path className="blob-p" fill="url(#blob-fill)" filter="url(#blob-soft)" d="" />
+        </g>
+      </svg>
       {children}
     </div>
-  )
-}
-
-/**
- * The goo. Blur everything together, then push alpha through a steep ramp so
- * the blurred edges snap back to a hard outline. Two overlapping circles come
- * out of it as one shape with a proper neck between them, which is the thing
- * that makes it read as liquid rather than as three circles.
- */
-export function GooFilter() {
-  return (
-    <svg aria-hidden width="0" height="0" style={{ position: 'absolute' }}>
-      <defs>
-        <filter id="goo">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
-          <feColorMatrix
-            in="blur"
-            type="matrix"
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -12"
-            result="goo"
-          />
-          <feGaussianBlur in="goo" stdDeviation="7" />
-        </filter>
-      </defs>
-    </svg>
   )
 }

@@ -177,6 +177,7 @@ export const projects: Project[] = [
     year: '2026',
     status: 'shipped',
     stack: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS', 'axe-core', 'Playwright'],
+    live: 'https://riches-garden-ganeshothsava.vercel.app/',
     featured: true,
     body: [
       'A residents’ committee in Ramamurthy Nagar runs a three-day Ganeshothsava and wanted a site for its 21st year. The obvious build is a registrations table, an admin dashboard and a login. I asked how they run it now. A Google Form into a sheet they sort by hand, about thirty names a year, managed by people who are not engineers and who would inherit whatever I left behind the moment I graduate. So the database, the dashboard and the auth were the first three things I removed.',
@@ -195,7 +196,7 @@ export const projects: Project[] = [
     limits: [
       'A static site for a few hundred neighbours. No load testing, and the engineering is in the build and the content model rather than in runtime scale.',
       'Committee photographs are of real residents and their children and are deliberately withheld. The children’s programme route is excluded in robots.ts for the same reason.',
-      'The repository is private, so there is no code to read here. Everything above is checkable against the running site.',
+      'The repository is private, so there is no code to read. Everything above is checkable against the running site.',
     ],
   },
 
@@ -364,23 +365,29 @@ export const projects: Project[] = [
     id: 'sikkim',
     slug: 'digital-heritage',
     name: 'Digital Heritage Preservation',
-    tagline: 'An AI and VR system for digitising the monasteries of Sikkim. Peer reviewed and published.',
+    tagline: 'A survey of how Buddhist monasteries are being digitised, and which of it survives contact with a remote site.',
     track: 'Applied ML',
     year: '2026',
     status: 'published',
-    stack: ['AI', 'VR', 'Image processing'],
+    role: 'First author of five. Published 4 April 2026.',
+    stack: ['Survey', 'Image processing', 'VR', 'Cultural heritage'],
+    live: 'https://doi.org/10.5281/zenodo.19413268',
     body: [
-      'Scoped and built an AI and VR system for digitising monasteries in Sikkim and presenting them as virtual tourism, published in Advancement in Image Processing and Pattern Recognition in 2026.',
-      'The monasteries are the point. They hold murals and thangkas that are degrading faster than they are being recorded, in a state where getting a conservation team up the hill is a logistics problem before it is a technical one.',
+      'More than 65 publications reviewed, covering over 100 monasteries across several Buddhist traditions, sorted into three layers: immersive visualisation, intelligent interaction, and engagement. Published in Advancement in Image Processing and Pattern Recognition, Volume 09 Issue 03.',
+      'The monasteries are the reason it matters. They hold murals and thangkas degrading faster than anyone is recording them, in a state where getting a conservation team up the hill is a logistics problem before it is a technical one.',
+      'The useful half of a survey is the part that says what does not work yet, and here that is consistent across every paper: bandwidth at remote sites, multilingual accuracy in AI cultural systems, and no funding model that survives past the pilot.',
     ],
     insight:
-      'The review process asked harder questions about the evaluation than I had asked myself, which is roughly what it is for.',
+      'Reviewing sixty-five papers taught me more about how to report a limitation than writing any one of my own results did.',
     metrics: [
+      { label: 'Publications surveyed', value: '65+', emphasis: true },
+      { label: 'Position', value: 'First author', note: 'of five' },
       { label: 'Venue', value: 'Advancement in Image Processing and Pattern Recognition' },
-      { label: 'Year', value: '2026' },
+      { label: 'DOI', value: '10.5281/zenodo.19413268' },
     ],
     limits: [
-      'An earlier draft of my resume quoted a 4K at 90 FPS VR benchmark for this. I cannot substantiate it, so it is gone.',
+      'A survey, not a build. It reports on other people’s systems and proposes a way of organising them.',
+      'An earlier draft of my resume quoted a 4K at 90 FPS VR benchmark against this. It was never mine to quote, and it is gone.',
     ],
   },
 ]

@@ -2,52 +2,52 @@
 
 import { useState } from 'react'
 import { publication, certifications, achievements } from '@/content/credentials'
-import { languages, profile } from '@/content/profile'
+import { languages } from '@/content/profile'
 import { Stage } from './Stage'
 
 /**
  * The things somebody else signed off on.
  *
- * This is the section a recruiter scans for proof that an outside party has
- * vouched for something, so the peer-reviewed chapter leads at the size it
- * deserves and everything else stays closed until asked.
+ * The paper leads, because it is the only item on this page that went through
+ * review, and it now opens onto the actual PDF and the actual publication
+ * certificate rather than promising them on request. The DOI is printed in
+ * full: it is the one link here that will still resolve in ten years.
  *
- * Where the actual document is on this machine, the arrow opens it. Where it is
- * not, the row says so rather than linking somewhere hopeful. Four of the five
- * certificates are in that second state today, and that is a more useful thing
- * for the page to admit than to paper over.
+ * "Competitive & organisational" was a category name, not a heading. What is
+ * actually in that list is hackathons he won and a chapter he ran, so it says
+ * that instead.
  */
 export function Credentials() {
   const [paper, setPaper] = useState(false)
   const [cert, setCert] = useState<string | null>(null)
 
   return (
-    <Stage
-      id="credentials"
-      n="04"
-      title="Credentials"
-      aside={<>The parts of this page that are somebody else&rsquo;s word, not mine.</>}
-    >
-      {/* ---------------------------------------------------- the paper ---- */}
+    <Stage id="credentials" n="04" title="Credentials">
+      {/* ------------------------------------------------------- the paper -- */}
       <article className="cut border-t border-[var(--edge)] pt-[clamp(24px,3vw,40px)]">
-        <div className="grid gap-x-[clamp(28px,4vw,64px)] gap-y-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+        <div className="grid gap-x-[clamp(28px,4vw,64px)] gap-y-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="chip chip--sig">Peer reviewed</span>
-              <span className="chip">{publication.year}</span>
+              <span className="chip">{publication.position}</span>
+              <span className="chip">{publication.date}</span>
             </div>
 
             <h3 className="t-h2 mt-5 max-w-[22ch] text-[clamp(23px,3.1vw,38px)]">
               {publication.title}
             </h3>
 
-            <p className="m mt-4 text-[12.5px] text-[var(--grey-1)]">
+            <p className="m mt-4 text-[12.5px] leading-relaxed text-[var(--grey-1)]">
               {publication.venue}
+              <br />
+              <span className="text-[var(--grey-3)]">
+                {publication.volume} · {publication.issn}
+              </span>
             </p>
           </div>
 
           <div className="min-w-0">
-            <p className="max-w-[48ch] text-[15.5px] leading-relaxed text-[var(--grey-1)]">
+            <p className="max-w-[46ch] text-[15.5px] leading-relaxed text-[var(--grey-1)]">
               {publication.note}
             </p>
 
@@ -56,40 +56,47 @@ export function Credentials() {
               onClick={() => setPaper(!paper)}
               aria-expanded={paper}
               aria-controls="paper-record"
-              className="mt-6 inline-flex items-center gap-3 text-[14.5px] font-medium transition-colors hover:text-[var(--sig-lit)]"
+              className="discl mt-6 inline-flex w-auto items-center gap-3 text-[14.5px] font-medium transition-colors hover:text-[var(--sig-lit)]"
             >
               <span className="sign" data-on={paper ? '1' : '0'} aria-hidden />
-              {paper ? 'Close the record' : 'See the record'}
+              {paper ? 'Close' : 'Open the paper'}
             </button>
 
             <div className="drawer" data-on={paper ? '1' : '0'} id="paper-record">
               <div>
-                <div className="pt-6" inert={!paper}>
-                  <dl className="flex flex-col">
-                    <Line k="Venue" v={publication.venue} />
-                    <Line k="Year" v={publication.year} />
-                    <Line k="Type" v={publication.type} />
-                    <Line k="Subject" v={publication.subject} />
-                    <Line k="Author" v={profile.name} />
+                <div className="pt-5" inert={!paper}>
+                  <p className="max-w-[50ch] text-[15px] leading-relaxed text-[var(--grey-1)]">
+                    {publication.body}
+                  </p>
+
+                  <dl className="mt-6 flex flex-col">
+                    <Line k="Authors" v={publication.authorLine} />
+                    <Line k="Publisher" v={publication.publisher} />
+                    <Line k="DOI" v="10.5281/zenodo.19413268" />
                   </dl>
 
-                  <p className="t-small mt-5 max-w-[50ch]">{publication.body}</p>
-
-                  {publication.file ? (
+                  <div className="mt-6 flex flex-wrap gap-2.5">
                     <a
-                      className="btn btn--sig mt-6"
+                      className="btn btn--sig"
                       href={publication.file}
                       target="_blank"
                       rel="noreferrer noopener"
                     >
-                      Open the chapter
+                      Read the paper
                       <span aria-hidden>&#8599;</span>
                     </a>
-                  ) : (
-                    <p className="tag mt-6 normal-case tracking-normal">
-                      The published chapter is not hosted here. Ask and I will send it.
-                    </p>
-                  )}
+                    <a
+                      className="btn"
+                      href={publication.certificate}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      Certificate
+                    </a>
+                    <a className="btn" href={publication.doi} target="_blank" rel="noreferrer noopener">
+                      DOI
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -98,15 +105,12 @@ export function Credentials() {
       </article>
 
       <div className="mt-[clamp(34px,4.5vw,64px)] grid gap-[clamp(28px,4vw,60px)] lg:grid-cols-2">
-        {/* ------------------------------- competitive and organisational -- */}
+        {/* ------------------------------------------- won, and ran --------- */}
         <div className="cut">
-          <div className="mb-6 flex items-baseline justify-between gap-5 border-t border-[var(--edge-2)] pt-5">
-            <h3 className="subhead">
-              Competitive <span className="text-[var(--grey-3)]">&amp;</span> organisational
-            </h3>
+          <div className="mb-5 flex items-baseline justify-between gap-5 border-t border-[var(--edge-2)] pt-5">
+            <h3 className="subhead">Hackathons &amp; chapters</h3>
             <span className="m text-[11px] text-[var(--grey-3)]">{achievements.length}</span>
           </div>
-          <p className="t-small -mt-3 mb-5">Won some, ran some.</p>
 
           <ul className="seq flex flex-col">
             {achievements.map((a, i) => (
@@ -130,11 +134,10 @@ export function Credentials() {
 
         {/* ------------------------------------------------ certifications -- */}
         <div className="cut">
-          <div className="mb-6 flex items-baseline justify-between gap-5 border-t border-[var(--edge-2)] pt-5">
+          <div className="mb-5 flex items-baseline justify-between gap-5 border-t border-[var(--edge-2)] pt-5">
             <h3 className="subhead">Certifications</h3>
             <span className="m text-[11px] text-[var(--grey-3)]">{certifications.length}</span>
           </div>
-          <p className="t-small -mt-3 mb-5">The arrow opens each one.</p>
 
           <ul className="seq flex flex-col">
             {certifications.map((c, i) => {
@@ -164,31 +167,23 @@ export function Credentials() {
                       </span>
                     </span>
                     <span
+                      className="sign mt-2 shrink-0 text-[var(--grey-2)] group-hover:text-[var(--sig-lit)]"
+                      data-on={on ? '1' : '0'}
                       aria-hidden
-                      className="mt-1.5 shrink-0 text-[15px] text-[var(--grey-2)] transition-transform duration-500"
-                      style={{ transform: on ? 'rotate(90deg)' : 'none' }}
-                    >
-                      &rarr;
-                    </span>
+                    />
                   </button>
 
                   <div className="drawer" data-on={on ? '1' : '0'}>
                     <div>
                       <div className="pb-5" inert={!on}>
-                        {c.note && <p className="t-small max-w-[46ch]">{c.note}</p>}
                         {c.file ? (
-                          <a
-                            className="btn mt-3"
-                            href={c.file}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                          >
+                          <a className="btn" href={c.file} target="_blank" rel="noreferrer noopener">
                             Open the certificate
                             <span aria-hidden>&#8599;</span>
                           </a>
                         ) : (
                           <p className="tag normal-case tracking-normal">
-                            Certificate not hosted here. Available on request.
+                            Not hosted here. Available on request.
                           </p>
                         )}
                       </div>
@@ -219,7 +214,7 @@ function Line({ k, v }: { k: string; v: string }) {
   return (
     <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-[var(--edge)] py-2.5 last:border-0">
       <dt className="tag shrink-0">{k}</dt>
-      <dd className="m m-0 max-w-[34ch] text-right text-[12.5px] leading-snug text-[var(--paper)]">
+      <dd className="m m-0 max-w-[38ch] text-right text-[12.5px] leading-snug text-[var(--paper)]">
         {v}
       </dd>
     </div>
