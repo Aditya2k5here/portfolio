@@ -111,7 +111,7 @@ function Row({
   const href = p.live ?? p.repo
 
   return (
-    <li className="border-b border-[var(--edge)]">
+    <li className="border-b border-[var(--edge)]" data-open={open ? '1' : '0'}>
       <h3>
         <button
           type="button"
@@ -152,7 +152,7 @@ function Row({
                 </span>
               </span>
 
-              <span className="mt-2.5 block max-w-[62ch] text-[15px] leading-relaxed text-[var(--grey-1)]">
+              <span className="row-tagline mt-2.5 block max-w-[62ch] text-[15px] leading-relaxed text-[var(--grey-1)]">
                 {p.tagline}
               </span>
             </span>
