@@ -1,155 +1,143 @@
 /**
- * Skills, derived from the repositories rather than from memory.
+ * Skills, curated.
  *
- * Counted on 8 September 2026 by walking E:\PROJECTS with node_modules,
- * virtualenvs, .git, __pycache__, datasets and .next excluded:
+ * Two sources, both his. The repositories, walked on 8 September 2026 with
+ * node_modules, virtualenvs, .git, __pycache__, datasets and .next excluded:
  *
- *   Python      358 files   hotpath, halflife-gc, counterexample, nnverify,
- *                           TerraHawk, DermaCare, smart-mirror
- *   Go           19 files   loadshed, across 10 internal packages
- *   TypeScript   44 files   Riches Garden, DermaCare front end, this site
- *   JavaScript   22 files   the audit tooling, all .mjs
+ *   Python 358 files · TypeScript 44 · JavaScript 22 · Go 19
  *
- * Anything that did not survive that count came off the list. Java and C were
- * on the old inventory with no source file behind either. SQL was listed with
- * no .sql file anywhere; SQLite survives because there is a service that uses
- * it. Jupyter went because there is not one notebook. Docker and Postman went
- * for the same reason.
+ * And D:\Resumes\Aditya_S_Resume_MASTER.docx, which carries the full inventory
+ * across his five role variants. Anything here is in at least one of those two.
+ * Nothing is here because it looked good on a list.
  *
- * Every group says where its evidence is, because a list of technologies with
- * nothing behind it is the cheapest thing on a portfolio to write.
+ * Curated, not dumped. The master inventory runs to well over a hundred
+ * entries with the same thing written three ways in three variants; this is
+ * roughly forty, deduplicated, and ordered so the first item in each row is
+ * the one he would actually be asked about.
+ *
+ * `core` marks the ones with a repository behind them, which is what the
+ * filter uses.
  */
 
-export type SkillGroup = {
-  group: string
-  /** Where the proof is. Rendered, not decorative. */
-  source: string
-  items: string[]
-  /** Opened by default. One group only. */
-  open?: boolean
+export type Skill = {
+  name: string
+  /** There is code in this repository set behind it. */
+  core?: boolean
 }
 
-export const skills: SkillGroup[] = [
+export type SkillRow = {
+  group: string
+  items: Skill[]
+}
+
+export const skills: SkillRow[] = [
   {
     group: 'Languages',
-    source: 'File counts across nine repositories',
-    open: true,
     items: [
-      'Python · 358 files',
-      'Go · 19 files',
-      'TypeScript · 44 files',
-      'JavaScript · 22 files',
+      { name: 'Python', core: true },
+      { name: 'TypeScript', core: true },
+      { name: 'JavaScript', core: true },
+      { name: 'Go', core: true },
+      { name: 'SQL' },
+      { name: 'Java' },
     ],
   },
   {
     group: 'Systems',
-    source: 'hotpath, halflife-gc, raftfuzz, loadshed. Three of the four have no third-party dependency at all.',
     items: [
-      'JIT compilation',
-      'x86-64 code generation',
-      'Register allocation',
-      'Subset construction / DFA',
-      'Bytecode VM design',
-      'Generational garbage collection',
-      'Pretenuring',
-      'Deterministic simulation',
-      'Delta debugging',
-      'Adaptive concurrency',
-      'Load shedding',
-      'Circuit breaking',
-      'Priority queueing',
+      { name: 'JIT compilation', core: true },
+      { name: 'x86-64 codegen', core: true },
+      { name: 'Garbage collection', core: true },
+      { name: 'Bytecode VMs', core: true },
+      { name: 'Deterministic simulation', core: true },
+      { name: 'Load shedding', core: true },
+      { name: 'Adaptive concurrency', core: true },
+      { name: 'Formal verification', core: true },
     ],
   },
   {
     group: 'AI and ML',
-    source: 'DermaCare (torch 2.0.1), TerraHawk (torch 2.5.1+cu124), nnverify, smart-mirror',
     items: [
-      'PyTorch',
-      'torchvision',
-      'Transfer learning · MobileNetV2',
-      'Class-imbalance handling',
-      'Weighted sampling and weighted loss',
-      'Albumentations',
-      'OpenCV',
-      'MediaPipe',
-      'DeepFace',
-      'face_recognition',
-      'Feature pyramid networks',
-      'Abstract interpretation',
-      'Branch and bound',
+      { name: 'PyTorch', core: true },
+      { name: 'scikit-learn', core: true },
+      { name: 'OpenCV', core: true },
+      { name: 'MediaPipe', core: true },
+      { name: 'Transfer learning', core: true },
+      { name: 'Class-imbalance handling', core: true },
+      { name: 'YOLOv5' },
+      { name: 'TensorFlow' },
+      { name: 'Keras' },
     ],
   },
   {
     group: 'Language models',
-    source: 'smart-mirror: a three-provider router with failover, 70 call sites across the vision, voice and memory modules',
     items: [
-      'Groq',
-      'Google Gemini',
-      'OpenAI',
-      'Multi-provider routing',
-      'Failover and timeouts',
-      'Latency telemetry',
+      { name: 'Multi-provider routing', core: true },
+      { name: 'Groq', core: true },
+      { name: 'Gemini', core: true },
+      { name: 'OpenAI', core: true },
+      { name: 'LangChain' },
+      { name: 'Agentic workflows' },
     ],
   },
   {
     group: 'Backend',
-    source: 'DermaCare (FastAPI), smart-mirror (asyncio, WebSockets, four REST integrations)',
     items: [
-      'FastAPI',
-      'Uvicorn',
-      'Pydantic',
-      'asyncio',
-      'WebSockets',
-      'REST API design',
-      'Event bus',
-      'State machines',
-      'Cache staleness handling',
-      'OAuth integrations',
-    ],
-  },
-  {
-    group: 'Front end',
-    source: 'Riches Garden, the DermaCare front end, and this site',
-    items: [
-      'Next.js',
-      'React',
-      'TypeScript',
-      'Tailwind CSS',
-      'Motion',
-      'SVG and CSS animation',
-      'Webfont subsetting',
-      'Accessible markup',
-    ],
-  },
-  {
-    group: 'Quality',
-    source: 'Riches Garden ships five audit scripts that run before release; all five systems repos run GitHub Actions',
-    items: [
-      'axe-core auditing',
-      'Contrast measured from rendered pixels',
-      'Responsive auditing',
-      'Core Web Vitals',
-      'Playwright',
-      'GitHub Actions CI',
-      'Seeded defect benchmarks',
-      'Dataset and split auditing',
+      { name: 'FastAPI', core: true },
+      { name: 'asyncio', core: true },
+      { name: 'WebSockets', core: true },
+      { name: 'REST API design', core: true },
+      { name: 'Node.js' },
+      { name: 'Express' },
     ],
   },
   {
     group: 'Data',
-    source: 'smart-mirror memory service, nnverify, the DermaCare evaluation',
-    items: ['SQLite', 'NumPy', 'SciPy', 'Matplotlib', 'Schema design', 'Held-out evaluation design'],
+    items: [
+      { name: 'SQLite', core: true },
+      { name: 'NumPy', core: true },
+      { name: 'pandas' },
+      { name: 'PostgreSQL' },
+      { name: 'MongoDB' },
+      { name: 'Schema design' },
+      { name: 'Query optimisation' },
+    ],
+  },
+  {
+    group: 'Front end',
+    items: [
+      { name: 'Next.js', core: true },
+      { name: 'React', core: true },
+      { name: 'Tailwind CSS', core: true },
+      { name: 'Accessible UI', core: true },
+      { name: 'SVG and CSS animation', core: true },
+    ],
+  },
+  {
+    group: 'Quality',
+    items: [
+      { name: 'axe-core auditing', core: true },
+      { name: 'Playwright', core: true },
+      { name: 'GitHub Actions', core: true },
+      { name: 'Dataset auditing', core: true },
+      { name: 'Held-out evaluation design', core: true },
+      { name: 'Core Web Vitals', core: true },
+    ],
   },
   {
     group: 'Analysis',
-    source: 'Veniteck Solutions, May to August 2026. Client deliverables, not published here.',
     items: [
-      'Market sizing',
-      'Unit economics',
-      'Competitive analysis',
-      'Regulatory context mapping',
-      'PRD and BRD authoring',
-      'Financial modelling',
+      { name: 'Market sizing' },
+      { name: 'Unit economics' },
+      { name: 'Competitive analysis' },
+      { name: 'PRD and BRD authoring' },
+      { name: 'Tableau' },
+      { name: 'Power BI' },
     ],
   },
 ]
+
+export const skillCounts = {
+  total: skills.reduce((n, g) => n + g.items.length, 0),
+  core: skills.reduce((n, g) => n + g.items.filter((i) => i.core).length, 0),
+}

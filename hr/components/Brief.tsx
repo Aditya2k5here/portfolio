@@ -78,17 +78,20 @@ export function Brief() {
                     ))}
                   </ul>
 
-                  {b.repo && (
-                    <a
-                      className="btn mt-4"
-                      href={b.repo}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      Read the code
-                      <span aria-hidden>&#8599;</span>
-                    </a>
-                  )}
+                  <div className="mt-4 flex flex-wrap gap-2.5">
+                    {b.live && (
+                      <a className="btn btn--sig" href={b.live} target="_blank" rel="noreferrer noopener">
+                        Open the site
+                        <span aria-hidden>&#8599;</span>
+                      </a>
+                    )}
+                    {b.repo && (
+                      <a className="btn" href={b.repo} target="_blank" rel="noreferrer noopener">
+                        Read the code
+                        <span aria-hidden>&#8599;</span>
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
