@@ -44,13 +44,16 @@ export function Opening() {
             <span className="hero-name-given block">Aditya</span>
             <span className="hero-name-family -ml-[0.05em] block">Srinivas</span>
           </h1>
+
+          <p className="mt-8 text-[30px] font-medium leading-tight tracking-[-0.03em]">
+            Curious by default.
+          </p>
+
+          <p className="mt-2.5 max-w-[31ch] text-[17px] leading-[1.55] text-[var(--grey-1)]">
+            I&rsquo;m usually one &ldquo;wait, what if&hellip;&rdquo; away from building
+            something.
+          </p>
         </Blob>
-
-        <p className="mt-8 text-[30px] font-medium leading-tight tracking-[-0.03em]">Curious by default.</p>
-
-        <p className="mt-2.5 max-w-[31ch] text-[17px] leading-[1.55] text-[var(--grey-1)]">
-          I&rsquo;m usually one &ldquo;wait, what if&hellip;&rdquo; away from building something.
-        </p>
 
         <div className="mt-9 flex flex-wrap gap-2.5">
           <a className="btn btn--sig" href="#work">

@@ -33,7 +33,7 @@ import { useEffect, useRef, type ReactNode } from 'react'
  */
 
 const N = 16
-const R = 84
+const R = 66
 const WIDE = 1.38 // horizontal stretch of the resting shape
 const TALL = 0.92
 
@@ -125,7 +125,7 @@ export function Blob({ children }: { children: ReactNode }) {
       }
       const d = toPath(pts)
       paths.forEach((p) => p.setAttribute('d', d))
-      g.setAttribute('transform', `translate(${cx.toFixed(1)} ${cy.toFixed(1)})`)
+      g.setAttribute('transform', `translate(${cx.toFixed(1)} ${(cy + 26).toFixed(1)})`)
     }
 
     const move = (e: PointerEvent) => {

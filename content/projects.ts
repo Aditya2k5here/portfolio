@@ -45,6 +45,8 @@ export type Project = {
   stack: string[]
   repo?: string
   live?: string
+  /** A real screenshot, where one says more than a metrics table would. */
+  shot?: { src: string; alt: string; caption: string }
   /** Two or three paragraphs. The actual explanation. */
   body: string[]
   /** The pull quote. One sentence that could only come from this project. */
@@ -206,29 +208,28 @@ export const projects: Project[] = [
     id: 'mirror',
     slug: 'ai-lifestyle-mirror',
     name: 'AI Lifestyle Mirror',
-    tagline: 'Six subsystems on one laptop, each sampled at the rate a person can actually perceive.',
+    tagline: 'A mirror that wakes when you walk up to it: time, weather, calendar, news, music and posture, all on one surface.',
     track: 'Applied ML',
     year: '2026',
     status: 'local',
     stack: ['Python', 'asyncio', 'WebSockets', 'SQLite', 'OpenCV', 'MediaPipe', 'Groq', 'Gemini', 'OpenAI'],
     repo: 'https://github.com/Aditya2k5here/smart-mirror',
     featured: true,
+    shot: {
+      src: '/shots/mirror.webp',
+      alt: 'The mirror running: clock, weather, calendar, briefing, reminders, training mode and the current track',
+      caption: 'Running on the bench. Everything on this screen is live.',
+    },
     body: [
-      'A mirror surface that wakes when you walk up to it and shows the time, the weather, the news, and what your posture is doing while you stand there. Vision, voice, memory and four REST integrations run at once behind a single orchestration layer: an event bus, a state manager, a WebSocket broadcaster, and a cache that marks entries stale rather than serving them quietly.',
-      'The rule that made it smooth was doing less. Face detection is cheap and runs every frame. Recognition is expensive and almost never changes, so it does not. Emotion changes slowly. Posture, gesture and exercise tracking run off the main loop entirely. The broadcast is capped, because the eyes on the other side of the glass cannot use more than a few updates a second and spending frames on updates nobody perceives is how a camera loop starts stuttering.',
-      'Language calls go through a three-provider router ordered by latency and cost, behind 8 and 10 second timeouts, with per-provider latency logged to a diagnostics endpoint. The failure paths were written before the happy path: automatic failover, a cache that admits when it is stale, and a finally block that returns the state machine to idle after a crash instead of leaving a mirror frozen on someone’s face.',
+      'Presence wakes it. From there it runs the clock and weather, the day’s calendar, a news briefing, whatever is playing, and a training mode that counts reps off the camera. Face recognition, emotion and posture run in the vision module; speech and conversation in another; and a memory service keeps enough history to say something useful about your week.',
+      'The rule that made it smooth was doing less. Face detection is cheap and runs every frame. Recognition almost never changes, so it does not. Posture and rep counting run off the main loop entirely, and the broadcast is capped, because nobody can perceive more than a few updates a second on a mirror.',
+      'Language calls go through a router across three providers ordered by latency and cost, behind timeouts, with per-provider latency logged. The failure paths were written before the happy path: automatic failover, a cache that marks itself stale rather than serving quietly, and a finally block that returns the state machine to idle after a crash.',
     ],
     insight:
-      'Every subsystem that felt like it needed to run every frame turned out to be something nobody could perceive changing that fast. The smoothness came from deleting work, not from optimising it.',
-    metrics: [
-      { label: 'Concurrent subsystems', value: '6' },
-      { label: 'Language providers in the failover chain', value: '3', note: 'ordered by latency and cost' },
-      { label: 'Provider timeouts', value: '8 s / 10 s' },
-      { label: 'Sustained frame rate', value: 'Not measured', note: 'no benchmark harness yet' },
-      { label: 'Frame to broadcast latency, p95', value: 'Not measured' },
-    ],
+      'Every subsystem that felt like it needed to run every frame turned out to be something nobody could perceive changing that fast.',
+    metrics: [],
     next: [
-      'Needs a webcam, so a recorded demo is how it travels.',
+      'Needs a webcam, so the screenshot and a recorded demo are how it travels.',
       'Next: a benchmark harness, so the smoothness is measured rather than observed.',
     ],
   },

@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { projects, type Project } from '@/content/projects'
 import { Stage } from './Stage'
@@ -234,7 +235,23 @@ function Row({
 
             {/* ---------------- the evidence ---------------- */}
             <div className="min-w-0">
-              {chart ?? (
+              {p.shot ? (
+                <figure className="panel m-0 overflow-hidden">
+                  <Image
+                    src={p.shot.src}
+                    alt={p.shot.alt}
+                    width={1280}
+                    height={720}
+                    sizes="(min-width: 1024px) 640px, 92vw"
+                    loading="eager"
+                    className="h-auto w-full"
+                  />
+                  <figcaption className="tag border-t border-[var(--edge)] px-4 py-3 normal-case tracking-normal">
+                    {p.shot.caption}
+                  </figcaption>
+                </figure>
+              ) : (
+                chart ?? (
                 <div className="panel p-[clamp(18px,2.2vw,26px)]">
                   {head && (
                     <>
@@ -272,11 +289,12 @@ function Row({
                     </dl>
                   )}
                 </div>
+                )
               )}
 
               {/* Where a chart carried the headline, the rest of the numbers
                   still need somewhere to live. */}
-              {chart && rest.length > 0 && (
+              {!p.shot && chart && rest.length > 0 && (
                 <dl className="mt-4 flex flex-col">
                   {[head, ...rest].filter(Boolean).map((m) => (
                     <div

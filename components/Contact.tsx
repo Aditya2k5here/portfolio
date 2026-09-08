@@ -12,6 +12,10 @@ import { Stage } from './Stage'
  *
  * The three facts sit underneath as a quiet strip rather than a sidebar, so the
  * page keeps one column of attention instead of two.
+ *
+ * Sized to land inside one screen. The separate "Say hello" button went for
+ * that: the email row directly above it is the same action, and it was costing
+ * roughly the height the section was over by.
  */
 
 const ROWS = [
@@ -20,7 +24,7 @@ const ROWS = [
   { k: 'GitHub', v: `github.com/${profile.githubHandle}`, href: profile.github, icon: 'git' },
   { k: 'LeetCode', v: 'leetcode.com/u/aditya-srinivas3', href: profile.leetcode, icon: 'code' },
   { k: 'Phone', v: profile.phone, href: `tel:${profile.phone.replace(/\s/g, '')}`, icon: 'phone' },
-  { k: 'Résumé', v: 'View / Download', href: cv, icon: 'doc' },
+  { k: 'Resume', v: 'View / Download', href: cv, icon: 'doc' },
 ] as const
 
 const FACTS = [
@@ -33,18 +37,18 @@ export function Contact() {
   return (
     <Stage id="contact" n="07" title="Contact">
       <div className="cut mx-auto max-w-[920px]">
-        <p className="t-h2 max-w-[13ch] text-[clamp(34px,6.4vw,74px)] leading-[1.02] tracking-[-0.04em]">
+        <p className="t-h2 max-w-[13ch] text-[clamp(30px,5.4vw,62px)] leading-[1.02] tracking-[-0.04em]">
           Got something interesting?
           <br />
           <span className="text-[var(--sig-lit)]">Let&rsquo;s talk.</span>
         </p>
 
-        <p className="t-body mt-7 max-w-[48ch]">
+        <p className="t-body mt-5 max-w-[48ch]">
           Open to internships, full-time roles, interesting collaborations, or just a good
           technical conversation.
         </p>
 
-        <ul className="mt-11 border-t border-[var(--edge)]">
+        <ul className="mt-8 border-t border-[var(--edge)]">
           {ROWS.map((r, i) => (
             <li
               key={r.k}
@@ -53,7 +57,7 @@ export function Contact() {
             >
               <a
                 href={r.href}
-                className="grid grid-cols-[22px_minmax(0,90px)_minmax(0,1fr)_18px] items-center gap-x-4 py-4 sm:gap-x-6 sm:py-[18px]"
+                className="grid grid-cols-[22px_minmax(0,88px)_minmax(0,1fr)_18px] items-center gap-x-4 py-3 sm:gap-x-6 sm:py-3.5"
                 {...(r.href.startsWith('http') || r.href.startsWith('/docs')
                   ? { target: '_blank', rel: 'noreferrer noopener' }
                   : {})}
@@ -76,9 +80,9 @@ export function Contact() {
           ))}
         </ul>
 
-        <dl className="mt-9 grid gap-px border-b border-[var(--edge)] bg-[var(--edge)] pb-px sm:grid-cols-3">
+        <dl className="mt-7 grid gap-px border-b border-[var(--edge)] bg-[var(--edge)] pb-px sm:grid-cols-3">
           {FACTS.map((f) => (
-            <div key={f.k} className="flex items-start gap-3 bg-[var(--void)] py-5 pr-5">
+            <div key={f.k} className="flex items-start gap-3 bg-[var(--void)] py-4 pr-5">
               <span className="mt-0.5 text-[var(--sig)]">
                 <Icon name={f.icon} />
               </span>
@@ -89,11 +93,6 @@ export function Contact() {
             </div>
           ))}
         </dl>
-
-        <a className="btn btn--sig mt-10" href={`mailto:${profile.email}`}>
-          Say hello
-          <span aria-hidden>&rarr;</span>
-        </a>
       </div>
     </Stage>
   )
