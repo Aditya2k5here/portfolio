@@ -42,11 +42,7 @@ export function Credentials() {
             </h3>
 
             <p className="m mt-4 text-[12.5px] leading-relaxed text-[var(--grey-1)]">
-              {publication.venue}
-              <br />
-              <span className="text-[var(--grey-3)]">
-                {publication.volume} · {publication.issn}
-              </span>
+              {publication.venue}, {publication.year}
             </p>
           </div>
 
@@ -75,8 +71,7 @@ export function Credentials() {
 
                   <dl className="mt-6 flex flex-col">
                     <Line k="Authors" v={publication.authorLine} />
-                    <Line k="Publisher" v={publication.publisher} />
-                    <Line k="DOI" v="10.5281/zenodo.19413268" />
+                    <Line k="Published in" v={`${publication.publisher} · ${publication.volume}`} />
                   </dl>
 
                   <div className="mt-6 flex flex-wrap gap-2.5">

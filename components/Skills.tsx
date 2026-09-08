@@ -27,8 +27,7 @@ export function Skills() {
       title="Skills"
       aside={
         <>
-          Always building something. These are the ones that survived.{' '}
-          <span className="text-[var(--paper)]">Click any of them to open it up.</span>
+          A toolbox for turning ideas into things that actually work.
         </>
       }
     >

@@ -1,164 +1,116 @@
-import Image from 'next/image'
 import { profile } from '@/content/profile'
 import { cv } from '@/content/credentials'
 import { Stage } from './Stage'
-import { Flow } from './Flow'
 
 /**
  * Contact.
  *
- * The last page of the thing, so it is an invitation rather than a footer. The
- * statement carries it, the three actions sit directly under it, and the raw
- * details are a quiet table below that for whoever wants to copy one.
+ * A closing invitation, not a footer. The statement carries the page, one line
+ * says what he is open to, and everything else is a single ruled table of ways
+ * to reach him: icon, label, the actual value, and an arrow. Nothing is hidden
+ * behind a button that only reveals an address.
  *
- * The photograph is the only one below the hero: head, shoulders and upper
- * torso, small, at the end. The red comes back on one word, the same system as
- * the hero at a tenth of the volume.
+ * The three facts sit underneath as a quiet strip rather than a sidebar, so the
+ * page keeps one column of attention instead of two.
  */
 
 const ROWS = [
   { k: 'Email', v: profile.email, href: `mailto:${profile.email}`, icon: 'mail' },
+  { k: 'LinkedIn', v: `linkedin.com/in/${profile.linkedinHandle}`, href: profile.linkedin, icon: 'in' },
+  { k: 'GitHub', v: `github.com/${profile.githubHandle}`, href: profile.github, icon: 'git' },
+  { k: 'LeetCode', v: 'leetcode.com/u/aditya-srinivas3', href: profile.leetcode, icon: 'code' },
   { k: 'Phone', v: profile.phone, href: `tel:${profile.phone.replace(/\s/g, '')}`, icon: 'phone' },
-  { k: 'GitHub', v: profile.githubHandle, href: profile.github, icon: 'code' },
-  { k: 'LinkedIn', v: profile.linkedinHandle, href: profile.linkedin, icon: 'in' },
-  { k: 'LeetCode', v: 'aditya-srinivas3', href: profile.leetcode, icon: 'code' },
-  { k: 'CV', v: 'Résumé, PDF', href: cv, icon: 'doc' },
+  { k: 'Résumé', v: 'View / Download', href: cv, icon: 'doc' },
 ] as const
 
 const FACTS = [
-  { k: 'Based in', v: 'Bangalore, India' },
-  { k: 'Graduating', v: 'May 2027' },
-  { k: 'Standing', v: 'Semester VII, no backlogs' },
+  { k: 'Based in', v: 'Bangalore, India', icon: 'pin' },
+  { k: 'Graduating', v: 'May 2027', icon: 'cap' },
+  { k: 'Open to', v: 'SWE · AI · ML · Data · Analytics · QA · BA', icon: 'case' },
 ]
 
 export function Contact() {
   return (
     <Stage id="contact" n="07" title="Contact">
-      <div className="cut grid gap-x-[clamp(28px,4vw,80px)] gap-y-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-        {/* ---------------------------------------------- the invitation -- */}
-        <div className="min-w-0">
-          <p className="t-h2 max-w-[15ch] text-[clamp(30px,4.8vw,58px)] leading-[1.04]">
-            Got something <Flow className="font-medium">interesting</Flow>?
-            <br />
-            <span className="text-[var(--sig-lit)]">I&rsquo;m listening.</span>
-          </p>
+      <div className="cut mx-auto max-w-[920px]">
+        <p className="t-h2 max-w-[13ch] text-[clamp(34px,6.4vw,74px)] leading-[1.02] tracking-[-0.04em]">
+          Got something interesting?
+          <br />
+          <span className="text-[var(--sig-lit)]">Let&rsquo;s talk.</span>
+        </p>
 
-          <p className="t-body mt-7 max-w-[46ch]">
-            Final-year B.E. ISE student at Atria Institute of Technology, graduating
-            May 2027. Open to software, AI, ML, data, analytics, quality assurance and
-            business analyst roles, and to good problems worth getting stuck into.
-          </p>
+        <p className="t-body mt-7 max-w-[48ch]">
+          Open to internships, full-time roles, interesting collaborations, or just a good
+          technical conversation.
+        </p>
 
-          <div className="mt-8 flex flex-wrap gap-2.5">
-            <a className="btn btn--sig" href={`mailto:${profile.email}`}>
-              Say hello
-              <span aria-hidden>&rarr;</span>
-            </a>
-            <a className="btn" href={cv} target="_blank" rel="noreferrer noopener">
-              <Icon name="doc" />
-              View résumé
-            </a>
-            <a className="btn" href={profile.linkedin} target="_blank" rel="noreferrer noopener">
-              <Icon name="in" />
-              Connect on LinkedIn
-            </a>
-          </div>
-
-          <ul className="seq mt-11 border-t border-[var(--edge)]">
-            {ROWS.map((r, i) => (
-              <li
-                key={r.k}
-                style={{ '--i': i } as React.CSSProperties}
-                className="group border-b border-[var(--edge)] transition-colors hover:border-[var(--sig-edge)]"
+        <ul className="mt-11 border-t border-[var(--edge)]">
+          {ROWS.map((r, i) => (
+            <li
+              key={r.k}
+              style={{ '--i': i } as React.CSSProperties}
+              className="group border-b border-[var(--edge)] transition-colors hover:border-[var(--sig-edge)]"
+            >
+              <a
+                href={r.href}
+                className="grid grid-cols-[22px_minmax(0,90px)_minmax(0,1fr)_18px] items-center gap-x-4 py-4 sm:gap-x-6 sm:py-[18px]"
+                {...(r.href.startsWith('http') || r.href.startsWith('/docs')
+                  ? { target: '_blank', rel: 'noreferrer noopener' }
+                  : {})}
               >
-                <a
-                  href={r.href}
-                  className="flex min-h-[54px] items-center gap-4 py-3"
-                  {...(r.href.startsWith('http') || r.href.startsWith('/docs')
-                    ? { target: '_blank', rel: 'noreferrer noopener' }
-                    : {})}
+                <span className="text-[var(--sig)] transition-colors group-hover:text-[var(--sig-lit)]">
+                  <Icon name={r.icon} />
+                </span>
+                <span className="tag">{r.k}</span>
+                <span className="min-w-0 truncate text-[15px] text-[var(--paper)] transition-colors group-hover:text-[var(--sig-lit)]">
+                  {r.v}
+                </span>
+                <span
+                  aria-hidden
+                  className="text-[15px] text-[var(--sig)] transition-transform duration-300 group-hover:translate-x-1"
                 >
-                  <span className="text-[var(--grey-3)] transition-colors group-hover:text-[var(--sig-lit)]">
-                    <Icon name={r.icon} />
-                  </span>
-                  <span className="tag w-[86px] shrink-0">{r.k}</span>
-                  <span className="m min-w-0 flex-1 truncate text-[13.5px] text-[var(--grey-1)] transition-colors group-hover:text-[var(--paper)]">
-                    {r.v}
-                  </span>
-                  <span
-                    aria-hidden
-                    className="shrink-0 text-[13px] text-[var(--grey-3)] transition-colors group-hover:text-[var(--sig-lit)]"
-                  >
-                    &#8599;
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
+                  &rarr;
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
 
-          <p className="tag mt-5 flex items-center gap-3 normal-case tracking-normal">
-            <span aria-hidden className="block h-px w-8 bg-[var(--edge-3)]" />
-            Or just drop a message anyway. I usually reply.
-          </p>
-        </div>
-
-        {/* ------------------------------------------------ the signature -- */}
-        <div className="flex min-w-0 flex-col gap-8">
-          <figure className="relative m-0">
-            <div className="relative mx-auto w-[190px] overflow-hidden sm:w-[230px] lg:mx-0">
-              <span className="rim" aria-hidden />
-              <Image
-                src="/cut/aditya-bust.webp"
-                alt={`${profile.name}, ${profile.location}`}
-                width={606}
-                height={487}
-                sizes="230px"
-                className="cutout relative h-auto w-full"
-              />
-            </div>
-          </figure>
-
-          <blockquote className="m-0 border-l-2 border-[var(--sig)] pl-5">
-            <p className="text-[17px] leading-[1.5] text-[var(--paper)]">
-              Still curious.
-              <br />
-              Still building.
-            </p>
-            <footer className="m mt-2.5 text-[11px] text-[var(--grey-3)]">
-              &mdash; {profile.name}
-            </footer>
-          </blockquote>
-
-          <dl className="grid grid-cols-1 gap-px bg-[var(--edge)] sm:grid-cols-3 lg:grid-cols-1">
-            {FACTS.map((f) => (
-              <div key={f.k} className="bg-[var(--void)] px-4 py-3.5">
+        <dl className="mt-9 grid gap-px border-b border-[var(--edge)] bg-[var(--edge)] pb-px sm:grid-cols-3">
+          {FACTS.map((f) => (
+            <div key={f.k} className="flex items-start gap-3 bg-[var(--void)] py-5 pr-5">
+              <span className="mt-0.5 text-[var(--sig)]">
+                <Icon name={f.icon} />
+              </span>
+              <div className="min-w-0">
                 <dt className="tag">{f.k}</dt>
                 <dd className="m m-0 mt-1.5 text-[13px] leading-snug text-[var(--paper)]">{f.v}</dd>
               </div>
-            ))}
-          </dl>
+            </div>
+          ))}
+        </dl>
 
-          <p className="tag max-w-[34ch] leading-relaxed">
-            Open to internships, full-time roles and interesting collaborations.
-          </p>
-        </div>
+        <a className="btn btn--sig mt-10" href={`mailto:${profile.email}`}>
+          Say hello
+          <span aria-hidden>&rarr;</span>
+        </a>
       </div>
     </Stage>
   )
 }
 
 /**
- * Four glyphs, drawn rather than pulled in. An icon package for this many
- * shapes would weigh more than the rest of the section.
+ * Drawn rather than pulled in. An icon package for eight shapes would weigh
+ * more than the section it sits in.
  */
 function Icon({ name }: { name: string }) {
-  const common = {
-    width: 15,
-    height: 15,
-    viewBox: '0 0 16 16',
+  const c = {
+    width: 17,
+    height: 17,
+    viewBox: '0 0 18 18',
     fill: 'none',
     stroke: 'currentColor',
-    strokeWidth: 1.4,
+    strokeWidth: 1.5,
     strokeLinecap: 'round' as const,
     strokeLinejoin: 'round' as const,
     'aria-hidden': true,
@@ -166,35 +118,62 @@ function Icon({ name }: { name: string }) {
   switch (name) {
     case 'mail':
       return (
-        <svg {...common}>
-          <rect x="1.5" y="3" width="13" height="10" rx="1.5" />
-          <path d="M2 4.5l6 4 6-4" />
-        </svg>
-      )
-    case 'phone':
-      return (
-        <svg {...common}>
-          <path d="M3 2.5h3l1.2 3-1.6 1.2a9 9 0 0 0 3.7 3.7L10.5 8.8l3 1.2v3a1 1 0 0 1-1.1 1A11.5 11.5 0 0 1 2 3.6 1 1 0 0 1 3 2.5z" />
+        <svg {...c}>
+          <rect x="1.8" y="3.6" width="14.4" height="10.8" rx="1.6" />
+          <path d="M2.4 4.8L9 9.9l6.6-5.1" />
         </svg>
       )
     case 'in':
       return (
-        <svg {...common}>
-          <rect x="1.5" y="1.5" width="13" height="13" rx="2" />
-          <path d="M4.6 6.8v4.6M4.6 4.6v.1M8 11.4V6.8M8 8.6c0-1.9 3.4-2 3.4 0v2.8" />
+        <svg {...c}>
+          <rect x="1.8" y="1.8" width="14.4" height="14.4" rx="2.2" />
+          <path d="M5.4 7.6v5.2M5.4 5.2v.1M9 12.8V7.6M9 9.6c0-2.1 3.8-2.2 3.8 0v3.2" />
+        </svg>
+      )
+    case 'git':
+      return (
+        <svg {...c}>
+          <path d="M11 15.6v-2.4a2.2 2.2 0 0 0-.7-1.8c2.2-.2 4.2-1.1 4.2-4.6a3.6 3.6 0 0 0-1-2.5 3.3 3.3 0 0 0-.1-2.5s-.8-.2-2.6 1a8.9 8.9 0 0 0-4.6 0C4.4 1.6 3.6 1.8 3.6 1.8a3.3 3.3 0 0 0-.1 2.5 3.6 3.6 0 0 0-1 2.5c0 3.5 2 4.4 4.2 4.6a2.2 2.2 0 0 0-.7 1.7v2.5" />
+        </svg>
+      )
+    case 'code':
+      return (
+        <svg {...c}>
+          <path d="M6.2 5.6L2.6 9l3.6 3.4M11.8 5.6L15.4 9l-3.6 3.4" />
+        </svg>
+      )
+    case 'phone':
+      return (
+        <svg {...c}>
+          <path d="M3.4 2.8h3.4l1.4 3.4-1.8 1.4a10 10 0 0 0 4.2 4.2l1.4-1.8 3.4 1.4v3.4a1.2 1.2 0 0 1-1.3 1.2A13 13 0 0 1 2.2 4.1a1.2 1.2 0 0 1 1.2-1.3z" />
         </svg>
       )
     case 'doc':
       return (
-        <svg {...common}>
-          <path d="M4 1.5h5l3 3v10H4z" />
-          <path d="M9 1.5v3h3M6 8h4M6 10.5h4" />
+        <svg {...c}>
+          <path d="M4.4 1.8h5.6l3.6 3.6v10.8H4.4z" />
+          <path d="M10 1.8v3.6h3.6M6.8 9h4.4M6.8 11.8h4.4" />
+        </svg>
+      )
+    case 'pin':
+      return (
+        <svg {...c}>
+          <path d="M9 16s5.2-4.6 5.2-8.4A5.2 5.2 0 0 0 3.8 7.6C3.8 11.4 9 16 9 16z" />
+          <circle cx="9" cy="7.4" r="1.9" />
+        </svg>
+      )
+    case 'cap':
+      return (
+        <svg {...c}>
+          <path d="M9 3.2L16.4 6.8 9 10.4 1.6 6.8z" />
+          <path d="M4.6 8.4v3.8c0 1.2 2 2.2 4.4 2.2s4.4-1 4.4-2.2V8.4" />
         </svg>
       )
     default:
       return (
-        <svg {...common}>
-          <path d="M5.5 5L2.5 8l3 3M10.5 5l3 3-3 3" />
+        <svg {...c}>
+          <rect x="1.8" y="5.2" width="14.4" height="10" rx="1.6" />
+          <path d="M6.4 5.2V3.8a1.4 1.4 0 0 1 1.4-1.4h2.4a1.4 1.4 0 0 1 1.4 1.4v1.4" />
         </svg>
       )
   }
