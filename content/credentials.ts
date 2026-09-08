@@ -1,3 +1,5 @@
+import { asset } from './paths'
+
 /**
  * Credentials, and the document behind each one.
  *
@@ -35,8 +37,8 @@ export const publication = {
   position: 'First author of five',
   note: 'A survey of the technologies being used to digitise Buddhist monasteries, and what actually works.',
   body: 'It reviews more than 65 publications across over 100 monasteries and sorts the field into three layers: immersive visualisation, intelligent interaction, and engagement. The honest half is the limitations, which are the same everywhere: bandwidth at remote sites, multilingual accuracy in AI cultural systems, and nobody having a funding model that survives past the pilot.',
-  file: '/docs/publication-sikkim.pdf',
-  certificate: '/docs/publication-certificate.pdf',
+  file: asset('/docs/publication-sikkim.pdf'),
+  certificate: asset('/docs/publication-certificate.pdf'),
 }
 
 export const certifications: Credential[] = [
@@ -72,4 +74,4 @@ export const achievements = [
   },
 ]
 
-export const cv = '/docs/Aditya-Srinivas-CV.pdf'
+export const cv = asset('/docs/Aditya-Srinivas-CV.pdf')
