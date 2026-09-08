@@ -14,3 +14,9 @@ node_modules/
 out/
 plates-out/
 reference/
+
+# agent scratch files, never committed
+CLAUDE.md
+AGENTS.md
+hr/CLAUDE.md
+hr/AGENTS.md

@@ -1,15 +1,55 @@
-# As built / Not built
+# Aditya Srinivas
 
-An as-built record of four systems. Not a portfolio — the word appears nowhere on the site.
+Personal portfolio. Final-year B.E. Information Science & Engineering at Atria Institute of
+Technology, Bangalore, graduating May 2027.
 
-The record reads in two directions. `/` is **as built**: what each system is, what it measured
-at, what it cannot do. `/not-built` is the same four parts with the stack struck through and
-replaced by what was deliberately left out, each with the reason it was left out.
+I build the layer underneath the thing everyone else is looking at — compilers, collectors,
+gateways, verifiers — and then I measure whether it actually worked. Several of the results on
+this site went against me. Those are the ones worth keeping.
 
-The part with no implementation is the emptiest sheet in one view and the fullest in the other.
-That inversion is the argument.
+**Live:** _deploying soon_
 
-## Run
+---
+
+## Get in touch
+
+I read everything and reply properly, including a no.
+
+| | |
+|---|---|
+| Email | adityasrinivasofficial@gmail.com |
+| LinkedIn | [aditya-srinivas3](https://linkedin.com/in/aditya-srinivas3) |
+| GitHub | [Aditya2k5here](https://github.com/Aditya2k5here) |
+| LeetCode | [aditya-srinivas3](https://leetcode.com/u/aditya-srinivas3) |
+| Phone | +91 99724 52243 |
+| Location | Bangalore, India |
+
+Open to internships, full-time roles in software, AI/ML, data, analytics, QA and business
+analysis, and to interesting collaborations.
+
+---
+
+## What's on the site
+
+| Project | | |
+|---|---|---|
+| **Dermora AI** | A skin lesion classifier that knows when to stay quiet | [code](https://github.com/Aditya2k5here/skin-lesion-classifier) |
+| **Hotpath** | A regex engine that writes x86-64 at runtime, and knows when not to | [code](https://github.com/Aditya2k5here/hotpath) |
+| **TerraHawk** | Verification infrastructure for physical claims. Co-founder | |
+| **Riches Garden** | A live festival site, and the features I talked the committee out of | [live](https://riches-garden-ganeshothsava.vercel.app/) |
+| **AI Lifestyle Mirror** | Vision, voice and memory on one surface | [code](https://github.com/Aditya2k5here/smart-mirror) |
+| **Halflife-GC** | A garbage collector that predicts object lifetimes before allocation | [code](https://github.com/Aditya2k5here/halflife-gc) |
+| **RaftFuzz** | Finds the schedule that breaks consensus, then shrinks it | [code](https://github.com/Aditya2k5here/counterexample) |
+| **NNVerify** | A neural network verifier that never answers "I don't know" | [code](https://github.com/Aditya2k5here/envelope) |
+| **LoadShed** | An API gateway that decides what to fail under overload | [code](https://github.com/Aditya2k5here/ballast) |
+
+**Published:** *Digital Heritage Preservation Technologies for Monasteries of Sikkim*, first
+author of five — Advancement in Image Processing and Pattern Recognition, 2026.
+[DOI](https://doi.org/10.5281/zenodo.19413268)
+
+---
+
+## Running it
 
 ```bash
 npm install
@@ -19,71 +59,22 @@ npm run dev
 | script | does |
 |---|---|
 | `npm run dev` | dev server |
-| `npm run validate` | content validation only |
-| `npm run build` | validate, then static export to `out/` |
+| `npm run build` | static export to `out/` |
 | `npm run typecheck` | `tsc --noEmit` |
-| `npm run measure` | cold-load weight per route, gzipped, vs budget |
+| `npm run lint` | eslint |
 
-## Shape
+Next.js 16, React 19, TypeScript, Tailwind CSS v4. Static export — no server, no database, no
+third-party scripts. Two typefaces, self-hosted.
+
+## Layout
 
 ```
-content/parts/      one file per part + types + index   ← every fact lives here
-content/site.ts     nav, field notes, about, budget, colophon
-components/         Sheet primitive, PartsIndex, PartSheet, Stamp, Measurements
-app/                routes only; no facts written inside a component
-scripts/            validate-content.ts, run in prebuild
+app/            routes, global stylesheet
+components/     one file per section, plus the hero interactions
+content/        every fact on the site lives here, nowhere else
+public/         hero artwork, portrait, documents
+hr/             a separate short-form build for recruiters
 ```
 
-Nothing about a project is written inside a component. Adding a part is one file in
-`content/parts/` plus one line in `content/parts/index.ts`.
-
-## The validator
-
-`scripts/validate-content.ts` runs in `prebuild`, so a violation fails the build rather than
-shipping. It throws on:
-
-- an empty `limitations` array
-- a `thesis` over 120 characters
-- a `measurements` array where every value is `null` and no note explains why
-- a `notBuilt` entry with no reason — *a removal without a reason does not ship*
-- a `decisions` entry with no reason
-- `status: 'design'` with a non-empty stack, or missing `evidence: ['none']`
-- `status: 'design'` prose containing "I built", "I developed", "working on"
-- a stack naming TensorFlow or Keras
-- a field note with no citation, or citing a part that does not exist
-- a budget row with no actual and no note explaining why
-
-It warns on evidence promising a link that is not present.
-
-## Honesty rules
-
-- No metric appears unless it is in the content data. Missing measurements render a
-  `NOT MEASURED` stamp, never a blank.
-- Status is never conveyed by colour alone; the stamp always carries the word.
-- No link is printed that would 404. `SM-02` and `DC-03` are `evidence: ['none']` until their
-  repos are public; the resume shows a `NOT UPLOADED` stamp until `site.resumeFile` is set.
-
-## Open items
-
-- [ ] Push `smart-mirror` (no remote configured) and `Derma-Care` (not a git repo), then set
-      their `evidence` back to `['repo']` and add the links.
-- [ ] Add the resume PDF to `public/` and set `site.resumeFile`.
-- [ ] Re-measure Smart Mirror's Python LOC and state the scope on the sheet.
-- [ ] Measure LCP on a real device; it is the one budget row still unmeasured.
-- [ ] Decide what to do about two missed budgets (`npm run measure` prints them):
-      **JS 180 KB against a 40 KB budget** — Next.js App Router ships a React runtime that
-      cannot reach 40 KB. Site code is under 3 KB of that. Hitting the budget means Astro or
-      hand-written HTML, not a smaller page. **Fonts 132 KB against 90 KB** — Archivo variable
-      is 88 KB of it. Subsetting it with `fonttools` (installed) to the characters actually
-      used, keeping the `wdth` axis and the layout tables, would likely clear the budget; that
-      is the same technique RG-01's case study describes.
-
-## Colour
-
-Every colour is a token on `:root`. Light is the base; dark is redefined under
-`prefers-color-scheme` guarded by `:not([data-theme="light"])` and again under
-`[data-theme="dark"]`. No colour is declared only inside a media query.
-
-Contrast is computed from the token values and published in the colophon. `graphite` and
-`vermillion` were darkened slightly from their original values because both landed just under
-4.5:1 on paper in the light theme.
+Every number on the site is transcribed from the project's own results file, or from a run
+recorded with its date. Nothing is rounded up.
