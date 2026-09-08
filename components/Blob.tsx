@@ -31,7 +31,9 @@ import { useEffect, useRef, type ReactNode } from 'react'
  */
 
 const N = 12
-const R = 78
+const R = 74
+const WIDE = 1.62 // horizontal stretch of the resting shape
+const TALL = 0.86
 
 /* Fixed, not random: the server and the client have to agree, and it should be
    the same creature every time the page loads. */
@@ -76,11 +78,17 @@ export function Blob({ children }: { children: ReactNode }) {
 
     const g = el.querySelector<SVGGElement>('.blob-g')
     const paths = Array.from(el.querySelectorAll<SVGPathElement>('.blob-p'))
+    const core = el.querySelector<SVGPathElement>('.blob-core')
     if (!g || !paths.length) return
 
     const pts: Pt[] = Array.from({ length: N }, (_, i) => {
       const a = (i / N) * Math.PI * 2
-      return { ox: Math.cos(a) * R * BASE[i], oy: Math.sin(a) * R * BASE[i], vx: 0, vy: 0 }
+      return {
+        ox: Math.cos(a) * R * BASE[i] * WIDE,
+        oy: Math.sin(a) * R * BASE[i] * TALL,
+        vx: 0,
+        vy: 0,
+      }
     })
 
     let cx = 0
@@ -93,10 +101,10 @@ export function Blob({ children }: { children: ReactNode }) {
         const a = (i / N) * Math.PI * 2
         const wob =
           BASE[i] +
-          0.11 * Math.sin(t * 0.0008 + PHASE[i].a) +
-          0.07 * Math.sin(t * 0.0013 + PHASE[i].b)
-        const bx = Math.cos(a) * R * wob
-        const by = Math.sin(a) * R * wob
+          0.035 * Math.sin(t * 0.0005 + PHASE[i].a) +
+          0.022 * Math.sin(t * 0.0008 + PHASE[i].b)
+        const bx = Math.cos(a) * R * wob * WIDE
+        const by = Math.sin(a) * R * wob * TALL
 
         const p = pts[i]
         p.vx = (p.vx + (bx - p.ox) * K) * DAMP
@@ -106,6 +114,7 @@ export function Blob({ children }: { children: ReactNode }) {
       }
       const d = toPath(pts)
       paths.forEach((p) => p.setAttribute('d', d))
+      core?.setAttribute('transform', 'scale(0.62)')
       g.setAttribute('transform', `translate(${cx.toFixed(1)} ${cy.toFixed(1)})`)
     }
 
@@ -191,6 +200,15 @@ export function Blob({ children }: { children: ReactNode }) {
         <g className="blob-g">
           <path className="blob-p" d="" fill="#e11d33" opacity="0.5" filter="url(#blob-glow)" />
           <path className="blob-p" d="" fill="#dd1b31" opacity="0.6" filter="url(#blob-body)" />
+          {/* The core. Same outline at 62%, so the density falls off from the
+              middle without a radial gradient anywhere near it. */}
+          <path
+            className="blob-p blob-core"
+            d=""
+            fill="#ff4d5f"
+            opacity="0.34"
+            filter="url(#blob-body)"
+          />
         </g>
       </svg>
       {children}

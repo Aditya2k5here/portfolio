@@ -69,10 +69,9 @@ export function Work() {
       title="Work"
       aside={
         <>
-          Always building something. These are the ones that survived.{' '}
-          <span className="text-[var(--paper)]">Click any of them to open it up.</span>{' '}
           Every number comes out of that project&rsquo;s own results file, including the
-          ones that argued with me.
+          ones that argued with me.{' '}
+          <span className="text-[var(--paper)]">Click a name to open it.</span>
         </>
       }
     >

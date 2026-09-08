@@ -60,7 +60,7 @@ export function Credentials() {
               onClick={() => setPaper(!paper)}
               aria-expanded={paper}
               aria-controls="paper-record"
-              className="discl mt-6 inline-flex w-auto items-center gap-3 text-[14.5px] font-medium transition-colors hover:text-[var(--sig-lit)]"
+              className="discl mt-5 inline-flex min-h-[44px] w-auto items-center gap-3 text-[14.5px] font-medium transition-colors hover:text-[var(--sig-lit)]"
             >
               <span className="sign" data-on={paper ? '1' : '0'} aria-hidden />
               {paper ? 'Close' : 'Open the paper'}
