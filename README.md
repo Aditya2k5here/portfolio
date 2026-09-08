@@ -7,7 +7,9 @@ I build the layer underneath the thing everyone else is looking at — compilers
 gateways, verifiers — and then I measure whether it actually worked. Several of the results on
 this site went against me. Those are the ones worth keeping.
 
-**Live:** _deploying soon_
+**Live:** [aditya2k5here.github.io/portfolio](https://aditya2k5here.github.io/portfolio/)
+
+**One-page version, for recruiters:** [aditya2k5here.github.io/hr-portfolio](https://aditya2k5here.github.io/hr-portfolio/)
 
 ---
 
