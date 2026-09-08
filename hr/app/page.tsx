@@ -134,7 +134,18 @@ export default function Page() {
             <span className="chip">{publication.year}</span>
           </div>
           <p className="t-h2 mt-4 max-w-[30ch]">{publication.title}</p>
-          <p className="m mt-2 text-[12px] text-[var(--grey-2)]">{publication.venue}</p>
+          <p className="m mt-2 text-[12px] text-[var(--grey-2)]">
+            {publication.venue} · {publication.position}
+          </p>
+          <div className="mt-4 flex flex-wrap gap-2.5">
+            <a className="btn" href={publication.file} target="_blank" rel="noreferrer noopener">
+              Read the paper
+              <span aria-hidden>&#8599;</span>
+            </a>
+            <a className="btn" href={publication.doi} target="_blank" rel="noreferrer noopener">
+              DOI
+            </a>
+          </div>
         </div>
 
         <ul className="mt-6 flex flex-col">
@@ -147,7 +158,7 @@ export default function Page() {
         </ul>
 
         <p className="tag mt-5 normal-case tracking-normal">
-          Four course certificates, and the published chapter, available on request.
+          Four course certificates available on request.
         </p>
       </section>
 

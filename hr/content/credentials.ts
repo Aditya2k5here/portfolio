@@ -1,17 +1,16 @@
 /**
- * Credentials, and where the document for each one actually is.
+ * Credentials, and the document behind each one.
  *
- * `file` is the honest field. When it points at something in /public/docs the
- * site renders a link to the document itself; when it is undefined the site
- * says the certificate is available on request. Nothing here ever links to a
- * URL that was guessed.
+ * `file` is the honest field. Where it points at something in /public/docs the
+ * site opens the document itself; where it is undefined the site says the
+ * certificate is available on request rather than linking somewhere hopeful.
  *
- * Checked on 8 September 2026 against D:\Aditya Documents and D:\Resumes:
- *   found      the CV, and an IEEE membership record under 02_Memberships
- *   not found  the four course certificates, and the published chapter
- *
- * So four of these are unlinked on purpose. See public/docs/README.md for what
- * to drop in and what it switches on.
+ * The publication was described wrongly here until 8 September 2026. The site
+ * called it "an AI and VR system for digitising the monasteries of Sikkim",
+ * which implies he built one. Reading the actual paper, it is a survey: it
+ * reviews more than 65 publications covering over 100 monasteries and proposes
+ * a three-layer framework for the field. He is first author of five. Both the
+ * paper and the publication certificate are now on disk, and the DOI resolves.
  */
 
 export type Credential = {
@@ -19,21 +18,25 @@ export type Credential = {
   issuer: string
   /** Path under /public/docs, only when the file is actually there. */
   file?: string
-  /** What it covered. Only where that is knowable from the programme itself. */
   note?: string
 }
 
 export const publication = {
   title: 'Digital Heritage Preservation Technologies for Monasteries of Sikkim',
   venue: 'Advancement in Image Processing and Pattern Recognition',
+  publisher: 'HBRP Publication',
+  volume: 'Volume 09, Issue 03, pages 1–14',
+  issn: 'e-ISSN 2583-9241',
+  doi: 'https://doi.org/10.5281/zenodo.19413268',
   year: '2026',
-  type: 'Peer-reviewed chapter',
-  subject: 'Image processing and pattern recognition',
-  note: 'An AI and VR system for digitising the monasteries of Sikkim and presenting them as virtual tourism.',
-  body: 'The murals and thangkas inside them are degrading faster than anyone is recording them, in a state where getting a conservation team up the hill is a logistics problem before it is a technical one.',
-  /* No PDF of the chapter is on this machine, so the card does not pretend to
-     link to one. Drop publication-sikkim.pdf into /public/docs to switch it on. */
-  file: undefined as string | undefined,
+  date: '4 April 2026',
+  type: 'Peer-reviewed survey',
+  authorLine: 'Aditya S, Harshavardhan HR, E Jerrish Daniel, Chandana C E, Dr. Deepak N R',
+  position: 'First author of five',
+  note: 'A survey of the technologies being used to digitise Buddhist monasteries, and what actually works.',
+  body: 'It reviews more than 65 publications across over 100 monasteries and sorts the field into three layers: immersive visualisation, intelligent interaction, and engagement. The honest half is the limitations, which are the same everywhere: bandwidth at remote sites, multilingual accuracy in AI cultural systems, and nobody having a funding model that survives past the pilot.',
+  file: '/docs/publication-sikkim.pdf',
+  certificate: '/docs/publication-certificate.pdf',
 }
 
 export const certifications: Credential[] = [
@@ -49,7 +52,7 @@ export const certifications: Credential[] = [
   { name: 'Java', issuer: 'IIT Bombay' },
 ]
 
-/** Competitive and organisational. Held separately: these are outcomes, not courses. */
+/** Wins and the things he ran. Outcomes, not courses, so they sit separately. */
 export const achievements = [
   {
     title: '1st Place, Cicada Agentic AI Hackathon',
@@ -61,12 +64,11 @@ export const achievements = [
   },
   {
     title: 'Smart India Hackathon 2025, National round',
-    detail:
-      'SIH25061. Led the system architecture and the technical documentation for a government-issued problem statement.',
+    detail: 'SIH25061. Led the system architecture and the technical documentation.',
   },
   {
     title: 'Event Organiser, IEEE Student Chapter',
-    detail: '5+ technical events, 100+ attendees. Membership on record.',
+    detail: '5+ technical events, 100+ attendees.',
   },
 ]
 

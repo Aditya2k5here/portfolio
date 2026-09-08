@@ -23,6 +23,7 @@ export type Brief = {
   figureNote: string
   stack: string[]
   repo?: string
+  live?: string
   /** Two or three sentences, shown only on open. */
   more: string
 }
@@ -90,6 +91,7 @@ export const briefs: Brief[] = [
     figure: '89 → 14 kB',
     figureNote: 'Kannada webfont, subset to the 33 glyphs in use',
     stack: ['Next.js', 'TypeScript', 'axe-core'],
+    live: 'https://riches-garden-ganeshothsava.vercel.app/',
     more: 'No database, no dashboard, no auth: the committee runs on a form and a sheet, and would have inherited whatever I left behind. Nine content files hold every fact, so rolling to next year is a four-line edit. Five audit gates run before every release: link integrity, axe-core, contrast sampled from rendered pixels, tap targets across seven viewports, and page weight.',
   },
 ]
