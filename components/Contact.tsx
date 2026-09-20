@@ -104,29 +104,33 @@ export function Contact() {
               </span>
               <span className="tag">Resume</span>
               <span className="min-w-0 truncate text-[15px] text-[var(--paper)] transition-colors group-hover:text-[var(--sig-lit)]">
-                {resumeNote ? 'On request' : 'View / Download'}
+                Available on request
               </span>
               <span
                 aria-hidden
-                className="text-[15px] text-[var(--sig)] transition-transform duration-300 group-hover:translate-x-1"
+                className={`text-[15px] text-[var(--sig)] transition-transform duration-300 ${
+                  resumeNote ? 'rotate-90 text-[var(--sig-lit)]' : 'group-hover:translate-x-1'
+                }`}
               >
                 &rarr;
               </span>
             </button>
             <div className="drawer" data-on={resumeNote ? '1' : '0'} id="resume-note">
               <div>
-                <p
-                  className="max-w-[46ch] pb-4 pl-[calc(22px+1rem)] text-[15px] leading-relaxed text-[var(--grey-1)] sm:pl-[calc(22px+1.5rem)]"
+                <div
+                  className="pb-4 pl-[calc(22px+1rem)] text-[15px] leading-relaxed text-[var(--grey-1)] sm:pl-[calc(22px+1.5rem)]"
                   inert={!resumeNote}
                 >
-                  Contact Aditya Srinivas for the resume.{' '}
-                  <a
-                    href={`mailto:${profile.email}?subject=Resume request`}
-                    className="text-[var(--paper)] underline decoration-[var(--sig-edge)] underline-offset-4 transition-colors hover:text-[var(--sig-lit)]"
-                  >
-                    {profile.email}
-                  </a>
-                </p>
+                  <p className="max-w-[48ch]">
+                    Contact Aditya Srinivas for the resume.{' '}
+                    <a
+                      href={`mailto:${profile.email}?subject=Resume request`}
+                      className="text-[var(--paper)] underline decoration-[var(--sig-edge)] underline-offset-4 transition-colors hover:text-[var(--sig-lit)]"
+                    >
+                      {profile.email}
+                    </a>
+                  </p>
+                </div>
               </div>
             </div>
           </li>

@@ -71,5 +71,3 @@ export const achievements = [
     detail: '5+ technical events, 100+ attendees.',
   },
 ]
-
-export const cv = '/docs/Aditya-Srinivas-CV.pdf'

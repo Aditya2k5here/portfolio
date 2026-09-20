@@ -197,7 +197,7 @@ export default function Page() {
             { k: 'LeetCode', v: 'aditya-srinivas3', href: profile.leetcode },
             {
               k: 'Resume',
-              v: 'Contact Aditya Srinivas for the resume',
+              v: 'Available on request',
               href: `mailto:${profile.email}?subject=Resume request`,
             },
           ].map((r) => (
@@ -205,7 +205,7 @@ export default function Page() {
               <a
                 href={r.href}
                 className="flex min-h-[56px] items-center justify-between gap-5 py-3"
-                {...(r.href.startsWith('http') || r.href.startsWith('/docs')
+                {...(r.href.startsWith('http')
                   ? { target: '_blank', rel: 'noreferrer noopener' }
                   : {})}
               >

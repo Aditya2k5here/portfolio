@@ -8,7 +8,6 @@ Expected names, matched in `content/credentials.ts`:
 
 | File                                   | Becomes a link on            |
 |----------------------------------------|------------------------------|
-| `Aditya-Srinivas-CV.pdf`               | Contact, and the nav CV link |
 | `publication-sikkim.pdf`               | the publication card         |
 | `cert-deeplearning-ai.pdf`             | Machine Learning / Deep Learning |
 | `cert-infosys-springboard.pdf`         | Infosys Springboard          |

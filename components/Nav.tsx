@@ -157,7 +157,7 @@ export function Nav() {
           ))}
 
           <a href="#contact" onClick={() => setOpen(false)} className="btn btn--sig mt-8 w-full">
-            Resume
+            Resume on request
             <span aria-hidden>&rarr;</span>
           </a>
 
