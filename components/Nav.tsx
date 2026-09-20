@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { profile } from '@/content/profile'
-import { cv } from '@/content/credentials'
 
 const LINKS = [
   { id: 'work', label: 'Work' },
@@ -157,15 +156,9 @@ export function Nav() {
             </a>
           ))}
 
-          <a
-            href={cv}
-            target="_blank"
-            rel="noreferrer noopener"
-            onClick={() => setOpen(false)}
-            className="btn btn--sig mt-8 w-full"
-          >
+          <a href="#contact" onClick={() => setOpen(false)} className="btn btn--sig mt-8 w-full">
             Resume
-            <span aria-hidden>&#8599;</span>
+            <span aria-hidden>&rarr;</span>
           </a>
 
           <p className="tag mt-7">

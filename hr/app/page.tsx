@@ -1,5 +1,5 @@
 import { profile, education, experience, languages } from '@/content/profile'
-import { publication, achievements, cv } from '@/content/credentials'
+import { publication, achievements } from '@/content/credentials'
 import { alsoBuilt, quickSkills, FULL_SITE } from '@/content/brief'
 import { Brief } from '@/components/Brief'
 
@@ -49,8 +49,8 @@ export default function Page() {
           <a className="btn btn--sig" href={`mailto:${profile.email}`}>
             Email me
           </a>
-          <a className="btn" href={cv} target="_blank" rel="noreferrer noopener">
-            CV
+          <a className="btn" href={`mailto:${profile.email}?subject=Resume request`}>
+            Resume on request
           </a>
           <a className="btn" href={profile.github} target="_blank" rel="noreferrer noopener">
             GitHub
@@ -195,7 +195,11 @@ export default function Page() {
             { k: 'GitHub', v: profile.githubHandle, href: profile.github },
             { k: 'LinkedIn', v: profile.linkedinHandle, href: profile.linkedin },
             { k: 'LeetCode', v: 'aditya-srinivas3', href: profile.leetcode },
-            { k: 'CV', v: 'PDF, one page', href: cv },
+            {
+              k: 'Resume',
+              v: 'Contact Aditya Srinivas for the resume',
+              href: `mailto:${profile.email}?subject=Resume request`,
+            },
           ].map((r) => (
             <li key={r.k} className="border-b border-[var(--edge)]">
               <a

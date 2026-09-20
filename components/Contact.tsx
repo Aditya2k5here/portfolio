@@ -1,5 +1,7 @@
+'use client'
+
+import { useState } from 'react'
 import { profile } from '@/content/profile'
-import { cv } from '@/content/credentials'
 import { Stage } from './Stage'
 
 /**
@@ -9,6 +11,9 @@ import { Stage } from './Stage'
  * says what he is open to, and everything else is a single ruled table of ways
  * to reach him: icon, label, the actual value, and an arrow. Nothing is hidden
  * behind a button that only reveals an address.
+ *
+ * The resume is not a file. Asking for it is the whole point of this row, so
+ * the click writes that instruction instead of opening a PDF.
  *
  * The three facts sit underneath as a quiet strip rather than a sidebar, so the
  * page keeps one column of attention instead of two.
@@ -24,7 +29,6 @@ const ROWS = [
   { k: 'GitHub', v: `github.com/${profile.githubHandle}`, href: profile.github, icon: 'git' },
   { k: 'LeetCode', v: 'leetcode.com/u/aditya-srinivas3', href: profile.leetcode, icon: 'code' },
   { k: 'Phone', v: profile.phone, href: `tel:${profile.phone.replace(/\s/g, '')}`, icon: 'phone' },
-  { k: 'Resume', v: 'View / Download', href: cv, icon: 'doc' },
 ] as const
 
 const FACTS = [
@@ -33,7 +37,12 @@ const FACTS = [
   { k: 'Open to', v: 'SWE · AI · ML · Data · Analytics · QA · BA', icon: 'case' },
 ]
 
+const rowClass =
+  'grid w-full grid-cols-[22px_minmax(0,88px)_minmax(0,1fr)_18px] items-center gap-x-4 py-3 text-left sm:gap-x-6 sm:py-3.5'
+
 export function Contact() {
+  const [resumeNote, setResumeNote] = useState(false)
+
   return (
     <Stage id="contact" n="07" title="Contact">
       <div className="cut mx-auto max-w-[920px]">
@@ -57,8 +66,8 @@ export function Contact() {
             >
               <a
                 href={r.href}
-                className="grid grid-cols-[22px_minmax(0,88px)_minmax(0,1fr)_18px] items-center gap-x-4 py-3 sm:gap-x-6 sm:py-3.5"
-                {...(r.href.startsWith('http') || r.href.startsWith('/docs')
+                className={rowClass}
+                {...(r.href.startsWith('http')
                   ? { target: '_blank', rel: 'noreferrer noopener' }
                   : {})}
               >
@@ -78,6 +87,49 @@ export function Contact() {
               </a>
             </li>
           ))}
+
+          <li
+            style={{ '--i': ROWS.length } as React.CSSProperties}
+            className="group border-b border-[var(--edge)] transition-colors hover:border-[var(--sig-edge)]"
+          >
+            <button
+              type="button"
+              onClick={() => setResumeNote((on) => !on)}
+              aria-expanded={resumeNote}
+              aria-controls="resume-note"
+              className={`${rowClass} cursor-pointer`}
+            >
+              <span className="text-[var(--sig)] transition-colors group-hover:text-[var(--sig-lit)]">
+                <Icon name="doc" />
+              </span>
+              <span className="tag">Resume</span>
+              <span className="min-w-0 truncate text-[15px] text-[var(--paper)] transition-colors group-hover:text-[var(--sig-lit)]">
+                {resumeNote ? 'On request' : 'View / Download'}
+              </span>
+              <span
+                aria-hidden
+                className="text-[15px] text-[var(--sig)] transition-transform duration-300 group-hover:translate-x-1"
+              >
+                &rarr;
+              </span>
+            </button>
+            <div className="drawer" data-on={resumeNote ? '1' : '0'} id="resume-note">
+              <div>
+                <p
+                  className="max-w-[46ch] pb-4 pl-[calc(22px+1rem)] text-[15px] leading-relaxed text-[var(--grey-1)] sm:pl-[calc(22px+1.5rem)]"
+                  inert={!resumeNote}
+                >
+                  Contact Aditya Srinivas for the resume.{' '}
+                  <a
+                    href={`mailto:${profile.email}?subject=Resume request`}
+                    className="text-[var(--paper)] underline decoration-[var(--sig-edge)] underline-offset-4 transition-colors hover:text-[var(--sig-lit)]"
+                  >
+                    {profile.email}
+                  </a>
+                </p>
+              </div>
+            </div>
+          </li>
         </ul>
 
         <dl className="mt-7 grid gap-px border-b border-[var(--edge)] bg-[var(--edge)] pb-px sm:grid-cols-3">
